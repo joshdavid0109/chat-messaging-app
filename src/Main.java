@@ -34,6 +34,7 @@ public class Main {
                 document = documentBuilder.parse(file);
                 users = document.getElementsByTagName("Users");
                 element = users.item(users.getLength() - 1);
+
             } else {
                 document = documentBuilder.newDocument();
                 element = document.createElement("Users");
