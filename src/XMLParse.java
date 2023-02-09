@@ -17,9 +17,16 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class Main {
-    private final static String file = "users.xml";
-    public static void main(String[] args) {
+
+public class XMLParse {
+
+    private String file;
+
+    public XMLParse(String file) {
+        this.file = file;
+    }
+
+    public void addUser(String name, String age, String username, String password) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -28,75 +35,59 @@ public class Main {
             NodeList users = null;
             Node element = null;
 
-            
-            if (f.exists()){
+            //check nu adda ti file f idjay compooter
+            if (f.exists()) {
                 document = documentBuilder.parse(file);
                 users = document.getElementsByTagName("Users");
                 element = users.item(users.getLength() - 1);
-
-            } else {
+            }
+            //if awan ti file f, create new document
+            else {
                 document = documentBuilder.newDocument();
                 element = document.createElement("Users");
                 document.appendChild(element);
             }
 
-
+            //random id exampol <User id="3f99fe2e-a7cb-452f-9bd0-d74ace5eeb7d">
             UUID randomID = UUID.randomUUID();
 
-            // USER 1
-            byte choice = 0;
-            Scanner scn = new Scanner(System.in);
+            //create element user
+            Element elementUser = document.createElement("User");
+            element.appendChild(elementUser);
 
-                Element elementUser = document.createElement("User");
-                element.appendChild(elementUser);
+            //set id for user
+            elementUser.setAttribute("id", String.valueOf(randomID));
 
-                elementUser.setAttribute("id", String.valueOf(randomID));
+            Element nameElement = document.createElement("name");
+            nameElement.appendChild(document.createTextNode(name));
+            elementUser.appendChild(nameElement);
 
-                Element name = document.createElement("name");
-                System.out.print("Enter name: ");
-                name.appendChild(document.createTextNode(scn.nextLine()));
+            Element ageElement = document.createElement("Age");
+            ageElement.appendChild(document.createTextNode(age));
+            elementUser.appendChild(ageElement);
 
-                elementUser.appendChild(name);
+            Element usernameElement = document.createElement("Username");
+            usernameElement.appendChild(document.createTextNode(username));
+            elementUser.appendChild(usernameElement);
 
-                Element userAge = document.createElement("Age");
-                System.out.print("Enter age: ");
-                userAge.appendChild(document.createTextNode(scn.nextLine()));
-                elementUser.appendChild(userAge);
-
-                Element userName = document.createElement("Username");
-                System.out.print("Enter username: ");
-                userName.appendChild(document.createTextNode(scn.nextLine()));
-                elementUser.appendChild(userName);
-
-                Element password = document.createElement("Password");
-                System.out.print("Enter password: ");
-                password.appendChild(document.createTextNode(scn.nextLine()));
-                elementUser.appendChild(password);
-
-                System.out.print("Do you want to continue adding users?");
-                choice = scn.nextByte();
-
-
-
+            Element passwordElement = document.createElement("Password");
+            passwordElement.appendChild(document.createTextNode(password));
+            elementUser.appendChild(passwordElement);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+            //baka dito
 
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no" );
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             DOMSource domSource = new DOMSource(document);
             StreamResult streamResult = new StreamResult(new File(file));
             transformer.transform(domSource, streamResult);
-
-
-
-
         } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

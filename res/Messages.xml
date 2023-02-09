@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ChatMessages>
+    <ChatMessage>
+        <userName>Darren Franz</userName>
+        <message>asdasdasdasdasd</message>
+        <date>2023-02-09</date>
+    </ChatMessage>
+    <ChatMessage>
+        <userName>cwcsc cscsc</userName>
+        <message>hello</message>
+        <date>2023-02-09</date>
+    </ChatMessage>
+	<ChatMessage>
+        <userName>asdasd asdasd</userName>
+        <message>asdasdasd</message>
+        <date>2023-02-09</date>
+    </ChatMessage>
+	<ChatMessage>
+        <userName>xxxx xx</userName>
+        <message>12345555</message>
+        <date>2023-02-09</date>
+    </ChatMessage>
+</ChatMessages>
