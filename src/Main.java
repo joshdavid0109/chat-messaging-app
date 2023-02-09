@@ -18,7 +18,7 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class Main {
-    private final static String file = "res/users.xml";
+    private final static String file = "users.xml";
     public static void main(String[] args) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -27,24 +27,27 @@ public class Main {
             File f = new File(file);
 
             NodeList users = null;
+            Node element = null;
 
             
             if (f.exists()){
                 document = documentBuilder.parse(file);
                 users = document.getElementsByTagName("Users");
+                element = users.item(users.getLength() - 1);
             } else {
                 document = documentBuilder.newDocument();
-                users = document.getElementsByTagName("Users");
+                element = document.createElement("Users");
+                document.appendChild(element);
             }
 
-            Node element = users.item(users.getLength()-1);
+
             UUID randomID = UUID.randomUUID();
 
             // USER 1
             byte choice = 0;
             Scanner scn = new Scanner(System.in);
 
-                Element elementUser = document.createElement("User" + (users.getLength() + 1));
+                Element elementUser = document.createElement("User");
                 element.appendChild(elementUser);
 
                 elementUser.setAttribute("id", String.valueOf(randomID));
