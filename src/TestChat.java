@@ -86,11 +86,11 @@ class ClientHandler extends Thread {
                     NodeList users = null;
                     org.w3c.dom.Element user = null;
 
-                    users = document.getElementsByTagName("Users");
+                    users = document.getElementsByTagName("User");
 
                     printWriter.println("\nUsername: ");
                     username = bufferedReader.readLine();
-                    for (int i = 0; i < users.getLength(); i++) {
+                    for (int i = 0; i <= users.getLength(); i++) {
                         user = (Element) users.item(i);
                         Node uName = user.getElementsByTagName("Username").item(0).getFirstChild();
                         if (!uName.getTextContent().equals(username)) {
@@ -107,7 +107,6 @@ class ClientHandler extends Thread {
 
                             name = nameNode.getTextContent();
                             System.out.println("Login Successful!");
-                            index = j;
                             break;
                         }
                     }

@@ -73,11 +73,6 @@ public class Main {
                 password.appendChild(document.createTextNode(scn.nextLine()));
                 elementUser.appendChild(password);
 
-                System.out.print("Do you want to continue adding users?");
-                choice = scn.nextByte();
-
-
-
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
