@@ -10,18 +10,23 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class TestChat {
     static String f = "users.xml";
+    static Socket clientSocket;
+    static PrintWriter printWriter;
+    static BufferedReader bufferedReader;
+
+    private boolean done;
+
 
     public static void main(String[] args) {
         int port = 8888;
 
 
         while (true) {
-            Socket clientSocket;
-            PrintWriter printWriter;
-            BufferedReader bufferedReader;
+
 
             try (ServerSocket serverSocket = new ServerSocket(port)) {
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -48,9 +53,13 @@ public class TestChat {
             }
         }
     }
+
+
 }
 
 class ClientHandler extends Thread {
+
+    final ArrayList<ClientHandler> clientHandlerArraylist = new ArrayList<>();
     final Socket socket;
     final PrintWriter printWriter;
     final BufferedReader bufferedReader;
@@ -86,11 +95,12 @@ class ClientHandler extends Thread {
                     NodeList users = null;
                     org.w3c.dom.Element user = null;
 
-                    users = document.getElementsByTagName("User");
+                    users = document.getElementsByTagName("Users");
 
-                    printWriter.println("\nUsername: ");
-                    username = bufferedReader.readLine();
-                    for (int i = 0; i <= users.getLength(); i++) {
+
+                    for (int i = 0; i < users.getLength(); i++) {
+                        printWriter.println("\nUsername: ");
+                        username = bufferedReader.readLine();
                         user = (Element) users.item(i);
                         Node uName = user.getElementsByTagName("Username").item(0).getFirstChild();
                         if (!uName.getTextContent().equals(username)) {
@@ -107,11 +117,14 @@ class ClientHandler extends Thread {
 
                             name = nameNode.getTextContent();
                             System.out.println("Login Successful!");
+                            joinServer(name);
                             break;
                         }
+                        break;
                     }
-                    
-                    printWriter.printf("[%s]: ", name);
+
+
+
 
                 } catch (IOException ignored) {
                 }
@@ -120,11 +133,27 @@ class ClientHandler extends Thread {
                 throw new RuntimeException(e);
             }
         }
+    }
 
-
-
+    private void joinServer(String name) {
+        broadcast(name + " joined the chat");
+        String message;
 
     }
+
+
+    public void broadcast(String message) {
+        for (ClientHandler clientHandler: clientHandlerArraylist) {
+            if (clientHandler != null) {
+                clientHandler.sendMessage(message);
+            }
+        }
+    }
+
+    public void sendMessage(String message) {
+        printWriter.println(message);
+    }
+
 }
 
 
