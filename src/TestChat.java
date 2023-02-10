@@ -96,22 +96,31 @@ class ClientHandler extends Thread {
                     org.w3c.dom.Element user = null;
 
                     users = document.getElementsByTagName("Users");
+                    NodeList userTest = document.getElementsByTagName("User");
+
 
                     while(!loginStatus){
+
+
                         for (int i = 0; i < users.getLength(); i++) {
+                            user = (Element) users.item(i);
+                            Node firstChild = user.getElementsByTagName("Username").item(i).getFirstChild();
                             printWriter.println("\nUsername: ");
                             username = bufferedReader.readLine();
-                            user = (Element) users.item(i);
-                            Node uName = user.getElementsByTagName("Username").item(0).getFirstChild();
-                            if (!uName.getTextContent().equals(username)) {
+
+                            if (!firstChild.getTextContent().equals(username)) {
+                                System.out.println("Username is not existing");
+
+                                firstChild = user.getElementsByTagName("Username").item(i).getFirstChild();
+
                                 continue;
                             }
 
                             printWriter.println("\nPassword: ");
                             password = bufferedReader.readLine();
                             for (int j = 0; j < users.getLength(); j++) {
-                                Node pass = user.getElementsByTagName("Password").item(0).getFirstChild();
-                                Node nameNode = user.getElementsByTagName("name").item(0).getFirstChild();
+                                Node pass = user.getElementsByTagName("Password").item(j).getFirstChild();
+                                Node nameNode = user.getElementsByTagName("name").item(j).getFirstChild();
                                 if (pass.getTextContent().equals(password)){
                                     name = nameNode.getTextContent();
                                     loginStatus = true;
@@ -123,9 +132,6 @@ class ClientHandler extends Thread {
 
                         break;
                     }
-
-
-
 
                 } catch (IOException ignored) {
                 }

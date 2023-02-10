@@ -5,6 +5,7 @@
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
+    </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>Joshua</name>
         <Age>20</Age>
