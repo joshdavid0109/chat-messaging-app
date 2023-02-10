@@ -7,7 +7,7 @@ public class test {
     public static void main(String[] args) {
 
         //bruh idk why may spaces dun sa xml  huhuhuhu pag madami ka nilagay na user may spaces inbetween
-        XMLParse userCreator = new XMLParse("res/users.xml");
+        XMLParse userCreator = new XMLParse("users.xml");
 
         Scanner scn = new Scanner(System.in);
         String choice = "y";
