@@ -93,6 +93,7 @@ public class XMLParse {
         }
     }
 
+    // ikaten tayu dagijay white spaces idjay xml file
     private static void trimWhiteSpace(Node node) {
         NodeList nodeList = node.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); ++i) {
