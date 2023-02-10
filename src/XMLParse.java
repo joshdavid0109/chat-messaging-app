@@ -74,6 +74,8 @@ public class XMLParse {
             passwordElement.appendChild(document.createTextNode(password));
             elementUser.appendChild(passwordElement);
 
+            trimWhiteSpace(element);
+
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             //baka dito
@@ -88,6 +90,18 @@ public class XMLParse {
             transformer.transform(domSource, streamResult);
         } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    // ikaten tayu dagijay white spaces idjay xml file
+    private static void trimWhiteSpace(Node node) {
+        NodeList nodeList = node.getChildNodes();
+        for (int i = 0; i < nodeList.getLength(); ++i) {
+            Node child = nodeList.item(i);
+            if (child.getNodeType() == Node.TEXT_NODE) {
+                child.setTextContent(child.getTextContent().trim());
+            }
+            trimWhiteSpace(child);
         }
     }
 }
