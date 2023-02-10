@@ -167,49 +167,49 @@ class ClientHandler extends Thread {
 
                     }
 
-                }
-                else
+                } else
                     broadcast(name + ": " + message);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    private void joinServer(String name) throws IOException {
-        sendMessage(name + " joined the chat");
-        String message;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    }
 
-        while(true){
+       /* private void joinServer (String name) throws IOException {
+            sendMessage(name + " joined the chat");
+            String message;
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
-            printWriter.println("INPUT YOUR MESSAGE: ");
-            printWriter.flush();
-            message = bufferedReader.readLine();
-            //get sa system yung date, dapat server side siguro ito para consistent
-            LocalDateTime now = LocalDateTime.now();
-            Messages msg = new Messages(name, message);
-            printWriter.println(dtf.format(now));
-            printWriter.println(msg);
-            printWriter.flush();
+            while (true) {
+
+                printWriter.println("INPUT YOUR MESSAGE: ");
+                printWriter.flush();
+                message = bufferedReader.readLine();
+                //get sa system yung date, dapat server side siguro ito para consistent
+                LocalDateTime now = LocalDateTime.now();
+                Messages msg = new Messages(name, message);
+                printWriter.println(dtf.format(now));
+                printWriter.println(msg);
+                printWriter.flush();
+            }
+
+        }
+*/
+        public void broadcast (String message){
+            for (ClientHandler clientHandler : TestChat.clientHandlerArraylist) {
+
+                if (clientHandler != null) {
+                    clientHandler.sendMessage(message);
+
+                } else
+                    printWriter.println("helloi=");
+            }
         }
 
-    }
-
-
-    public void broadcast(String message) {
-        for (ClientHandler clientHandler: TestChat.clientHandlerArraylist) {
-
-            if (clientHandler != null) {
-                clientHandler.sendMessage(message);
-
-            } else
-                printWriter.println("helloi=");
+        public void sendMessage (String message){
+            printWriter.println(message);
         }
     }
 
-    public void sendMessage(String message) {
-        printWriter.println(message);
-    }
-
-}
 
 
