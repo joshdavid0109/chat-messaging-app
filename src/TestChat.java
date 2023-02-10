@@ -18,10 +18,13 @@ public class TestChat {
     static PrintWriter printWriter;
     static BufferedReader bufferedReader;
 
+
+
     private boolean done;
 
 
     public static void main(String[] args) {
+        final ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
         int port = 8888;
 
 
@@ -38,8 +41,13 @@ public class TestChat {
 
                 clientSocket = serverSocket.accept();
 
+
+
+
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+
+                clientHandlers.add(new ClientHandler(clientSocket, printWriter, bufferedReader));
 
 
                 System.out.println("A client has connected.");
@@ -136,17 +144,21 @@ class ClientHandler extends Thread {
     }
 
     private void joinServer(String name) {
-        broadcast(name + " joined the chat");
+        sendMessage(name + " joined the chat");
         String message;
 
     }
 
 
     public void broadcast(String message) {
+
         for (ClientHandler clientHandler: clientHandlerArraylist) {
+
             if (clientHandler != null) {
                 clientHandler.sendMessage(message);
-            }
+
+            } else
+                printWriter.println("helloi=");
         }
     }
 
