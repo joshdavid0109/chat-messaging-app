@@ -10,6 +10,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class TestChat {
@@ -89,7 +91,6 @@ class ClientHandler extends Thread {
 
                 document = documentBuilder.parse(file);
 
-
                 try {
 
                     NodeList users = null;
@@ -121,7 +122,7 @@ class ClientHandler extends Thread {
                             if (pass.getTextContent().equals(password)) {
                                 name = nameNode.getTextContent();
                                 loginStatus = true;
-                                System.out.println("Login Successful!");
+                                System.out.println(name + " has successfully logged onto idjay server");
                                 joinServer(name);
                                 break;
                             }
@@ -129,6 +130,7 @@ class ClientHandler extends Thread {
                     }
 
                 } catch (IOException ignored) {
+
                 }
 
             } catch (IOException | ParserConfigurationException | SAXException e) {
@@ -137,9 +139,23 @@ class ClientHandler extends Thread {
         }
     }
 
-    private void joinServer(String name) {
+    private void joinServer(String name) throws IOException {
         sendMessage(name + " joined the chat");
         String message;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
+        while(true){
+
+            printWriter.println("INPUT YOUR MESSAGE: ");
+            printWriter.flush();
+            message = bufferedReader.readLine();
+            //get sa system yung date, dapat server side siguro ito para consistent
+            LocalDateTime now = LocalDateTime.now();
+            Messages msg = new Messages(name, message);
+            printWriter.println(dtf.format(now));
+            printWriter.println(msg);
+            printWriter.flush();
+        }
 
     }
 

@@ -12,4 +12,10 @@
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
     </User>
+    <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
+        <name>TEST</name>
+        <Age>20</Age>
+        <Username>x</Username>
+        <Password>x</Password>
+    </User>
 </Users>
