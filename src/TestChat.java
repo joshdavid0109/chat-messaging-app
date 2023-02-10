@@ -77,7 +77,7 @@ class ClientHandler extends Thread {
     public void run() {
         String username, password, name = null;
         int index = 0;
-    loginStatus = false;
+        loginStatus = false;
 
         while (true){
 
@@ -102,35 +102,30 @@ class ClientHandler extends Thread {
                     while(!loginStatus){
 
 
-                        for (int i = 0; i < users.getLength(); i++) {
-                            user = (Element) users.item(i);
-                            Node firstChild = user.getElementsByTagName("Username").item(i).getFirstChild();
-                            printWriter.println("\nUsername: ");
-                            username = bufferedReader.readLine();
+                        printWriter.println("\nUsername: ");
+                        username = bufferedReader.readLine();
 
-                            if (!firstChild.getTextContent().equals(username)) {
-                                System.out.println("Username is not existing");
+                        for (int i = 0; i < userTest.getLength(); i++) {
+                            Element u = (Element) userTest.item(i);
+                            Node uName = u.getElementsByTagName("Username").item(0).getFirstChild();
 
-                                firstChild = user.getElementsByTagName("Username").item(i).getFirstChild();
-
+                            if (!uName.getTextContent().equals(username)) {
                                 continue;
                             }
 
                             printWriter.println("\nPassword: ");
                             password = bufferedReader.readLine();
-                            for (int j = 0; j < users.getLength(); j++) {
-                                Node pass = user.getElementsByTagName("Password").item(j).getFirstChild();
-                                Node nameNode = user.getElementsByTagName("name").item(j).getFirstChild();
-                                if (pass.getTextContent().equals(password)){
-                                    name = nameNode.getTextContent();
-                                    loginStatus = true;
-                                }
+                            Node pass = u.getElementsByTagName("Password").item(0).getFirstChild();
+                            Node nameNode = u.getElementsByTagName("name").item(0).getFirstChild();
+
+                            if (pass.getTextContent().equals(password)) {
+                                name = nameNode.getTextContent();
+                                loginStatus = true;
                                 System.out.println("Login Successful!");
                                 joinServer(name);
+                                break;
                             }
-                    }
-
-                        break;
+                        }
                     }
 
                 } catch (IOException ignored) {
