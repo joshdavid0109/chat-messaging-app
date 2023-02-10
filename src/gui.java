@@ -27,7 +27,7 @@ public class gui extends JFrame implements ActionListener {
         userTextField.setBounds(300, 150, 360, 30);
         passwordField.setBounds(300, 200, 360, 30);
         loginButton.setBounds(300, 270, 360, 30);
-        titleLabel.setBounds(425,100,360,30);
+        titleLabel.setBounds(425,110,360,30);
         showPassword.setBounds(425,235,360,30);
     }
 
