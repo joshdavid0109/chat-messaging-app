@@ -1,23 +1,27 @@
 package privateMessages;
 
-import javax.xml.parsers.*;
 
 public class privateMessages {
-    public static void main(String[] args) {
-        try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser saxParserFactory = factory.newSAXParser();
+    private final String recipient;
+    private final String message;
+    private final String sender;
 
-        } catch (Exception e) {
 
-        }
+    public privateMessages(String recipient, String message, String sender) {
+        this.recipient = recipient;
+        this.message = message;
+        this.sender = sender;
     }
 
-    public void notification() {
-
+    public String getRecipient() {
+        return recipient;
     }
 
-    public void delete() {
+    public String getMessage() {
+        return message;
+    }
 
+    public String getSender() {
+        return sender;
     }
 }

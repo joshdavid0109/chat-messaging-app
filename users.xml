@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Users>
     <User id="0c1311ae-50c0-41d1-b817-73540f04a87f">
-        <name>darren</name>
+        <name>Darren</name>
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
@@ -11,5 +11,11 @@
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
+    </User>
+    <User id="ed49f946-fae7-47ba-9027-d158123b906a">
+        <name>Kiko</name>
+        <Age>20</Age>
+        <Username>kikoxcore</Username>
+        <Password>kikoxcore</Password>
     </User>
 </Users>
