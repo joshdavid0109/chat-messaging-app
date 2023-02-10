@@ -10,6 +10,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class TestChat {
@@ -62,9 +64,12 @@ public class TestChat {
 }
 
 class ClientHandler extends Thread {
+
+    final ArrayList<ClientHandler> clientHandlerArraylist = new ArrayList<>();
     final Socket socket;
     final PrintWriter printWriter;
     final BufferedReader bufferedReader;
+    int counter;
     boolean loginStatus;
     private String f = "users.xml";
     String ip;
@@ -127,6 +132,7 @@ class ClientHandler extends Thread {
 
                 } catch (IOException ignored) {
                 }
+
             } catch (IOException | ParserConfigurationException | SAXException e) {
                 throw new RuntimeException(e);
             }
@@ -168,6 +174,23 @@ class ClientHandler extends Thread {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    private void joinServer(String name) throws IOException {
+        sendMessage(name + " joined the chat");
+        String message;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+
+        while(true){
+
+            printWriter.println("INPUT YOUR MESSAGE: ");
+            printWriter.flush();
+            message = bufferedReader.readLine();
+            //get sa system yung date, dapat server side siguro ito para consistent
+            LocalDateTime now = LocalDateTime.now();
+            Messages msg = new Messages(name, message);
+            printWriter.println(dtf.format(now));
+            printWriter.println(msg);
+            printWriter.flush();
+        }
 
     }
 
@@ -177,6 +200,7 @@ class ClientHandler extends Thread {
 
             if (clientHandler != null) {
                 clientHandler.sendMessage(message);
+
             } else
                 printWriter.println("helloi=");
         }
