@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Users>
+    <User id="0c1311ae-50c0-41d1-b817-73540f04a87f">
+        <name>darren</name>
+        <Age>18</Age>
+        <Username>franz1</Username>
+        <Password>franz</Password>
+    <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
+        <name>Joshua</name>
+        <Age>20</Age>
+        <Username>joshdavid0109</Username>
+        <Password>joshdavid</Password>
+    </User>
+</Users>

@@ -64,7 +64,7 @@ class ClientHandler extends Thread {
     final PrintWriter printWriter;
     final BufferedReader bufferedReader;
     int counter;
-    boolean loginStatus = false;
+    boolean loginStatus;
     private String f = "users.xml";
 
     public ClientHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) {
@@ -77,7 +77,7 @@ class ClientHandler extends Thread {
     public void run() {
         String username, password, name = null;
         int index = 0;
-
+    loginStatus = false;
 
         while (true){
 
@@ -97,29 +97,30 @@ class ClientHandler extends Thread {
 
                     users = document.getElementsByTagName("Users");
 
-
-                    for (int i = 0; i < users.getLength(); i++) {
-                        printWriter.println("\nUsername: ");
-                        username = bufferedReader.readLine();
-                        user = (Element) users.item(i);
-                        Node uName = user.getElementsByTagName("Username").item(0).getFirstChild();
-                        if (!uName.getTextContent().equals(username)) {
-                            continue;
-                        }
-
-                        printWriter.println("\nPassword: ");
-                        password = bufferedReader.readLine();
-                        for (int j = 0; j < users.getLength(); j++) {
-                            Node pass = user.getElementsByTagName("Password").item(0).getFirstChild();
-                            Node nameNode = user.getElementsByTagName("name").item(0).getFirstChild();
-                            if (!pass.getTextContent().equals(password))
+                    while(!loginStatus){
+                        for (int i = 0; i < users.getLength(); i++) {
+                            printWriter.println("\nUsername: ");
+                            username = bufferedReader.readLine();
+                            user = (Element) users.item(i);
+                            Node uName = user.getElementsByTagName("Username").item(0).getFirstChild();
+                            if (!uName.getTextContent().equals(username)) {
                                 continue;
+                            }
 
-                            name = nameNode.getTextContent();
-                            System.out.println("Login Successful!");
-                            joinServer(name);
-                            break;
-                        }
+                            printWriter.println("\nPassword: ");
+                            password = bufferedReader.readLine();
+                            for (int j = 0; j < users.getLength(); j++) {
+                                Node pass = user.getElementsByTagName("Password").item(0).getFirstChild();
+                                Node nameNode = user.getElementsByTagName("name").item(0).getFirstChild();
+                                if (pass.getTextContent().equals(password)){
+                                    name = nameNode.getTextContent();
+                                    loginStatus = true;
+                                }
+                                System.out.println("Login Successful!");
+                                joinServer(name);
+                            }
+                    }
+
                         break;
                     }
 
@@ -136,17 +137,21 @@ class ClientHandler extends Thread {
     }
 
     private void joinServer(String name) {
-        broadcast(name + " joined the chat");
+        sendMessage(name + " joined the chat");
         String message;
 
     }
 
 
     public void broadcast(String message) {
+
         for (ClientHandler clientHandler: clientHandlerArraylist) {
+
             if (clientHandler != null) {
                 clientHandler.sendMessage(message);
-            }
+
+            } else
+                printWriter.println("helloi=");
         }
     }
 
