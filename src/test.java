@@ -1,10 +1,11 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class test {
+
     public static void main(String[] args) {
+        final ArrayList<User> userArrayList = new ArrayList<>();
 
         //bruh idk why may spaces dun sa xml  huhuhuhu pag madami ka nilagay na user may spaces inbetween
         XMLParse userCreator = new XMLParse("users.xml");
@@ -20,9 +21,14 @@ public class test {
             String username = scn.nextLine();
             System.out.print("Enter pass: ");
             String password = scn.nextLine();
-            userCreator.addUser(name, age, username, password);
+
+            userArrayList.add(userCreator.addUser(name, age, username, password));
+
             System.out.print("Do you want to continue adding users? (y/n): ");
             choice = scn.nextLine();
         }
+
+        TestChat testChat = new TestChat();
+        testChat.run();
     }
 }

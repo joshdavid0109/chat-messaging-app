@@ -14,6 +14,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -22,11 +23,13 @@ public class XMLParse {
 
     private String file;
 
+    User newUser;
     public XMLParse(String file) {
         this.file = file;
     }
 
-    public void addUser(String name, String age, String username, String password) {
+
+    public User addUser(String name, String age, String username, String password) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -74,11 +77,13 @@ public class XMLParse {
             passwordElement.appendChild(document.createTextNode(password));
             elementUser.appendChild(passwordElement);
 
+            newUser = new User(nameElement.getTextContent(), ageElement.getTextContent(),
+                    usernameElement.getTextContent(), passwordElement.getTextContent());
+
             trimWhiteSpace(element);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
-            //baka dito
 
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
@@ -91,6 +96,7 @@ public class XMLParse {
         } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
+        return newUser;
     }
 
     // ikaten tayu dagijay white spaces idjay xml file

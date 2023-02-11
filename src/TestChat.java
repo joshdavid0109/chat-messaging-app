@@ -1,6 +1,5 @@
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class TestChat {
+public class TestChat implements Runnable{
     static String f = "users.xml";
     static Socket clientSocket;
     static PrintWriter printWriter;
@@ -23,8 +22,13 @@ public class TestChat {
 
     private boolean done;
 
-
     public static void main(String[] args) {
+        TestChat testChat = new TestChat();
+        testChat.run();
+    }
+
+
+    public void run() {
         int port = 8888;
 
 
@@ -48,7 +52,6 @@ public class TestChat {
 
                 System.out.println("A client has connected.");
 
-
                 Thread handler = new ClientHandler(clientSocket, printWriter, bufferedReader);
                 clientHandlerArraylist.add(new ClientHandler(clientSocket, printWriter, bufferedReader));
                 handler.start();
@@ -58,9 +61,8 @@ public class TestChat {
                 throw new RuntimeException(e);
             }
         }
+
     }
-
-
 }
 
 class ClientHandler extends Thread {
@@ -157,7 +159,12 @@ class ClientHandler extends Thread {
                         Element users = (Element) usersList.item(i);
                         String r = users.getElementsByTagName("name").item(0).getTextContent();
 
+                        TestChat.clientHandlerArraylist.get(i).socket.getLocalSocketAddress().toString();
+                        TestChat.clientHandlerArraylist.get(i);
+
+
                         if (r.equals(recipient)) {
+
                             for (ClientHandler clientHandlerhander : TestChat.clientHandlerArraylist) {
                                 if (clientHandlerhander.socket.getRemoteSocketAddress().toString().equals(ip)) {
                                     clientHandlerhander.sendMessage(name + ": " + message);
@@ -175,7 +182,7 @@ class ClientHandler extends Thread {
         }
     }
 
-       /* private void joinServer (String name) throws IOException {
+        /*private void joinServer (String name) throws IOException {
             sendMessage(name + " joined the chat");
             String message;
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -193,8 +200,7 @@ class ClientHandler extends Thread {
                 printWriter.flush();
             }
 
-        }
-*/
+        }*/
         public void broadcast (String message){
             for (ClientHandler clientHandler : TestChat.clientHandlerArraylist) {
 

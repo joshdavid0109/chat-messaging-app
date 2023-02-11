@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Users>
     <User id="0c1311ae-50c0-41d1-b817-73540f04a87f">
-        <name>darren</name>
+        <name>Darren</name>
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
@@ -23,5 +23,23 @@
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
+    </User>
+    <User id="4f2668f6-b75d-4f4e-8f36-bb27028974cd">
+        <name>Maervin</name>
+        <Age>20</Age>
+        <Username>maervinV</Username>
+        <Password>maervin</Password>
+    </User>
+    <User id="c88571a6-d57c-4e9e-9e0b-8545046f0069">
+        <name>Ariel</name>
+        <Age>20</Age>
+        <Username>ariel</Username>
+        <Password>ariel</Password>
+    </User>
+    <User id="9b5ec170-ddc0-4a12-a152-24082c895785">
+        <name>Rey</name>
+        <Age>20</Age>
+        <Username>reybans</Username>
+        <Password>rey</Password>
     </User>
 </Users>
