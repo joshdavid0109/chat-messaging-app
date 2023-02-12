@@ -1,34 +1,64 @@
-
-import java.util.ArrayList;
-import java.util.Scanner;
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.*;
+import java.util.*;
 
 public class test {
 
-    public static void main(String[] args) {
-        final ArrayList<User> userArrayList = new ArrayList<>();
-
-        //bruh idk why may spaces dun sa xml  huhuhuhu pag madami ka nilagay na user may spaces inbetween
+    protected static Scanner scn = new Scanner(System.in);
+    public static void main(String[] args) throws Exception {
         XMLParse userCreator = new XMLParse("users.xml");
 
-        Scanner scn = new Scanner(System.in);
-        String choice = "y";
-        while (choice.equalsIgnoreCase("y")) {
+        do {
             System.out.print("Enter name: ");
             String name = scn.nextLine();
             System.out.print("Enter age: ");
             String age = scn.nextLine();
-            System.out.print("Enter username: ");
-            String username = scn.nextLine();
+            String username = checkUsername();
             System.out.print("Enter pass: ");
             String password = scn.nextLine();
+            userCreator.addUser(name, age, username, password);
+        } while (cont());
+    }
 
-            userArrayList.add(userCreator.addUser(name, age, username, password));
+    // may masmaayos siguro na method kesa dito but it worky
+    private static String checkUsername() throws Exception {
+        System.out.print("Enter username: ");
+        String username = scn.nextLine();
+        while (isDuplicate(username)) {
+            System.out.print("Username \"" + username + "\" is already taken! Please enter another username: ");
+            username = scn.nextLine();
+        }
+        return username;
+    }
 
-            System.out.print("Do you want to continue adding users? (y/n): ");
-            choice = scn.nextLine();
+    private static boolean cont() {
+        String response = "";
+        while (!("Y".equalsIgnoreCase(response) || "N".equalsIgnoreCase(response))) {
+            System.out.print("Do you want to continue adding users? [y/n]: ");
+            response = scn.next();
+            if (!("Y".equalsIgnoreCase(response) || "N".equalsIgnoreCase(response))) {
+                System.out.println("Invalid entry! Please use characters [y] or [n] and try again.");
+            }
+            System.out.println();
+        }
+        return "Y".equalsIgnoreCase(response);
+    }
+
+    // iterate through elements to get usernames then check if entered username is the same
+    private static boolean isDuplicate(String userName) throws Exception {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document users = documentBuilder.parse(new File("users.xml"));
+
+        NodeList nodeList = users.getElementsByTagName("Username");
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            if (Objects.equals(node.getTextContent(), userName)) {
+                return true;
+            }
         }
 
-        TestChat testChat = new TestChat();
-        testChat.run();
+        return false;
     }
 }
