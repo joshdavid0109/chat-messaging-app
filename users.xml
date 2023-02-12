@@ -24,4 +24,10 @@
         <Username>x</Username>
         <Password>x</Password>
     </User>
+    <User id="f1477d6d-3611-439b-801c-372316669a5c">
+        <name>reydan</name>
+        <Age>20</Age>
+        <Username>lemao</Username>
+        <Password>2221</Password>
+    </User>
 </Users>
