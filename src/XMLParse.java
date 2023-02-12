@@ -102,12 +102,16 @@ public class XMLParse {
     // ikaten tayu dagijay white spaces idjay xml file
     private static void trimWhiteSpace(Node node) {
         NodeList nodeList = node.getChildNodes();
-        for (int i = 0; i < nodeList.getLength(); ++i) {
-            Node child = nodeList.item(i);
-            if (child.getNodeType() == Node.TEXT_NODE) {
-                child.setTextContent(child.getTextContent().trim());
+        try {
+            for (int i = 0; i < nodeList.getLength(); ++i) {
+                Node child = nodeList.item(i);
+                if (child.getNodeType() == Node.TEXT_NODE) {
+                    child.setTextContent(child.getTextContent().trim());
+                }
+                trimWhiteSpace(child);
             }
-            trimWhiteSpace(child);
+        } catch (NullPointerException nullPointerException) {
+            throw new NullPointerException("Socket closed");
         }
     }
 }
