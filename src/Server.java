@@ -8,31 +8,25 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Server {
-    static String f = "users.xml";
+    static String f = "res/users.xml";
     static Socket clientSocket;
     static PrintWriter printWriter;
     static BufferedReader bufferedReader;
     static ArrayList<LoginHandler> loginHandlerArraylist = new ArrayList<>();
+    static HashMap<String, User> userHashMap = new HashMap<>();
 
     public void run() {
-        int port = 8888, testChoice = 0;
+        int testChoice = 0;
 
 
         while (true) {
 
 
             try (ServerSocket serverSocket = new ServerSocket(1234)) {
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                Document document;
-                File file = new File(f);
-
-                document = documentBuilder.parse(file);
-
                 clientSocket = serverSocket.accept();
-
 
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -54,7 +48,7 @@ public class Server {
                 }
 
 
-            } catch (ParserConfigurationException | IOException | SAXException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
