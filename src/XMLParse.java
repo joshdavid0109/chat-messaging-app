@@ -77,7 +77,7 @@ public class XMLParse {
             passwordElement.appendChild(document.createTextNode(password));
             elementUser.appendChild(passwordElement);
 
-            newUser = new User(nameElement.getTextContent(), ageElement.getTextContent(),
+            newUser = new User(elementUser.getAttribute("id"), nameElement.getTextContent(), ageElement.getTextContent(),
                     usernameElement.getTextContent(), passwordElement.getTextContent());
 
             trimWhiteSpace(element);
