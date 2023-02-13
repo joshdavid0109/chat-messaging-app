@@ -6,6 +6,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,6 +16,7 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 public class Server {
     static String f = "res/users.xml";
@@ -22,6 +26,8 @@ public class Server {
     static ArrayList<LoginHandler> loginHandlerArraylist = new ArrayList<>();
     static List<User> registeredUsersList = new ArrayList<>();
     static HashMap<String, User> loggedInUserHashMap = new HashMap<>();
+
+    static Scanner scanner = new Scanner(System.in);
 
     public void run() {
         int testChoice = 0;
@@ -39,9 +45,11 @@ public class Server {
 
                 System.out.println("A client has connected.");
                 System.out.println("Ban a user - /ban + [name]");
-                String input = bufferedReader.readLine();
-                if (input.startsWith("/ban"))
+
+                String input = scanner.nextLine();
+                if (input.startsWith("/ban")) {
                     banUser(input.split(" ")[1]);
+                }
 
                 getRegisteredUsers();
 
@@ -72,19 +80,38 @@ public class Server {
             Document document = documentBuilder.parse(f);
 
             NodeList users = document.getElementsByTagName("User");
+            Element element = null;
 
             for (int i = 0; i < users.getLength(); i++) {
-                Element element = (Element) users.item(i);
+                element = (Element) users.item(i);
                 if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
                     element.getElementsByTagName("BanStatus").item(0).setTextContent("Banned");
                     printWriter.println(name + " banned\n");
                     break;
                 }
+
+
             }
 
+            users = document.getElementsByTagName("Users");
+            element = (Element) users.item(0);
+            XMLParse.trimWhiteSpace(element);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            DOMSource domSource = new DOMSource(document);
+            StreamResult streamResult = new StreamResult(new File(f));
+            transformer.transform(domSource, streamResult);
 
 
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+
+        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
             throw new RuntimeException(e);
         }
 

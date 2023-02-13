@@ -1,5 +1,9 @@
 package groupConference;
 
+import javax.print.Doc;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -77,6 +81,16 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter username: ");
