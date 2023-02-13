@@ -107,7 +107,7 @@ public class RegClientHandler extends Thread {
     private static boolean isDuplicate(String userName) throws Exception {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document users = documentBuilder.parse(new File("users.xml"));
+        Document users = documentBuilder.parse(new File("res/users.xml"));
 
         NodeList nodeList = users.getElementsByTagName("Username");
         for (int i = 0; i < nodeList.getLength(); i++) {

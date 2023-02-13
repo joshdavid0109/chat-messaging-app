@@ -16,7 +16,6 @@ public class LoginHandler extends Thread {
     Socket socket = null;
     PrintWriter printWriter = null;
     BufferedReader bufferedReader;
-    static LoginHandler loginHandler;
     boolean loginStatus;
 
     public LoginHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) {
@@ -67,7 +66,7 @@ public class LoginHandler extends Thread {
                     messagePrompt(name);
                     message = bufferedReader.readLine();
 
-                        for (Map.Entry<String, User> hash : Server.userHashMap.entrySet()) {
+                        for (Map.Entry<String, User> hash : Server.loggedInUserHashMap.entrySet()) {
                              if (hash.getValue().name().equals(recipient)) {
                                  for (LoginHandler loginHandler : Server.loginHandlerArraylist) {
                                      if (loginHandler.socket.getRemoteSocketAddress().toString().equals(hash.getKey()))
@@ -78,6 +77,8 @@ public class LoginHandler extends Thread {
                              }
                         }
 
+                } else if (message.startsWith("/quit")) {
+                    socket.close();
                 } else
                     broadcast(name + ": " + message);
             }
@@ -138,9 +139,6 @@ public class LoginHandler extends Thread {
                         String uName = u.getElementsByTagName("Username").item(0).getTextContent();
 
                         if (uName.equals(username)) {
-
-
-
                             for (int j = 0; j < users.getLength(); j++) {
                                 printWriter.println("\nPassword: ");
                                 password = bufferedReader.readLine();
@@ -154,20 +152,23 @@ public class LoginHandler extends Thread {
                                     User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
                                             u.getElementsByTagName("Username").item(0).getTextContent(),
                                             u.getElementsByTagName("Password").item(0).getTextContent());
-                                    Server.userHashMap.put(socket.getRemoteSocketAddress().toString(), user);
+
+                                    if (u.getElementsByTagName("BanStatus").item(0).getTextContent().equalsIgnoreCase("Banned")){
+                                        printWriter.println("Sorry. Your account is currently banned from the system.");
+                                        break;
+                                    }
+                                    Server.loggedInUserHashMap.put(socket.getRemoteSocketAddress().toString(), user);
                                     System.out.println("Login Successful!");
 
                                     joinServer(name, users);
                                     broadcast(name + ": ");
                                     break;
-                                } else if (j == users.getLength() - 1)
+                                }
                                     printWriter.println("Invalid password.");
                             }
+                            break;
                         } else if (i == users.getLength() - 1)
                             printWriter.println("User is not existing");
-
-
-
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);

@@ -1,4 +1,6 @@
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -7,8 +9,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Server {
     static String f = "res/users.xml";
@@ -16,7 +20,8 @@ public class Server {
     static PrintWriter printWriter;
     static BufferedReader bufferedReader;
     static ArrayList<LoginHandler> loginHandlerArraylist = new ArrayList<>();
-    static HashMap<String, User> userHashMap = new HashMap<>();
+    static List<User> registeredUsersList = new ArrayList<>();
+    static HashMap<String, User> loggedInUserHashMap = new HashMap<>();
 
     public void run() {
         int testChoice = 0;
@@ -33,6 +38,12 @@ public class Server {
 
 
                 System.out.println("A client has connected.");
+                System.out.println("Ban a user - /ban + [name]");
+                String input = bufferedReader.readLine();
+                if (input.startsWith("/ban"))
+                    banUser(input.split(" ")[1]);
+
+                getRegisteredUsers();
 
                 printWriter.println("Register [1]\nLogin [2]");
                 testChoice = Integer.parseInt(bufferedReader.readLine());
@@ -54,9 +65,65 @@ public class Server {
         }
     }
 
+    private void banUser(String name) {
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(f);
+
+            NodeList users = document.getElementsByTagName("User");
+
+            for (int i = 0; i < users.getLength(); i++) {
+                Element element = (Element) users.item(i);
+                if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
+                    element.getElementsByTagName("BanStatus").item(0).setTextContent("Banned");
+                    printWriter.println(name + " banned\n");
+                    break;
+                }
+            }
+
+
+
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public static void main(String[] args) {
         Server server = new Server();
         server.run();
+
+
+    }
+
+    private void getRegisteredUsers() {
+        String id, name, age, username, password;
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(f);
+
+            NodeList users = document.getElementsByTagName("User");
+
+            for (int i = 0; i < users.getLength(); i++) {
+                Element element = (Element) users.item(i);
+                id = element.getAttribute("User");
+                name = element.getElementsByTagName("name").item(0).getTextContent();
+                age = element.getElementsByTagName("Age").item(0).getTextContent();
+                username = element.getElementsByTagName("Username").item(0).getTextContent();
+                password = element.getElementsByTagName("Password").item(0).getTextContent();
+
+                registeredUsersList.add(new User(id, name, age, username, password));
+
+                printWriter.println(name + " added\n");
+            }
+
+
+
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }
