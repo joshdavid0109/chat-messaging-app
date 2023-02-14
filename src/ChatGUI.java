@@ -49,8 +49,6 @@ public class ChatGUI extends JFrame implements ActionListener {
         frame.pack();
         frame.setBounds(500, 250, 960, 540);
         frame.setVisible(true);
-
-
     }
 
     @Override
