@@ -252,7 +252,6 @@ public class LoginHandler extends Thread {
                             }
                             printWriter.println("Invalid password.");
                         }
-                        break;
                     } else if (i == users.getLength() - 1)
                         printWriter.println("User is not existing");
                 }

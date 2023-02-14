@@ -1,4 +1,4 @@
-package privateMessages;
+package privatemessages;
 
 public class privateMessagesConstructor {
 
