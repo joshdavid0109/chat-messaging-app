@@ -24,23 +24,23 @@ public class RegClientHandler extends Thread {
         while (true) {
             try {
                 do {
-                    printWriter.println("Enter name: ");
+                    System.out.println("Enter name: ");
                     name = bufferedReader.readLine();
                     do {
-                        printWriter.println("Enter age: ");
+                        System.out.println("Enter age: ");
                         age = bufferedReader.readLine();
                         if (!isNumeric(age))
-                            printWriter.println("Invalid age");
+                            System.out.println("Invalid age");
                     } while (!isNumeric(age));
 
                     username = checkUsername();
 
                     do {
-                        printWriter.println("Enter password: ");
+                        System.out.println("Enter password: ");
                         password = bufferedReader.readLine();
 
                         if (password.length() > 16 || password.length() < 8) {
-                            printWriter.println("Password must contain 8-16 characters");
+                            System.out.println("Password must contain 8-16 characters");
                         }
                     } while (!passWordValidation(password));
 
@@ -81,10 +81,10 @@ public class RegClientHandler extends Thread {
 
     // may masmaayos siguro na method kesa dito but it worky
     private String checkUsername() throws Exception {
-        printWriter.println("Enter username: ");
+        System.out.println("Enter username: ");
         String username = bufferedReader.readLine();
         while (isDuplicate(username)) {
-            printWriter.print("Username \"" + username + "\" is already taken! Please enter another username: ");
+            System.out.print("Username \"" + username + "\" is already taken! Please enter another username: ");
             username = bufferedReader.readLine();
         }
         return username;
@@ -93,12 +93,12 @@ public class RegClientHandler extends Thread {
     private boolean cont() throws IOException {
         String response = "";
         while (!("Y".equalsIgnoreCase(response) || "N".equalsIgnoreCase(response))) {
-            printWriter.print("Do you want to continue adding users? [y/n]: ");
+            System.out.print("Do you want to continue adding users? [y/n]: ");
             response = bufferedReader.readLine();
             if (!("Y".equalsIgnoreCase(response) || "N".equalsIgnoreCase(response))) {
-                printWriter.println("Invalid entry! Please use characters [y] or [n] and try again.");
+                System.out.println("Invalid entry! Please use characters [y] or [n] and try again.");
             }
-            printWriter.println();
+            System.out.println();
         }
         return "Y".equalsIgnoreCase(response);
     }

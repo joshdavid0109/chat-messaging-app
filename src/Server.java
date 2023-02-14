@@ -42,23 +42,23 @@ public class Server {
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
-
+                String input;
                 System.out.println("A client has connected.");
                 System.out.println("Ban a user - /ban + [name]");
 
-                String input = scanner.nextLine();
+                input = scanner.nextLine();
                 if (input.startsWith("/ban")) {
                     banUser(input.split(" ")[1]);
+                } else if (input.startsWith("add")) {
+                    RegClientHandler regClientHandler = new RegClientHandler(clientSocket, printWriter, bufferedReader);
+                    regClientHandler.start();
                 }
 
                 getRegisteredUsers();
 
-                printWriter.println("Register [1]\nLogin [2]");
+                printWriter.println("Login");
                 testChoice = Integer.parseInt(bufferedReader.readLine());
-                if (testChoice == 1) {
-                    RegClientHandler registration = new RegClientHandler(clientSocket, printWriter, bufferedReader);
-                    registration.start();
-                }else  if (testChoice == 2){
+                if (testChoice == 2){
 
                     // if registration is successful --
                     Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
