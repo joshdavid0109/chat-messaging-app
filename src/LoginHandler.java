@@ -242,6 +242,7 @@ public class LoginHandler extends Thread {
                                     printWriter.println("Sorry. Your account is currently banned from the system.");
                                     break;
                                 }
+
                                 Server.loggedInUserHashMap.put(socket.getRemoteSocketAddress().toString(), user);
                                 System.out.println("Login Successful!");
 
