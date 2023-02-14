@@ -12,6 +12,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class LoginHandler extends Thread {
     final PrintWriter printWriter;
     final BufferedReader bufferedReader;
     boolean loginStatus;
-
+    static String f = "res/users.xml";
 
     public LoginHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) {
         this.socket = clientSocket;
@@ -40,7 +41,7 @@ public class LoginHandler extends Thread {
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 org.w3c.dom.Document document;
                 String f = "res/users.xml";
-                File file = new File(f);
+                File file= new File(f);
 
                 document = documentBuilder.parse(file);
 
@@ -118,9 +119,14 @@ public class LoginHandler extends Thread {
                     broadcast(name + ": " + message);
                 }
             }
+
+
+        } catch (SocketException socketException) {
+            throw new SocketException("Socket closed");
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
+
             socket.close();
         }
     }
@@ -164,46 +170,29 @@ public class LoginHandler extends Thread {
 
     public void changeUName(String name, NodeList usersList) {
         File xmlFile = new File("res/users.xml");
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = null;
         Document document;
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             document = documentBuilder.parse(xmlFile);
-            NodeList users = document.getElementsByTagName("User");
-            Element element = null;
-            dBuilder = dbFactory.newDocumentBuilder();
+            NodeList users;
 
-            String nameToChangeTo = "hardcodelol";
+            users = document.getElementsByTagName("User");
+
+            printWriter.println("Enter new username: ");
+            String nameToChangeTo = bufferedReader.readLine();
             for (int i = 0; i < usersList.getLength(); i++) {
-                Element u = (Element) usersList.item(i);
+                Element u = (Element) users.item(i);
                 String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
+                printWriter.println(nameNode);
                 if (nameNode.equals(name)) {
                     u.getElementsByTagName("name").item(0).setTextContent(nameToChangeTo);
-                    System.out.println("User " + nameNode + " has changed name to " + nameToChangeTo);
+                    Server.updateXML(users, document);
+                    printWriter.println("User " + nameNode + " has changed name to " + nameToChangeTo);
                     break;
                 }
             }
-            users = document.getElementsByTagName("Users");
-            element = (Element) users.item(0);
-            XMLParse.trimWhiteSpace(element);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
-
-        try{
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-            DOMSource domSource = new DOMSource(document);
-            StreamResult streamResult = new StreamResult(new File(String.valueOf(xmlFile)));
-            transformer.transform(domSource, streamResult);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -212,14 +201,21 @@ public class LoginHandler extends Thread {
 
     public void userValidation(String name, NodeList users) {
 
-        String username, password;
         while (!loginStatus) {
             try {
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document document = documentBuilder.parse(Server.f);
+
+                String username, password;
+                users = document.getElementsByTagName("User");
+                Element u = null;
+
                 printWriter.println("\nUsername: ");
                 username = bufferedReader.readLine();
 
                 for (int i = 0; i < users.getLength(); i++) {
-                    Element u = (Element) users.item(i);
+                    u = (Element) users.item(i);
                     String uName = u.getElementsByTagName("Username").item(0).getTextContent();
 
                     if (uName.equals(username)) {
@@ -232,18 +228,28 @@ public class LoginHandler extends Thread {
                             if (pass.equals(password)) {
                                 name = nameNode;
                                 loginStatus = true;
-                                Server.loginHandlerArraylist.add(new LoginHandler(socket, printWriter, bufferedReader));
-                                User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
-                                        u.getElementsByTagName("Username").item(0).getTextContent(),
-                                        u.getElementsByTagName("Password").item(0).getTextContent());
 
                                 if (u.getElementsByTagName("BanStatus").item(0).getTextContent().equalsIgnoreCase("Banned")) {
                                     printWriter.println("Sorry. Your account is currently banned from the system.");
                                     break;
                                 }
 
+
+                                    Server.loginHandlerArraylist.add(new LoginHandler(socket, printWriter, bufferedReader));
+                                User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
+                                        u.getElementsByTagName("Username").item(0).getTextContent(),
+                                        u.getElementsByTagName("Password").item(0).getTextContent());
+
+                                // IP, USER HASHMAP
                                 Server.loggedInUserHashMap.put(socket.getRemoteSocketAddress().toString(), user);
+
+                                u.getElementsByTagName("status").item(0).setTextContent("online");
+                                Server.updateXML(users, document);
+
+
                                 System.out.println("Login Successful!");
+
+                                System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " +  u.getElementsByTagName("status").item(0).getTextContent());
 
                                 joinServer(name, users);
                                 broadcast(name + ": ");
@@ -251,6 +257,7 @@ public class LoginHandler extends Thread {
                             }
                             printWriter.println("Invalid password.");
                         }
+                        break;
                     } else if (i == users.getLength() - 1)
                         printWriter.println("User is not existing");
                 }

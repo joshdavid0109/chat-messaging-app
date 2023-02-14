@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Users>
     <User id="0c1311ae-50c0-41d1-b817-73540f04a87f">
-        <name>darren</name>
+        <name>Darren</name>
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
+        <status>offline</status>
         <BanStatus>Banned</BanStatus>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
@@ -12,6 +13,7 @@
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
+        <status>offline</status>
         <BanStatus/>
     </User>
     <User id="ed49f946-fae7-47ba-9027-d158123b906a">
@@ -19,13 +21,15 @@
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
-        <BanStatus>Banned</BanStatus>
+        <status>offline</status>
+        <BanStatus/>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>TEST</name>
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
+        <status>offline</status>
         <BanStatus>Banned</BanStatus>
     </User>
     <User id="4f2668f6-b75d-4f4e-8f36-bb27028974cd">
@@ -33,6 +37,7 @@
         <Age>20</Age>
         <Username>maervinV</Username>
         <Password>maervin</Password>
+        <status>offline</status>
         <BanStatus>Banned</BanStatus>
     </User>
     <User id="c88571a6-d57c-4e9e-9e0b-8545046f0069">
@@ -40,6 +45,7 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
+        <status>offline</status>
         <BanStatus/>
     </User>
     <User id="9b5ec170-ddc0-4a12-a152-24082c895785">
@@ -47,13 +53,15 @@
         <Age>20</Age>
         <Username>reybans</Username>
         <Password>rey</Password>
-        <BanStatus/>
+        <status>offline</status>
+        <BanStatus>Banned</BanStatus>
     </User>
     <User id="f1477d6d-3611-439b-801c-372316669a5c">
         <name>reydan</name>
         <Age>20</Age>
         <Username>lemao</Username>
         <Password>2221</Password>
-        <BanStatus/>
+        <status>offline</status>
+        <BanStatus>Banned</BanStatus>
     </User>
 </Users>

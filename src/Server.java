@@ -3,6 +3,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,10 +29,22 @@ public class Server {
     static HashMap<String, User> loggedInUserHashMap = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
 
-    public void run() {
+    public void run() throws IOException, SAXException, ParserConfigurationException {
 
         while (true) {
+            System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
+            System.out.println("Add a user - /add");
 
+            new Thread(() -> {
+                String input;
+                input = scanner.nextLine();
+                if (input.startsWith("/ban") || input.startsWith("/unban")) {
+                    banUser(input.split(" ")[0], input.split(" ")[1]);
+                } else if (input.startsWith("/add")) {
+                    RegClientHandler regClientHandler = new RegClientHandler(clientSocket, printWriter, bufferedReader);
+                    regClientHandler.start();
+                }
+            }).start();
 
             try (ServerSocket serverSocket = new ServerSocket(1234)) {
                 clientSocket = serverSocket.accept();
@@ -39,39 +52,40 @@ public class Server {
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
-                new Thread(){
-                    public void run() {
-                        String input;
-                        System.out.println("A client has connected.");
-                        System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
-                        System.out.println("Add a user - /add");
 
-                        input = scanner.nextLine();
-                        if (input.startsWith("/ban") || input.startsWith("/unban")) {
-                            banUser(input.split(" ")[0], input.split(" ")[1]);
-                        } else if (input.startsWith("/add")) {
-                            RegClientHandler regClientHandler = new RegClientHandler(clientSocket, printWriter, bufferedReader);
-                            regClientHandler.start();
-                        }
-                    }
-                }.start();
 
-                new Thread(){
-                    public void run() {
-                        getRegisteredUsers();
+                new Thread(() -> {
+                    getRegisteredUsers();
+                    System.out.println("A client has connected.");
+                    printWriter.println("Login");
+                    Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
+                    login.start();
 
-                        printWriter.println("Login");
-                        Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
-                        login.start();
-
-                    }
-
-                }.start();
+                }).start();
 
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+
+             // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
+            /*finally {
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document document = documentBuilder.parse(f);
+
+                NodeList users = document.getElementsByTagName("User");
+
+                for (int i = 0; i < users.getLength(); i++) {
+                    Element element = (Element) users.item(i);
+
+                    element.getElementsByTagName("status").item(0).setTextContent("offline");
+
+                    Server.updateXML(users, document);
+
+                }
+            }*/
         }
     }
 
@@ -89,7 +103,7 @@ public class Server {
                     element = (Element) users.item(i);
                     if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
                         element.getElementsByTagName("BanStatus").item(0).setTextContent("Banned");
-                        printWriter.println(name + " banned.\n");
+                        element.getElementsByTagName("status").item(0).setTextContent("online");
                         System.out.println(name + " is banned.\n");
                         break;
                     }
@@ -98,18 +112,28 @@ public class Server {
                 for (int i = 0; i < users.getLength(); i++) {
                     element = (Element) users.item(i);
                     if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
-                        element.getElementsByTagName("BanStatus").item(0).setTextContent("");
-                        printWriter.println(name + " is unbanned.\n");
+                        element.getElementsByTagName("BanStatus").item(0).setTextContent(" ");
                         System.out.println(name + " is unbanned\n");
                         break;
                     }
                 }
             }
 
-            users = document.getElementsByTagName("Users");
-            element = (Element) users.item(0);
-            XMLParse.trimWhiteSpace(element);
+           updateXML(users, document);
 
+
+
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void updateXML(NodeList users, Document document) {
+        users = document.getElementsByTagName("Users");
+        Element element = (Element) users.item(0);
+        XMLParse.trimWhiteSpace(element);
+
+        try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
 
@@ -121,19 +145,19 @@ public class Server {
             DOMSource domSource = new DOMSource(document);
             StreamResult streamResult = new StreamResult(new File(f));
             transformer.transform(domSource, streamResult);
-
-
-
-        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
+        } catch (TransformerException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 
     public static void main(String[] args) {
-        Server server = new Server();
-        server.run();
+        try {
+            Server server = new Server();
+            server.run();
+        } catch (IOException | SAXException | ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }
@@ -157,7 +181,6 @@ public class Server {
 
                 registeredUsersList.add(new User(id, name, age, username, password));
 
-                System.out.println(name + " added\n");
             }
 
 
