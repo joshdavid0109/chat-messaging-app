@@ -1,4 +1,4 @@
-package bookmarkContacts;
+package bookmarkcontacts;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
