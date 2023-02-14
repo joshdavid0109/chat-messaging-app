@@ -30,7 +30,7 @@ public class Server {
     static Scanner scanner = new Scanner(System.in);
 
     public void run() {
-        int testChoice = 0;
+
 
 
         while (true) {
@@ -42,29 +42,46 @@ public class Server {
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
+                new Thread(){
+                    public void run() {
+                        String input;
+                        System.out.println("A client has connected.");
+                        System.out.println("Ban a user - /ban + [name]\n");
+                        System.out.println("Add a user - /add");
 
-                System.out.println("A client has connected.");
-                System.out.println("Ban a user - /ban + [name]");
+                        input = scanner.nextLine();
+                        if (input.startsWith("/ban")) {
+                            banUser(input.split(" ")[1]);
+                        } else if (input.startsWith("/add")) {
+                            RegClientHandler regClientHandler = new RegClientHandler(clientSocket, printWriter, bufferedReader);
+                            regClientHandler.start();
+                        }
+                    }
+                }.start();
 
-                String input = scanner.nextLine();
-                if (input.startsWith("/ban")) {
-                    banUser(input.split(" ")[1]);
-                }
+                new Thread(){
+                    public void run() {
+                        try {
+                            getRegisteredUsers();
+                            int testChoice = 0;
 
-                getRegisteredUsers();
+                            printWriter.println("Login");
+                            testChoice = Integer.parseInt(bufferedReader.readLine());
+                            if (testChoice == 2) {
 
-                printWriter.println("Register [1]\nLogin [2]");
-                testChoice = Integer.parseInt(bufferedReader.readLine());
-                if (testChoice == 1) {
-                    RegClientHandler registration = new RegClientHandler(clientSocket, printWriter, bufferedReader);
-                    registration.start();
-                }else  if (testChoice == 2){
+                                // if registration is successful --
+                                Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
 
-                    // if registration is successful --
-                    Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
+                                login.start();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                    login.start();
-                }
+                }.start();
+
+
 
 
             } catch (IOException e) {
