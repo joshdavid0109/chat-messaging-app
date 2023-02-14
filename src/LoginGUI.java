@@ -40,7 +40,6 @@ public class LoginGUI extends JFrame implements ActionListener {
 
         LoginGUI frame = new LoginGUI();
         frame.setTitle("Budget Discord");
-        frame.setLayout(null);
         frame.setVisible(true);
         frame.setBounds(500, 250, 960, 540);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
