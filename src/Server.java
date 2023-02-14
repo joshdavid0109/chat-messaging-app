@@ -43,12 +43,12 @@ public class Server {
                     public void run() {
                         String input;
                         System.out.println("A client has connected.");
-                        System.out.println("Ban a user - /ban + [name]\n");
+                        System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
                         System.out.println("Add a user - /add");
 
                         input = scanner.nextLine();
-                        if (input.startsWith("/ban")) {
-                            banUser(input.split(" ")[1]);
+                        if (input.startsWith("/ban") || input.startsWith("/unban")) {
+                            banUser(input.split(" ")[0], input.split(" ")[1]);
                         } else if (input.startsWith("/add")) {
                             RegClientHandler regClientHandler = new RegClientHandler(clientSocket, printWriter, bufferedReader);
                             regClientHandler.start();
@@ -75,7 +75,7 @@ public class Server {
         }
     }
 
-    private void banUser(String name) {
+    private void banUser(String command, String name) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -84,15 +84,26 @@ public class Server {
             NodeList users = document.getElementsByTagName("User");
             Element element = null;
 
-            for (int i = 0; i < users.getLength(); i++) {
-                element = (Element) users.item(i);
-                if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
-                    element.getElementsByTagName("BanStatus").item(0).setTextContent("Banned");
-                    printWriter.println(name + " banned\n");
-                    break;
+            if (command.equals("/ban")) {
+                for (int i = 0; i < users.getLength(); i++) {
+                    element = (Element) users.item(i);
+                    if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
+                        element.getElementsByTagName("BanStatus").item(0).setTextContent("Banned");
+                        printWriter.println(name + " banned.\n");
+                        System.out.println(name + " is banned.\n");
+                        break;
+                    }
                 }
-
-
+            } else if (command.equals("/unban")) {
+                for (int i = 0; i < users.getLength(); i++) {
+                    element = (Element) users.item(i);
+                    if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
+                        element.getElementsByTagName("BanStatus").item(0).setTextContent("");
+                        printWriter.println(name + " is unbanned.\n");
+                        System.out.println(name + " is unbanned\n");
+                        break;
+                    }
+                }
             }
 
             users = document.getElementsByTagName("Users");
