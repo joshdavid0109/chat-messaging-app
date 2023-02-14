@@ -5,14 +5,14 @@
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
-        <BanStatus> </BanStatus>
+        <BanStatus>Banned</BanStatus>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>Joshua</name>
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
-        <BanStatus> </BanStatus>
+        <BanStatus/>
     </User>
     <User id="ed49f946-fae7-47ba-9027-d158123b906a">
         <name>Kiko</name>
@@ -26,34 +26,34 @@
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <BanStatus> </BanStatus>
+        <BanStatus>Banned</BanStatus>
     </User>
     <User id="4f2668f6-b75d-4f4e-8f36-bb27028974cd">
         <name>Maervin</name>
         <Age>20</Age>
         <Username>maervinV</Username>
         <Password>maervin</Password>
-        <BanStatus> </BanStatus>
+        <BanStatus>Banned</BanStatus>
     </User>
     <User id="c88571a6-d57c-4e9e-9e0b-8545046f0069">
         <name>Ariel</name>
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <BanStatus> </BanStatus>
+        <BanStatus/>
     </User>
     <User id="9b5ec170-ddc0-4a12-a152-24082c895785">
         <name>Rey</name>
         <Age>20</Age>
         <Username>reybans</Username>
         <Password>rey</Password>
-        <BanStatus> </BanStatus>
+        <BanStatus/>
     </User>
     <User id="f1477d6d-3611-439b-801c-372316669a5c">
         <name>reydan</name>
         <Age>20</Age>
         <Username>lemao</Username>
         <Password>2221</Password>
-        <BanStatus> </BanStatus>
+        <BanStatus/>
     </User>
 </Users>

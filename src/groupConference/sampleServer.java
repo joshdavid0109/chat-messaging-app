@@ -19,23 +19,23 @@ public class sampleServer {
      */
     public void startServer() {
 
-        try {
+        while (true) {
+            try {
+                // Checking if the server socket is closed. If it is closed, it will not accept any new client.
+                while (serverSocket.isClosed()) {
 
-            // Checking if the server socket is closed. If it is closed, it will not accept any new client.
-            while (serverSocket.isClosed()) {
+                    // Waiting for a client to connect to the server.
+                    Socket socket = serverSocket.accept();
+                    System.out.println("A new member is added");
 
-                // Waiting for a client to connect to the server.
-                Socket socket = serverSocket.accept();
-                System.out.println("A new member is added");
+                    ClientHandler clientHandler = new ClientHandler(socket);
 
-                ClientHandler clientHandler = new ClientHandler(socket);
-
-                Thread thread = new Thread(clientHandler);
-                thread.start();
+                    Thread thread = new Thread(clientHandler);
+                    thread.start();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
