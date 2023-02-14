@@ -94,7 +94,7 @@ public class LoginHandler extends Thread {
                                         if (loginHandler.socket.getRemoteSocketAddress().toString().equals(hash.getKey()))
                                             loginHandler.sendMessage(name + ": " + message);
                                         else
-                                            sendMessage("User not existing");
+                                            loginHandler.sendMessage("User not existing");
                                     }
                                 }
                             }
@@ -157,7 +157,8 @@ public class LoginHandler extends Thread {
         }
     }
 
-    public void sendMessage (String message){
+    public void sendMessage ( String message){
+
         printWriter.println(message);
     }
 
@@ -215,9 +216,7 @@ public class LoginHandler extends Thread {
         while (!loginStatus) {
             try {
                 printWriter.println("\nUsername: ");
-
                 username = bufferedReader.readLine();
-
 
                 for (int i = 0; i < users.getLength(); i++) {
                     Element u = (Element) users.item(i);

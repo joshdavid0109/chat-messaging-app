@@ -26,12 +26,9 @@ public class Server {
     static ArrayList<LoginHandler> loginHandlerArraylist = new ArrayList<>();
     static List<User> registeredUsersList = new ArrayList<>();
     static HashMap<String, User> loggedInUserHashMap = new HashMap<>();
-
     static Scanner scanner = new Scanner(System.in);
 
     public void run() {
-
-
 
         while (true) {
 
@@ -70,8 +67,6 @@ public class Server {
                     }
 
                 }.start();
-
-
 
 
             } catch (IOException e) {
@@ -124,6 +119,7 @@ public class Server {
 
     }
 
+
     public static void main(String[] args) {
         Server server = new Server();
         server.run();
@@ -150,7 +146,7 @@ public class Server {
 
                 registeredUsersList.add(new User(id, name, age, username, password));
 
-                printWriter.println(name + " added\n");
+                System.out.println(name + " added\n");
             }
 
 
