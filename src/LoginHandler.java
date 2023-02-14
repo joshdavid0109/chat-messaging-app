@@ -7,10 +7,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
@@ -164,49 +161,52 @@ public class LoginHandler extends Thread {
         printWriter.println(message);
     }
 
-    public void changeUName(String name, NodeList usersList){
-        File xmlFile = new File("users.xml");
+    public void changeUName(String name, NodeList usersList) {
+        File xmlFile = new File("res/users.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = null;
+        Document document;
         try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            document = documentBuilder.parse(xmlFile);
+            NodeList users = document.getElementsByTagName("User");
+            Element element = null;
             dBuilder = dbFactory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        }
-        Document users = null;
-        try {
-            users = dBuilder.parse(xmlFile);
-        } catch (SAXException | IOException e) {
-            e.printStackTrace();
-        }
-        String nameToChangeTo = "hardcodelol";
-        for (int i = 0; i < usersList.getLength(); i++) {
-            Element u = (Element) usersList.item(i);
-            String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
-            if (nameNode.equals(name)) {
-                u.getElementsByTagName("name").item(0).setTextContent(nameToChangeTo);
-                System.out.println("User "+nameNode+" has changed name to "+nameToChangeTo);
-                break;
+
+            String nameToChangeTo = "hardcodelol";
+            for (int i = 0; i < usersList.getLength(); i++) {
+                Element u = (Element) usersList.item(i);
+                String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
+                if (nameNode.equals(name)) {
+                    u.getElementsByTagName("name").item(0).setTextContent(nameToChangeTo);
+                    System.out.println("User " + nameNode + " has changed name to " + nameToChangeTo);
+                    break;
+                }
             }
-        }
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = null;
-        try {
-            transformer = transformerFactory.newTransformer();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        }
-        DOMSource source = new DOMSource(users);
-        StreamResult result = new StreamResult(xmlFile);
-        try {
-            transformer.transform(source, result);
-        } catch (TransformerException e) {
-            e.printStackTrace();
+            users = document.getElementsByTagName("Users");
+            element = (Element) users.item(0);
+            XMLParse.trimWhiteSpace(element);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
-        System.out.println(xmlFile);
-        System.out.println(source);
-        System.out.println("XML file updated successfully!");
+
+        try{
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            DOMSource domSource = new DOMSource(document);
+            StreamResult streamResult = new StreamResult(new File(String.valueOf(xmlFile)));
+            transformer.transform(domSource, streamResult);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void userValidation(String name, NodeList users) {

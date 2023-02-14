@@ -61,22 +61,12 @@ public class Server {
 
                 new Thread(){
                     public void run() {
-                        try {
-                            getRegisteredUsers();
-                            int testChoice = 0;
+                        getRegisteredUsers();
 
-                            printWriter.println("Login");
-                            testChoice = Integer.parseInt(bufferedReader.readLine());
-                            if (testChoice == 2) {
+                        printWriter.println("Login");
+                        Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
+                        login.start();
 
-                                // if registration is successful --
-                                Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
-
-                                login.start();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                     }
 
                 }.start();
