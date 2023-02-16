@@ -34,6 +34,8 @@ public class Server {
         while (true) {
             System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
             System.out.println("Add a user - /add");
+            bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+            printWriter = new PrintWriter(System.out);
 
             new Thread(() -> {
                 String input;
@@ -42,16 +44,18 @@ public class Server {
                 if (input.startsWith("/ban") || input.startsWith("/unban")) {
                     banUser(input.split(" ")[0], input.split(" ")[1]);
                 } else if (input.startsWith("/add")) {
-                    RegClientHandler regClientHandler = new RegClientHandler(clientSocket, printWriter, bufferedReader);
+                    RegClientHandler regClientHandler = new RegClientHandler(printWriter, bufferedReader);
                     regClientHandler.start();
                 }
             }).start();
+
 
             try (ServerSocket serverSocket = new ServerSocket(8888)) {
                 clientSocket = serverSocket.accept();
 
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+
 
 
 

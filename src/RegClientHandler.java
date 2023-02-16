@@ -7,12 +7,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegClientHandler extends Thread {
-    final Socket socket;
     final BufferedReader bufferedReader;
     final PrintWriter printWriter;
 
-    public RegClientHandler(Socket socket, PrintWriter printWriter, BufferedReader bufferedReader) {
-        this.socket = socket;
+    public RegClientHandler(PrintWriter printWriter, BufferedReader bufferedReader) {
         this.bufferedReader = bufferedReader;
         this.printWriter = printWriter;
     }
