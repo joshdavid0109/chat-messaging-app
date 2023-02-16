@@ -5,3 +5,4 @@ record User(String id, String name, String age, String username, String password
         return "User: " + name + "\nAge: " + age + "\nUsername: " + username;
     }
 }
+

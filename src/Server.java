@@ -38,6 +38,7 @@ public class Server {
             new Thread(() -> {
                 String input;
                 input = scanner.nextLine();
+
                 if (input.startsWith("/ban") || input.startsWith("/unban")) {
                     banUser(input.split(" ")[0], input.split(" ")[1]);
                 } else if (input.startsWith("/add")) {
@@ -46,7 +47,7 @@ public class Server {
                 }
             }).start();
 
-            try (ServerSocket serverSocket = new ServerSocket(1234)) {
+            try (ServerSocket serverSocket = new ServerSocket(8888)) {
                 clientSocket = serverSocket.accept();
 
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));

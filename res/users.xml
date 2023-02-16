@@ -21,7 +21,7 @@
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
@@ -45,7 +45,7 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
     </User>
     <User id="9b5ec170-ddc0-4a12-a152-24082c895785">

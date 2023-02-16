@@ -19,6 +19,7 @@ import java.util.Map;
 
 public class LoginHandler extends Thread {
     Socket socket;
+    static Socket gcSocket;
     final PrintWriter printWriter;
     final BufferedReader bufferedReader;
     boolean loginStatus;
@@ -101,6 +102,10 @@ public class LoginHandler extends Thread {
                             }
 
                             break;
+                        case "create":
+                            GroupChatClientHandler gcClientHandler = new  GroupChatClientHandler(gcSocket, printWriter, bufferedReader);
+                            gcClientHandler.start();
+                            break;
                         case "help":
                             showCommands();
                             break;
@@ -108,6 +113,7 @@ public class LoginHandler extends Thread {
                             broadcast(name + " has left the chat.");
                             exit = true;
                             break;
+
                         case "ban":
                             //TODO
                             System.out.println();
