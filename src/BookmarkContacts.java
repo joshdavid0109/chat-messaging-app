@@ -1,5 +1,3 @@
-package bookmarkcontacts;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -7,7 +5,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,23 +12,19 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class bookmarkContacts extends JPanel {
-    private ArrayList<String> bookmarkedContacts;
-    private JList<String> contactList;
-    private JButton bookmarkButton;
-    private JLabel bookmarkedContactsLabel;
-    private JScrollPane contactListScrollPane;
+public class BookmarkContacts extends JPanel {
+    private final ArrayList<String> bookmarkedContacts;
+    private final JList<String> contactList;
+    private final JLabel bookmarkedContactsLabel;
 
-    public bookmarkContacts() {
+    public BookmarkContacts() {
         bookmarkedContacts = new ArrayList<>();
-        contactList = new JList<>(getAllContacts());
+        String[] allContacts = getAllContacts();
+        contactList = new JList<>(allContacts);
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        contactListScrollPane = new JScrollPane(contactList);
+        JScrollPane contactListScrollPane = new JScrollPane(contactList);
 
-        Icon icon = new ImageIcon(new ImageIcon("src/bookmarkContacts/bookmarkIcon.png")
-                .getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-
-        bookmarkButton = new JButton(icon);
+        JButton bookmarkButton = new JButton("Bookmark");
         bookmarkButton.setBackground(Color.black);
         bookmarkButton.setOpaque(false);
 
@@ -41,8 +34,13 @@ public class bookmarkContacts extends JPanel {
             int selectedIndex = contactList.getSelectedIndex();
             if (selectedIndex != -1) {
                 String selectedContact = contactList.getModel().getElementAt(selectedIndex);
-                bookmarkedContacts.add(selectedContact);
+                if (bookmarkedContacts.contains(selectedContact)) {
+                    bookmarkedContacts.remove(selectedContact);
+                } else {
+                    bookmarkedContacts.add(selectedContact);
+                }
                 updateBookmarkedContactsLabel();
+                updateContactList(allContacts);
             }
         });
 
@@ -53,12 +51,12 @@ public class bookmarkContacts extends JPanel {
 
     private String[] getAllContacts() {
 
-        String[] contacts = null;
+        String[] contacts;
         try {
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse("users.xml");
+            Document document = documentBuilder.parse("res/users.xml");
             NodeList userNodes = document.getElementsByTagName("User");
 
             contacts = new String[userNodes.getLength()];
@@ -69,13 +67,8 @@ public class bookmarkContacts extends JPanel {
                     Element userElement = (Element) userNode;
 
                     String name = userElement.getElementsByTagName("name").item(0).getTextContent();
-                    String age = userElement.getElementsByTagName("Age").item(0).getTextContent();
 
-//                    String username = userElement.getElementsByTagName("Username").item(0).getTextContent();
-//                    String password = userElement.getElementsByTagName("Password").item(0).getTextContent();
-
-
-                    contacts[i] = "Name: " + name + ", Age: " + age ;
+                    contacts[i] = "Name: " + name;
                 }
             }
         } catch (SAXException | IOException | ParserConfigurationException e) {
@@ -84,20 +77,36 @@ public class bookmarkContacts extends JPanel {
         return contacts;
     }
 
+    private void updateContactList(String[] allContacts) {
+        ArrayList<String> contactsList = new ArrayList<>();
+
+        for (String contact : bookmarkedContacts) {
+            if (contactsList.contains(contact)) {
+                continue;
+            }
+            contactsList.add(contact);
+        }
+
+        for (String contact : allContacts) {
+            if (contactsList.contains(contact)) {
+                continue;
+            }
+            contactsList.add(contact);
+        }
+        contactList.setListData(contactsList.toArray(new String[0]));
+    }
 
     private void updateBookmarkedContactsLabel() {
         bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts.toString());
     }
 
-
+    // TEST
     public static void main(String[] args) {
-        bookmarkContacts bookmarks = new bookmarkContacts();
-        JFrame frame = new JFrame("Bookmark Contacts");
+        BookmarkContacts bookmarks = new BookmarkContacts();
+        JFrame frame = new JFrame("Contacts");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(bookmarks);
         frame.pack();
         frame.setVisible(true);
     }
-
-
 }
