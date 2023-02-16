@@ -31,7 +31,7 @@ public class Server {
 
     public void run() throws IOException, SAXException, ParserConfigurationException {
 
-        while (true) {
+
             System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
             System.out.println("Add a user - /add");
             bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -49,14 +49,12 @@ public class Server {
                 }
             }).start();
 
-
+            while (true) {
             try (ServerSocket serverSocket = new ServerSocket(8888)) {
                 clientSocket = serverSocket.accept();
 
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-
-
 
 
                 new Thread(() -> {
