@@ -60,6 +60,7 @@ public class Server {
 
                 getRegisteredUsers();
 
+                //here
                 ExecutorService executorService = Executors.newFixedThreadPool(registeredUsersList.size());
                 executorService.execute(new LoginHandler(clientSocket, printWriter, bufferedReader));
 
