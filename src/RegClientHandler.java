@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegClientHandler extends Thread {
+public class RegClientHandler implements Runnable {
     final BufferedReader bufferedReader;
     final PrintWriter printWriter;
 

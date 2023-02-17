@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-public class LoginHandler extends Thread {
+public class LoginHandler implements Runnable {
     Socket socket;
     static Socket gcSocket;
     final PrintWriter printWriter;

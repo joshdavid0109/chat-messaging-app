@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     static String f = "res/users.xml";
@@ -45,7 +47,7 @@ public class Server {
                     banUser(input.split(" ")[0], input.split(" ")[1]);
                 } else if (input.startsWith("/add")) {
                     RegClientHandler regClientHandler = new RegClientHandler(printWriter, bufferedReader);
-                    regClientHandler.start();
+                    regClientHandler.run();
                 }
             }).start();
 
@@ -56,15 +58,20 @@ public class Server {
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
+                getRegisteredUsers();
 
-                new Thread(() -> {
-                    getRegisteredUsers();
-                    System.out.println("A client has connected.");
-                    printWriter.println("Login");
-                    Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
-                    login.start();
+                ExecutorService executorService = Executors.newFixedThreadPool(registeredUsersList.size());
+                executorService.execute(new LoginHandler(clientSocket, printWriter, bufferedReader));
 
-                }).start();
+
+//                new Thread(() -> {
+//                    getRegisteredUsers();
+//                    System.out.println("A client has connected.");
+//                    printWriter.println("Login");
+//                    Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
+//                    login.start();
+//
+//                }).start();
 
 
             } catch (IOException e) {
