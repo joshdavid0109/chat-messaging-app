@@ -10,22 +10,29 @@ public class LoginGUI extends JFrame implements ActionListener {
     JButton loginButton = new JButton("Login");
     JCheckBox showPassword = new JCheckBox("Show Password");
     JLabel titleLabel = new JLabel("Budget Discord");
+    JLabel usernameLabel = new JLabel("Username");
+    JLabel passwordLabel = new JLabel("Password");
 
     LoginGUI() {
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
+
+        pack();
     }
     private void setLayoutManager() {
         container.setLayout(null);
     }
 
     public void setLocationAndSize() {
+        usernameLabel.setBounds(305, 125, 360, 30);
         userTextField.setBounds(300, 150, 360, 30);
+        passwordLabel.setBounds(305, 175,360,30);
         passwordField.setBounds(300, 200, 360, 30);
         loginButton.setBounds(300, 270, 360, 30);
-        titleLabel.setBounds(440,110,360,30);
+        titleLabel.setBounds(440,100,360,30);
         showPassword.setBounds(425,235,360,30);
+
     }
 
     public void addComponentsToContainer() {
@@ -34,10 +41,11 @@ public class LoginGUI extends JFrame implements ActionListener {
         container.add(loginButton);
         container.add(titleLabel);
         container.add(showPassword);
+        container.add(usernameLabel);
+        container.add(passwordLabel);
     }
 
     public static void main(String[] args) {
-
         LoginGUI frame = new LoginGUI();
         frame.setTitle("Budget Discord");
         frame.setVisible(true);
