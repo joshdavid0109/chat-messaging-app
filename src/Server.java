@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Server {
     static String f = "res/users.xml";
@@ -26,16 +27,16 @@ public class Server {
     static BufferedReader bufferedReader;
     static ArrayList<LoginHandler> loginHandlerArraylist = new ArrayList<>();
     static List<User> registeredUsersList = new ArrayList<>();
-    static HashMap<String, User> loggedInUserHashMap = new HashMap<>();
+    static HashMap<LoginHandler, User> loggedInUserHashMap = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
+
+
 
     public void run() throws IOException, SAXException, ParserConfigurationException {
 
 
             System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
             System.out.println("Add a user - /add");
-            bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            printWriter = new PrintWriter(System.out);
 
             new Thread(() -> {
                 String input;
@@ -50,12 +51,12 @@ public class Server {
             }).start();
 
             while (true) {
+
             try (ServerSocket serverSocket = new ServerSocket(8888)) {
                 clientSocket = serverSocket.accept();
 
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-
 
                 new Thread(() -> {
                     getRegisteredUsers();
@@ -66,14 +67,13 @@ public class Server {
 
                 }).start();
 
-
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
 
              // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
-            finally {
+            /*finally {
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 Document document = documentBuilder.parse(f);
@@ -88,7 +88,7 @@ public class Server {
                     Server.updateXML(users, document);
 
                 }
-            }
+            }*/
         }
     }
 
