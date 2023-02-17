@@ -17,19 +17,20 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-public class LoginHandler extends Thread {
-    Socket socket;
+
+public class LoginHandler implements Runnable {
+    static Socket socket;
     static Socket gcSocket;
-    final PrintWriter printWriter;
-    final BufferedReader bufferedReader;
-    boolean loginStatus;
+    static PrintWriter printWriter = null;
+    static BufferedReader bufferedReader = null;
+    static boolean loginStatus;
     static String f = "res/users.xml";
 
     public LoginHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) {
-        this.socket = clientSocket;
-        this.printWriter = printWriter;
-        this.bufferedReader = bufferedReader;
-        String ip = clientSocket.getRemoteSocketAddress().toString();
+        socket = clientSocket;
+        LoginHandler.printWriter = printWriter;
+        LoginHandler.bufferedReader = bufferedReader;
+
     }
 
     public void run() {
@@ -56,7 +57,7 @@ public class LoginHandler extends Thread {
         }
     }
 
-    private void joinServer(String name, NodeList usersList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    private static void joinServer(String name, NodeList usersList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         String message, recipient;
 
         try {
@@ -90,10 +91,10 @@ public class LoginHandler extends Thread {
                             recipient = bufferedReader.readLine();
                             messagePrompt(name);
                             message = bufferedReader.readLine();
-                            for (Map.Entry<String, User> hash : Server.loggedInUserHashMap.entrySet()) {
+                            for (Map.Entry<LoginHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
                                 if (hash.getValue().name().equals(recipient)) {
                                     for (LoginHandler loginHandler : Server.loginHandlerArraylist) {
-                                        if (loginHandler.socket.getRemoteSocketAddress().toString().equals(hash.getKey()))
+                                        if (loginHandler.equals(hash.getKey()))
                                             loginHandler.sendMessage(name + ": " + message);
                                         else
                                             loginHandler.sendMessage("User not existing");
@@ -136,11 +137,11 @@ public class LoginHandler extends Thread {
             socket.close();
         }
     }
-    private void messagePrompt(String name) {
+    private static void messagePrompt(String name) {
         printWriter.println("\n" + name + ": ");
     }
 
-    private void showCommands() {
+    private static void showCommands() {
         printWriter.println("\n\n");
         printWriter.println("COMMANDS");
         printWriter.println("/help");
@@ -149,7 +150,7 @@ public class LoginHandler extends Thread {
         printWriter.println("\n\n");
     }
 
-    private void showEditMenu() {
+    private static void showEditMenu() {
         printWriter.println("\n\n");
         printWriter.println("[1] Change username");
         printWriter.println("[2] Change name");
@@ -161,7 +162,7 @@ public class LoginHandler extends Thread {
     public void editName(String name, String newName) {
 
     }
-    public void broadcast (String message){
+    public static void broadcast(String message){
         for (LoginHandler loginHandler : Server.loginHandlerArraylist) {
             if (loginHandler != null && loginStatus) {
                 loginHandler.sendMessage(message);
@@ -174,7 +175,7 @@ public class LoginHandler extends Thread {
         printWriter.println(message);
     }
 
-    public void changeUName(String name, NodeList usersList) {
+    public static void changeUName(String name, NodeList usersList) {
         File xmlFile = new File("res/users.xml");
         Document document;
         try {
@@ -247,7 +248,7 @@ public class LoginHandler extends Thread {
                                         u.getElementsByTagName("Password").item(0).getTextContent());
 
                                 // IP, USER HASHMAP
-                                Server.loggedInUserHashMap.put(socket.getRemoteSocketAddress().toString(), user);
+                                Server.loggedInUserHashMap.put(new LoginHandler(socket, printWriter, bufferedReader), user);
 
                                 u.getElementsByTagName("status").item(0).setTextContent("online");
                                 Server.updateXML(users, document);

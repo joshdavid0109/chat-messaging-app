@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     static String f = "res/users.xml";
@@ -26,16 +30,16 @@ public class Server {
     static BufferedReader bufferedReader;
     static ArrayList<LoginHandler> loginHandlerArraylist = new ArrayList<>();
     static List<User> registeredUsersList = new ArrayList<>();
-    static HashMap<String, User> loggedInUserHashMap = new HashMap<>();
+    static HashMap<LoginHandler, User> loggedInUserHashMap = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
+
+
 
     public void run() throws IOException, SAXException, ParserConfigurationException {
 
 
             System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
             System.out.println("Add a user - /add");
-            bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            printWriter = new PrintWriter(System.out);
 
             new Thread(() -> {
                 String input;
@@ -45,7 +49,7 @@ public class Server {
                     banUser(input.split(" ")[0], input.split(" ")[1]);
                 } else if (input.startsWith("/add")) {
                     RegClientHandler regClientHandler = new RegClientHandler(printWriter, bufferedReader);
-                    regClientHandler.start();
+                    regClientHandler.run();
                 }
             }).start();
 
@@ -56,15 +60,21 @@ public class Server {
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
+                getRegisteredUsers();
 
-                new Thread(() -> {
-                    getRegisteredUsers();
-                    System.out.println("A client has connected.");
-                    printWriter.println("Login");
-                    Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
-                    login.start();
+                //here
+                ExecutorService executorService = Executors.newFixedThreadPool(registeredUsersList.size());
+                executorService.execute(new LoginHandler(clientSocket, printWriter, bufferedReader));
 
-                }).start();
+
+//                new Thread(() -> {
+//                    getRegisteredUsers();
+//                    System.out.println("A client has connected.");
+//                    printWriter.println("Login");
+//                    Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
+//                    login.start();
+//
+//                }).start();
 
 
             } catch (IOException e) {
@@ -73,7 +83,7 @@ public class Server {
 
 
              // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
-            finally {
+            /*finally {
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 Document document = documentBuilder.parse(f);
@@ -88,7 +98,7 @@ public class Server {
                     Server.updateXML(users, document);
 
                 }
-            }
+            }*/
         }
     }
 

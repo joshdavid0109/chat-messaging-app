@@ -22,7 +22,7 @@ public class Client {
 
             String inMessage;
             while ((inMessage = bufferedReader.readLine()) !=null) {
-                System.out.println(inMessage);
+                System.out.print(inMessage);
             }
         } catch (IOException e) {
             shutdown();

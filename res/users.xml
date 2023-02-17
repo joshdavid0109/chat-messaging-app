@@ -5,15 +5,15 @@
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
-        <status>offline</status>
-        <BanStatus>Banned</BanStatus>
+        <status>online</status>
+        <BanStatus/>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>Joshua</name>
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
     </User>
     <User id="ed49f946-fae7-47ba-9027-d158123b906a">
@@ -21,7 +21,7 @@
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
@@ -45,7 +45,7 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
     </User>
     <User id="9b5ec170-ddc0-4a12-a152-24082c895785">
