@@ -1,75 +1,86 @@
+package shared_classes;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import server_side.Server;
+import shared_classes.User;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+
 import java.io.IOException;
 import java.util.UUID;
 
-public class XMLParserGC {
-    private final String file;
 
-    GroupChatUsersSample gcUsers;
+public class XMLParse {
 
-    public XMLParserGC(String file) {
+    private String file;
+
+    User newUser;
+    public XMLParse(String file) {
         this.file = file;
     }
 
-    public GroupChatUsersSample GroupChat(String groupName, String admin, String members) {
+
+    public User addUser(String id, String name, String age, String username, String password) {
+        String status = "offline";
+        String banStatus = " ";
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document;
             File f = new File(file);
-            NodeList users;
-            Node element;
+            NodeList users = null;
+            Node element = null;
 
+            //check nu adda ti file f idjay compooter
             if (f.exists()) {
                 document = documentBuilder.parse(file);
-                users = document.getElementsByTagName("GroupChat");
+                users = document.getElementsByTagName("Users");
                 element = users.item(users.getLength() - 1);
             }
-
+            //if awan ti file f, create new document
             else {
                 document = documentBuilder.newDocument();
-                element = document.createElement("GroupChat");
+                element = document.createElement("Users");
                 document.appendChild(element);
             }
 
-            UUID randomID = UUID.randomUUID();
+            //random id exampol <User id="3f99fe2e-a7cb-452f-9bd0-d74ace5eeb7d">
+
 
             //create element user
-            Element groupElement = document.createElement("GroupChat");
-            element.appendChild(groupElement);
+            Element elementUser = document.createElement("User");
+            element.appendChild(elementUser);
 
             //set id for user
-            groupElement.setAttribute("id", String.valueOf(randomID));
+            elementUser.setAttribute("id", String.valueOf(id));
 
-            Element groupNameElement = document.createElement("GroupName");
-            groupNameElement.appendChild(document.createTextNode(groupName));
-            groupElement.appendChild(groupNameElement);
+            Element nameElement = document.createElement("name");
+            nameElement.appendChild(document.createTextNode(name));
+            elementUser.appendChild(nameElement);
 
-            Element groupAdminElement = document.createElement("Admin");
-            groupAdminElement.appendChild(document.createTextNode(admin));
-            groupElement.appendChild(groupAdminElement);
+            Element ageElement = document.createElement("Age");
+            ageElement.appendChild(document.createTextNode(age));
+            elementUser.appendChild(ageElement);
 
-            Element groupMemberElement = document.createElement("Members");
-            groupMemberElement.appendChild(document.createTextNode(members));
-            groupElement.appendChild(groupMemberElement);
+            Element usernameElement = document.createElement("Username");
+            usernameElement.appendChild(document.createTextNode(username));
+            elementUser.appendChild(usernameElement);
 
-            gcUsers = new GroupChatUsersSample(groupElement.getAttribute("id"), groupNameElement.getTextContent(),
-                    groupAdminElement.getTextContent(), groupMemberElement.getTextContent());
+            Element passwordElement = document.createElement("Password");
+            passwordElement.appendChild(document.createTextNode(password));
+            elementUser.appendChild(passwordElement);
+
+            Server.registeredUsersList.add(new User(id, name, age, username, password,status, banStatus));
 
             trimWhiteSpace(element);
 
@@ -87,9 +98,10 @@ public class XMLParserGC {
         } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
-        return gcUsers;
+        return newUser;
     }
 
+    // ikaten tayu dagijay white spaces idjay xml file
     public static void trimWhiteSpace(Node node) {
         NodeList nodeList = node.getChildNodes();
         try {

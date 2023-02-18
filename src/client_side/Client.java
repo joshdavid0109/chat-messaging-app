@@ -1,3 +1,5 @@
+package client_side;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,7 +24,7 @@ public class Client {
 
             String inMessage;
             while ((inMessage = bufferedReader.readLine()) !=null) {
-                System.out.print(inMessage);
+                System.out.println(inMessage);
             }
         } catch (IOException e) {
             shutdown();

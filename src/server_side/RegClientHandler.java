@@ -1,4 +1,9 @@
+package server_side;
+
 import org.w3c.dom.*;
+import shared_classes.User;
+import shared_classes.XMLParse;
+
 import javax.xml.parsers.*;
 import java.io.*;
 import java.net.Socket;
@@ -10,9 +15,9 @@ public class RegClientHandler implements Runnable {
     final BufferedReader bufferedReader;
     final PrintWriter printWriter;
 
-    public RegClientHandler(PrintWriter printWriter, BufferedReader bufferedReader) {
-        this.bufferedReader = bufferedReader;
-        this.printWriter = printWriter;
+    public RegClientHandler() {
+        this.bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        this.printWriter = new PrintWriter(System.out);
     }
 
     @Override
@@ -42,11 +47,14 @@ public class RegClientHandler implements Runnable {
                         }
                     } while (!passWordValidation(password));
 
-                    userCreator.addUser(name, age, username, password); // may return object na user here
+                    UUID randomID = UUID.randomUUID();
+
+                    userCreator.addUser(randomID.toString(), name, age, username, password); // may return object na user here
                 } while (cont());
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            break;
         }
     }
 

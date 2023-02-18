@@ -1,35 +1,35 @@
+package server_side;
+
+import client_side.GroupChatClientHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import shared_classes.User;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 
-public class LoginHandler implements Runnable {
-    static Socket socket;
-    static Socket gcSocket;
-    static PrintWriter printWriter = null;
-    static BufferedReader bufferedReader = null;
-    static boolean loginStatus;
-    static String f = "res/users.xml";
+public class ClientHandler implements Runnable {
+    Socket socket;
+    PrintWriter printWriter = null;
+    BufferedReader bufferedReader = null;
+    public static String newLine = System.getProperty("line.separator");
+    boolean loginStatus;
+    String f = "res/users.xml";
+//    ObjectInputStream inputStream = new
 
-    public LoginHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) {
-        socket = clientSocket;
-        LoginHandler.printWriter = printWriter;
-        LoginHandler.bufferedReader = bufferedReader;
+    public ClientHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) {
+        this.socket= clientSocket;
+        this.printWriter = printWriter;
+        this.bufferedReader = bufferedReader;
 
     }
 
@@ -57,7 +57,7 @@ public class LoginHandler implements Runnable {
         }
     }
 
-    private static void joinServer(String name, NodeList usersList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    private void joinServer(String name, NodeList usersList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         String message, recipient;
 
         try {
@@ -67,6 +67,7 @@ public class LoginHandler implements Runnable {
             boolean exit = false;
 
             while (!exit && (message = bufferedReader.readLine()) != null) {
+                messagePrompt(name);
 
                 if (message.startsWith("/")) {
                     String[] words = message.split("/");
@@ -91,20 +92,23 @@ public class LoginHandler implements Runnable {
                             recipient = bufferedReader.readLine();
                             messagePrompt(name);
                             message = bufferedReader.readLine();
-                            for (Map.Entry<LoginHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
+                            for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
                                 if (hash.getValue().name().equals(recipient)) {
-                                    for (LoginHandler loginHandler : Server.loginHandlerArraylist) {
-                                        if (loginHandler.equals(hash.getKey()))
+                                    for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
+                                        if (loginHandler.socket.equals(hash.getKey().socket)) {
                                             loginHandler.sendMessage(name + ": " + message);
-                                        else
-                                            loginHandler.sendMessage("User not existing");
+                                            break;
+                                        }
                                     }
-                                }
+                                    break;
+                                }  else
+                                    sendMessage("User not existing");
+
                             }
 
                             break;
                         case "create":
-                            GroupChatClientHandler gcClientHandler = new  GroupChatClientHandler(gcSocket, printWriter, bufferedReader);
+                            GroupChatClientHandler gcClientHandler = new GroupChatClientHandler(socket, printWriter, bufferedReader);
                             gcClientHandler.start();
                             break;
                         case "help":
@@ -137,11 +141,11 @@ public class LoginHandler implements Runnable {
             socket.close();
         }
     }
-    private static void messagePrompt(String name) {
-        printWriter.println("\n" + name + ": ");
+    private void messagePrompt(String name) {
+        printWriter.println("\n\n" + name + ": ");
     }
 
-    private static void showCommands() {
+    private void showCommands() {
         printWriter.println("\n\n");
         printWriter.println("COMMANDS");
         printWriter.println("/help");
@@ -150,7 +154,7 @@ public class LoginHandler implements Runnable {
         printWriter.println("\n\n");
     }
 
-    private static void showEditMenu() {
+    private void showEditMenu() {
         printWriter.println("\n\n");
         printWriter.println("[1] Change username");
         printWriter.println("[2] Change name");
@@ -162,20 +166,20 @@ public class LoginHandler implements Runnable {
     public void editName(String name, String newName) {
 
     }
-    public static void broadcast(String message){
-        for (LoginHandler loginHandler : Server.loginHandlerArraylist) {
+    public void broadcast(String message ){
+        for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
             if (loginHandler != null && loginStatus) {
                 loginHandler.sendMessage(message);
+
             }
         }
     }
 
     public void sendMessage ( String message){
-
         printWriter.println(message);
     }
 
-    public static void changeUName(String name, NodeList usersList) {
+    public void changeUName(String name, NodeList usersList) {
         File xmlFile = new File("res/users.xml");
         Document document;
         try {
@@ -242,13 +246,13 @@ public class LoginHandler implements Runnable {
                                 }
 
 
-                                    Server.loginHandlerArraylist.add(new LoginHandler(socket, printWriter, bufferedReader));
+                                    Server.loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
                                 User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
                                         u.getElementsByTagName("Username").item(0).getTextContent(),
-                                        u.getElementsByTagName("Password").item(0).getTextContent());
+                                        u.getElementsByTagName("Password").item(0).getTextContent(), u.getElementsByTagName("status").item(0).getTextContent(), u.getElementsByTagName("BanStatus").item(0).getTextContent());
 
                                 // IP, USER HASHMAP
-                                Server.loggedInUserHashMap.put(new LoginHandler(socket, printWriter, bufferedReader), user);
+                                Server.loggedInUserHashMap.put(new ClientHandler(socket, printWriter, bufferedReader), user);
 
                                 u.getElementsByTagName("status").item(0).setTextContent("online");
                                 Server.updateXML(users, document);

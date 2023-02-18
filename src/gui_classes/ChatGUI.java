@@ -1,3 +1,5 @@
+package gui_classes;
+
 import javax.swing.*;
 
 import java.awt.*;

@@ -1,9 +1,12 @@
+package server_side;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import shared_classes.User;
+import shared_classes.XMLParse;
 
-import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,13 +16,10 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,18 +28,20 @@ public class Server {
     static Socket clientSocket;
     static PrintWriter printWriter;
     static BufferedReader bufferedReader;
-    static ArrayList<LoginHandler> loginHandlerArraylist = new ArrayList<>();
-    static List<User> registeredUsersList = new ArrayList<>();
-    static HashMap<LoginHandler, User> loggedInUserHashMap = new HashMap<>();
+    static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
+    public static List<User> registeredUsersList = new ArrayList<>();
+    static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
 
 
 
     public void run() throws IOException, SAXException, ParserConfigurationException {
 
-
+        while (true) {
             System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
             System.out.println("Add a user - /add");
+
+            ExecutorService executorService = Executors.newCachedThreadPool();
 
             new Thread(() -> {
                 String input;
@@ -48,14 +50,16 @@ public class Server {
                 if (input.startsWith("/ban") || input.startsWith("/unban")) {
                     banUser(input.split(" ")[0], input.split(" ")[1]);
                 } else if (input.startsWith("/add")) {
-                    RegClientHandler regClientHandler = new RegClientHandler(printWriter, bufferedReader);
+                    RegClientHandler regClientHandler = new RegClientHandler();
                     regClientHandler.run();
                 }
             }).start();
 
-            while (true) {
+
             try (ServerSocket serverSocket = new ServerSocket(8888)) {
                 clientSocket = serverSocket.accept();
+
+                System.out.println("A client has connected.");
 
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -63,8 +67,8 @@ public class Server {
                 getRegisteredUsers();
 
                 //here
-                ExecutorService executorService = Executors.newFixedThreadPool(registeredUsersList.size());
-                executorService.execute(new LoginHandler(clientSocket, printWriter, bufferedReader));
+
+                executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
 
 
 //                new Thread(() -> {
@@ -176,7 +180,7 @@ public class Server {
     }
 
     private void getRegisteredUsers() {
-        String id, name, age, username, password;
+        String id, name, age, username, password, status, banStatus;
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -191,8 +195,10 @@ public class Server {
                 age = element.getElementsByTagName("Age").item(0).getTextContent();
                 username = element.getElementsByTagName("Username").item(0).getTextContent();
                 password = element.getElementsByTagName("Password").item(0).getTextContent();
+                status = element.getElementsByTagName("status").item(0).getTextContent();
+                banStatus = element.getElementsByTagName("BanStatus").item(0).getTextContent();
 
-                registeredUsersList.add(new User(id, name, age, username, password));
+                registeredUsersList.add(new User(id, name, age, username, password, status, banStatus));
 
             }
 
