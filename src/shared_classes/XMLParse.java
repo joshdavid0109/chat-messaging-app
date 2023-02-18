@@ -23,8 +23,6 @@ import java.util.UUID;
 public class XMLParse {
 
     private String file;
-
-    User newUser;
     public XMLParse(String file) {
         this.file = file;
     }
