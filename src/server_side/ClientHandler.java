@@ -5,7 +5,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import shared_classes.Messages;
 import shared_classes.User;
+import shared_classes.XMLParse;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,12 +23,13 @@ public class ClientHandler implements Runnable {
     Socket socket;
     PrintWriter printWriter = null;
     BufferedReader bufferedReader = null;
-    public static String newLine = System.getProperty("line.separator");
+    ObjectInputStream objectInputStream;
+    ObjectOutputStream objectOutputStream;
     boolean loginStatus;
-    String f = "res/users.xml";
+    XMLParse xmlParse = new XMLParse("res/messages.xml");
 //    ObjectInputStream inputStream = new
 
-    public ClientHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) {
+    public ClientHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) throws IOException {
         this.socket= clientSocket;
         this.printWriter = printWriter;
         this.bufferedReader = bufferedReader;
@@ -57,17 +60,20 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void joinServer(String name, NodeList usersList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    private void joinServer(User user, NodeList nodeList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         String message, recipient;
+//        objectInputStream = new ObjectInputStream(socket.getInputStream());
+//        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
         try {
-            broadcast(name + " joined the chat");
-            messagePrompt(name);
+            broadcast(user.name() + " joined the chat");
+            messagePrompt(user.name());
 
             boolean exit = false;
 
             while (!exit && (message = bufferedReader.readLine()) != null) {
-                messagePrompt(name);
+
+                xmlParse.addMessage(user.username(), message);
 
                 if (message.startsWith("/")) {
                     String[] words = message.split("/");
@@ -81,7 +87,7 @@ public class ClientHandler implements Runnable {
                             byte choice = Byte.parseByte(bufferedReader.readLine());
                             switch (choice) {
                                 //TODO
-                                case 1 -> changeUName(name, usersList);
+                                case 1 -> changeUName(user.name(), nodeList);
                                 case 2 -> System.out.println();
                                 case 3 -> System.out.println();
                                 case 4 -> System.out.println();
@@ -90,13 +96,13 @@ public class ClientHandler implements Runnable {
                         case "pm":
                             printWriter.println("Send to: ");
                             recipient = bufferedReader.readLine();
-                            messagePrompt(name);
+                            messagePrompt(user.name());
                             message = bufferedReader.readLine();
                             for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
                                 if (hash.getValue().name().equals(recipient)) {
                                     for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
                                         if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                            loginHandler.sendMessage(name + ": " + message);
+                                            loginHandler.sendMessage(user.name() + ": " + message);
                                             break;
                                         }
                                     }
@@ -115,7 +121,7 @@ public class ClientHandler implements Runnable {
                             showCommands();
                             break;
                         case "quit":
-                            broadcast(name + " has left the chat.");
+                            broadcast(user.name() + " has left the chat.");
                             exit = true;
                             break;
 
@@ -127,7 +133,7 @@ public class ClientHandler implements Runnable {
                             printWriter.println("command not recognized. input '/help' for a list of commands");
                     }
                 } else {
-                    broadcast(name + ": " + message);
+                    broadcast(user.name() + ": " + message);
                 }
             }
 
@@ -170,7 +176,6 @@ public class ClientHandler implements Runnable {
         for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
             if (loginHandler != null && loginStatus) {
                 loginHandler.sendMessage(message);
-
             }
         }
     }
@@ -262,7 +267,7 @@ public class ClientHandler implements Runnable {
 
                                 System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " +  u.getElementsByTagName("status").item(0).getTextContent());
 
-                                joinServer(name, users);
+                                joinServer(user, users);
                                 broadcast(name + ": ");
                                 break;
                             }

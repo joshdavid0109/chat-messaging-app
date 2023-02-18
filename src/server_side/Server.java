@@ -33,7 +33,8 @@ public class Server {
     static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
 
-
+    ObjectInputStream objectInputStream;
+    ObjectOutputStream objectOutputStream;
 
     public void run() throws IOException, SAXException, ParserConfigurationException {
 

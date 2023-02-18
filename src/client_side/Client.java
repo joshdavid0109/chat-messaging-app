@@ -1,9 +1,6 @@
 package client_side;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class Client {
@@ -11,20 +8,26 @@ public class Client {
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
     private boolean done;
+    ObjectInputStream objectInputStream;
 
     public Client() {
         try {
             client = new Socket("localhost", 8888);
             printWriter = new PrintWriter(client.getOutputStream(), true);
             bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+//            objectInputStream =new ObjectInputStream(client.getInputStream());
 
             InputHandler inHandler = new InputHandler();
             Thread t = new Thread(inHandler);
             t.start();
 
             String inMessage;
+
+//            System.out.println(objectInputStream.readObject());
             while ((inMessage = bufferedReader.readLine()) !=null) {
                 System.out.println(inMessage);
+//                System.out.println(objectInputStream.readObject());
+
             }
         } catch (IOException e) {
             shutdown();

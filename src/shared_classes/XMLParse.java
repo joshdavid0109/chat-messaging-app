@@ -30,7 +30,7 @@ public class XMLParse {
     }
 
 
-    public User addUser(String id, String name, String age, String username, String password) {
+    public void addUser(String id, String name, String age, String username, String password) {
         String status = "offline";
         String banStatus = " ";
         try {
@@ -98,7 +98,65 @@ public class XMLParse {
         } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
-        return newUser;
+
+    }
+
+    public void addMessage(String sender, String message) {
+        String status = "offline";
+        String banStatus = " ";
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document;
+            File f = new File(file);
+            NodeList users = null;
+            Node element = null;
+
+            //check nu adda ti file f idjay compooter
+            if (f.exists()) {
+                document = documentBuilder.parse(file);
+                users = document.getElementsByTagName("Messages");
+                element = users.item(users.getLength() - 1);
+            }
+            //if awan ti file f, create new document
+            else {
+                document = documentBuilder.newDocument();
+                element = document.createElement("Messages");
+                document.appendChild(element);
+            }
+
+            //random id exampol <User id="3f99fe2e-a7cb-452f-9bd0-d74ace5eeb7d">
+
+
+            //create element user
+            Element elementUser = document.createElement("Sender");
+            element.appendChild(elementUser);
+
+            //set id for user
+            elementUser.setAttribute("id", String.valueOf(sender));
+
+            Element nameElement = document.createElement("Message");
+            nameElement.appendChild(document.createTextNode(message));
+            elementUser.appendChild(nameElement);
+
+
+            trimWhiteSpace(element);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            DOMSource domSource = new DOMSource(document);
+            StreamResult streamResult = new StreamResult(new File(file));
+            transformer.transform(domSource, streamResult);
+        } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     // ikaten tayu dagijay white spaces idjay xml file
