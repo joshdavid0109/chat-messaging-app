@@ -5,7 +5,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import shared_classes.GroupChatUsersSample;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,6 +17,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class XMLParserGC {
@@ -29,7 +29,7 @@ public class XMLParserGC {
         this.file = file;
     }
 
-    public GroupChatUsersSample GroupChat(String groupName, String admin, String members) {
+    public void GroupChat(String groupName, String admin, ArrayList<String> members) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -67,12 +67,11 @@ public class XMLParserGC {
             groupAdminElement.appendChild(document.createTextNode(admin));
             groupElement.appendChild(groupAdminElement);
 
-            Element groupMemberElement = document.createElement("Members");
-            groupMemberElement.appendChild(document.createTextNode(members));
-            groupElement.appendChild(groupMemberElement);
-
-            gcUsers = new GroupChatUsersSample(groupElement.getAttribute("id"), groupNameElement.getTextContent(),
-                    groupAdminElement.getTextContent(), groupMemberElement.getTextContent());
+            for (String member : members) {
+                Element memberElement = document.createElement("Member");
+                memberElement.appendChild(document.createTextNode(member));
+                groupElement.appendChild(memberElement);
+            }
 
             trimWhiteSpace(element);
 
@@ -90,7 +89,6 @@ public class XMLParserGC {
         } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
-        return gcUsers;
     }
 
     public static void trimWhiteSpace(Node node) {

@@ -1,5 +1,6 @@
 package server_side;
 
+import client_side.Client;
 import client_side.GroupChatClientHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -13,6 +14,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
+import java.awt.event.ComponentListener;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -109,13 +111,12 @@ public class ClientHandler implements Runnable {
                                     break;
                                 }  else
                                     sendMessage("User not existing");
-
                             }
 
                             break;
                         case "create":
-                            GroupChatClientHandler gcClientHandler = new GroupChatClientHandler(socket, printWriter, bufferedReader);
-                            gcClientHandler.start();
+                            GroupChatClientHandler groupHandler = new GroupChatClientHandler(socket, printWriter, bufferedReader, user);
+                            groupHandler.start();
                             break;
                         case "help":
                             showCommands();
@@ -185,6 +186,8 @@ public class ClientHandler implements Runnable {
     }
 
     public void changeUName(String name, NodeList usersList) {
+
+        //should check list of usernames muna if available
         File xmlFile = new File("res/users.xml");
         Document document;
         try {
