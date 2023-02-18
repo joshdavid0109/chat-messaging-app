@@ -99,9 +99,8 @@ public class XMLParse {
 
     }
 
-    public void addMessage(String sender, String message) {
-        String status = "offline";
-        String banStatus = " ";
+    public void addMessage(String sender, String message, String recipient) {
+
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -127,16 +126,19 @@ public class XMLParse {
 
 
             //create element user
-            Element elementUser = document.createElement("Sender");
-            element.appendChild(elementUser);
+            Element senderElement = document.createElement("Sender");
+            element.appendChild(senderElement);
 
             //set id for user
-            elementUser.setAttribute("id", String.valueOf(sender));
+            senderElement.setAttribute("id", String.valueOf(sender));
 
-            Element nameElement = document.createElement("Message");
-            nameElement.appendChild(document.createTextNode(message));
-            elementUser.appendChild(nameElement);
+            Element messageElement = document.createElement("Message");
+            messageElement.appendChild(document.createTextNode(message));
+            senderElement.appendChild(messageElement);
 
+            Element rElement = document.createElement("Recipient");
+            rElement.appendChild(document.createTextNode(recipient));
+            senderElement.appendChild(messageElement);
 
             trimWhiteSpace(element);
 

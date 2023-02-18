@@ -88,7 +88,7 @@ public class Server {
 
 
              // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
-            /*finally {
+            finally {
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 Document document = documentBuilder.parse(f);
@@ -103,7 +103,7 @@ public class Server {
                     Server.updateXML(users, document);
 
                 }
-            }*/
+            }
         }
     }
 

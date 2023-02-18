@@ -72,8 +72,7 @@ public class ClientHandler implements Runnable {
             boolean exit = false;
 
             while (!exit && (message = bufferedReader.readLine()) != null) {
-
-                xmlParse.addMessage(user.username(), message);
+                xmlParse.addMessage(user.username(), message, "toall");
 
                 if (message.startsWith("/")) {
                     String[] words = message.split("/");
@@ -98,18 +97,28 @@ public class ClientHandler implements Runnable {
                             recipient = bufferedReader.readLine();
                             messagePrompt(user.name());
                             message = bufferedReader.readLine();
-                            for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
-                                if (hash.getValue().name().equals(recipient)) {
-                                    for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
-                                        if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                            loginHandler.sendMessage(user.name() + ": " + message);
-                                            break;
-                                        }
-                                    }
-                                    break;
-                                }  else
-                                    sendMessage("User not existing");
 
+                            for (User u :Server.registeredUsersList) {
+                                if (u.name().equals(recipient)) {
+                                    if (u.status().equals("online")) {
+                                        for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
+                                            if (hash.getValue().name().equals(recipient)) {
+                                                for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
+                                                    if (loginHandler.socket.equals(hash.getKey().socket)) {
+                                                        loginHandler.sendMessage(user.name() + ": " + message);
+                                                        break;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    } else if (u.status().equals("offline")){
+                                        xmlParse.addMessage(u.name(), message, recipient);
+                                        break;
+                                    } else
+                                        sendMessage("User not existing");
+                                }
                             }
 
                             break;
