@@ -1,6 +1,5 @@
 package server_side;
 
-import client_side.Client;
 import client_side.GroupChatClientHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,7 +13,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
-import java.awt.event.ComponentListener;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -74,8 +72,7 @@ public class ClientHandler implements Runnable {
             boolean exit = false;
 
             while (!exit && (message = bufferedReader.readLine()) != null) {
-
-                xmlParse.addMessage(user.username(), message);
+                xmlParse.addMessage(user.username(), message, "toall");
 
                 if (message.startsWith("/")) {
                     String[] words = message.split("/");
@@ -100,23 +97,34 @@ public class ClientHandler implements Runnable {
                             recipient = bufferedReader.readLine();
                             messagePrompt(user.name());
                             message = bufferedReader.readLine();
-                            for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
-                                if (hash.getValue().name().equals(recipient)) {
-                                    for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
-                                        if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                            loginHandler.sendMessage(user.name() + ": " + message);
-                                            break;
+
+                            for (User u :Server.registeredUsersList) {
+                                if (u.name().equals(recipient)) {
+                                    if (u.status().equals("online")) {
+                                        for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
+                                            if (hash.getValue().name().equals(recipient)) {
+                                                for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
+                                                    if (loginHandler.socket.equals(hash.getKey().socket)) {
+                                                        loginHandler.sendMessage(user.name() + ": " + message);
+                                                        break;
+                                                    }
+                                                }
+                                                break;
+                                            }
                                         }
-                                    }
-                                    break;
-                                }  else
-                                    sendMessage("User not existing");
+                                        break;
+                                    } else if (u.status().equals("offline")){
+                                        xmlParse.addMessage(u.name(), message, recipient);
+                                        break;
+                                    } else
+                                        sendMessage("User not existing");
+                                }
                             }
 
                             break;
                         case "create":
-                            GroupChatClientHandler groupHandler = new GroupChatClientHandler(socket, printWriter, bufferedReader, user);
-                            groupHandler.start();
+                            GroupChatClientHandler gcClientHandler = new GroupChatClientHandler(socket, printWriter, bufferedReader);
+                            gcClientHandler.start();
                             break;
                         case "help":
                             showCommands();
