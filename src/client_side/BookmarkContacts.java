@@ -8,6 +8,8 @@ import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
@@ -21,32 +23,46 @@ public class BookmarkContacts extends JPanel {
 
     public BookmarkContacts() {
         bookmarkedContacts = new ArrayList<>();
-        String[] allContacts = getAllContacts();
-        contactList = new JList<>(allContacts);
+        contactList = new JList<>(getAllContacts());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane contactListScrollPane = new JScrollPane(contactList);
 
-        JButton bookmarkButton = new JButton("Bookmark");
+//        Icon bookmarkIcon = new ImageIcon(new ImageIcon("src/groupniSir/Updates/BookmarkIcon.png")
+//                .getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+
+        JButton bookmarkButton = new JButton("CLICK");
         bookmarkButton.setBackground(Color.black);
         bookmarkButton.setOpaque(false);
-
+        bookmarkButton.setBorder(BorderFactory.createEmptyBorder());
+        bookmarkButton.setFocusable(false);
         bookmarkedContactsLabel = new JLabel("Bookmarked Contacts:");
 
-        bookmarkButton.addActionListener(event -> {
-            int selectedIndex = contactList.getSelectedIndex();
-            if (selectedIndex != -1) {
-                String selectedContact = contactList.getModel().getElementAt(selectedIndex);
-                if (bookmarkedContacts.contains(selectedContact)) {
-                    bookmarkedContacts.remove(selectedContact);
+        bookmarkButton.addActionListener(e -> {
+            String selectedContact = contactList.getSelectedValue();
+            if (selectedContact != null) {
+                if (bookmarkedContacts.remove(selectedContact)) {
+                    bookmarkButton.setToolTipText("Add to bookmark");
                 } else {
                     bookmarkedContacts.add(selectedContact);
+                    bookmarkButton.setToolTipText("Remove from bookmark");
                 }
                 updateBookmarkedContactsLabel();
-                updateContactList(allContacts);
+                updateContactList(getAllContacts());
+            }
+        });
+        bookmarkButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                String selectedContact = contactList.getSelectedValue();
+                if (selectedContact != null) {
+                    bookmarkButton.setToolTipText(bookmarkedContacts.contains(selectedContact) ? "Remove from bookmark" : "Add to bookmark");
+                }
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                bookmarkButton.setToolTipText(null);
             }
         });
 
-        add(contactListScrollPane);
+        add(new JScrollPane(contactList));
         add(bookmarkButton);
         add(bookmarkedContactsLabel);
     }
@@ -67,9 +83,7 @@ public class BookmarkContacts extends JPanel {
                 Node userNode = userNodes.item(i);
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
-
                     String name = userElement.getElementsByTagName("name").item(0).getTextContent();
-
                     contacts[i] = "Name: " + name;
                 }
             }
