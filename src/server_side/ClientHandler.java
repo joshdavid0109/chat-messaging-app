@@ -123,7 +123,7 @@ public class ClientHandler implements Runnable {
 
                             break;
                         case "create":
-                            GroupChatClientHandler gcClientHandler = new GroupChatClientHandler(socket, printWriter, bufferedReader);
+                            GroupChatClientHandler gcClientHandler = new GroupChatClientHandler(socket, printWriter, bufferedReader, user);
                             gcClientHandler.start();
                             break;
                         case "help":
