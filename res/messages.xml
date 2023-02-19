@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Messages>
+    <Sender id="franz1">
+        <Message>/pm</Message>
+    </Sender>
+    <Sender id="joshdavid0109">
+        <Message>hello</Message>
+    </Sender>
+    <Sender id="joshdavid0109">
+        <Message>hello</Message>
+    </Sender>
+    <Sender id="franz1">
+        <Message>/pm</Message>
+    </Sender>
+    <Sender id="franz1">
+        <Message>/create</Message>
+    </Sender>
+    <Sender id="franz1">
+        <Message>group franz</Message>
+    </Sender>
+    <Sender id="franz1">
+        <Message>ariel</Message>
+    </Sender>
+</Messages>

@@ -122,9 +122,6 @@ public class XMLParse {
                 document.appendChild(element);
             }
 
-            //random id exampol <User id="3f99fe2e-a7cb-452f-9bd0-d74ace5eeb7d">
-
-
             //create element user
             Element senderElement = document.createElement("Sender");
             element.appendChild(senderElement);

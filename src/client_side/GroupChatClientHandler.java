@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import server_side.Server;
 import shared_classes.User;
 import shared_classes.XMLParserGC;
 
@@ -37,7 +38,7 @@ public class GroupChatClientHandler extends Thread {
     public void run() {
         XMLParserGC createGC = new XMLParserGC("res/gcUsers.xml");
         String gcName, admin;
-        ArrayList<String> groupMembers;
+        ArrayList<User> groupMembers;
 
             try {
                 printWriter.println("INPUT GROUP NAME: ");
@@ -59,8 +60,8 @@ public class GroupChatClientHandler extends Thread {
 
     }
 
-    private ArrayList<String> populateMembers() throws IOException, SAXException, ParserConfigurationException {
-        ArrayList<String> users = new ArrayList<>();
+    private ArrayList<User> populateMembers() throws IOException, SAXException, ParserConfigurationException {
+        ArrayList<User> users = new ArrayList<>();
         Document document;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -69,10 +70,11 @@ public class GroupChatClientHandler extends Thread {
         usersNodeList = document.getElementsByTagName("User");
         String m = "";
         while (!m.equals("finished")) {
+
             printWriter.println("Enter username of member: ");
             m = bufferedReader.readLine();
             boolean userExists = false;
-            for (int i = 0; i < usersNodeList.getLength(); i++) {
+            /*for (int i = 0; i < usersNodeList.getLength(); i++) {
                 Element u = (Element) usersNodeList.item(i);
                 String nameNode = u.getElementsByTagName("Username").item(0).getTextContent();
                 if (nameNode.equals(m)) {
@@ -81,7 +83,17 @@ public class GroupChatClientHandler extends Thread {
                     userExists = true;
                     break;
                 }
+            }*/
+
+            for (User user: Server.registeredUsersList) {
+                if (m.equals(user.username())) {
+                    users.add(user);
+                    printWriter.println(user);
+                    userExists = true;
+                    break;
+                }
             }
+
             if (!userExists && !m.equals("finished")) {
                 printWriter.println("USER NOT FOUND");
             }

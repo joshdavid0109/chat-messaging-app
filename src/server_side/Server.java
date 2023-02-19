@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import shared_classes.GroupChatUsersSample;
 import shared_classes.User;
 import shared_classes.XMLParse;
 
@@ -30,6 +31,7 @@ public class Server {
     static BufferedReader bufferedReader;
     static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
     public static List<User> registeredUsersList = new ArrayList<>();
+    public static List<GroupChatUsersSample> groupChatList = new ArrayList<>();
     static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
 

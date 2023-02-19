@@ -29,7 +29,7 @@ public class XMLParserGC {
         this.file = file;
     }
 
-    public void GroupChat(String groupName, String admin, ArrayList<String> members) {
+    public void GroupChat(String groupName, String admin, ArrayList<User> members) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -67,11 +67,38 @@ public class XMLParserGC {
             groupAdminElement.appendChild(document.createTextNode(admin));
             groupElement.appendChild(groupAdminElement);
 
-            for (String member : members) {
-                Element memberElement = document.createElement("Member");
-                memberElement.appendChild(document.createTextNode(member));
-                groupElement.appendChild(memberElement);
+            Element memberElement = document.createElement("Members");
+            groupElement.appendChild(memberElement);
+
+            for (User member : members) {
+
+
+                //create element user
+                Element elementUser = document.createElement("User");
+                element.appendChild(elementUser);
+
+                //set id for user
+                elementUser.setAttribute("id", String.valueOf(member.id()));
+
+                Element nameElement = document.createElement("name");
+                nameElement.appendChild(document.createTextNode(name));
+                elementUser.appendChild(nameElement);
+
+                Element ageElement = document.createElement("Age");
+                ageElement.appendChild(document.createTextNode(age));
+                elementUser.appendChild(ageElement);
+
+                Element usernameElement = document.createElement("Username");
+                usernameElement.appendChild(document.createTextNode(username));
+                elementUser.appendChild(usernameElement);
+
+                Element passwordElement = document.createElement("Password");
+                passwordElement.appendChild(document.createTextNode(password));
+                elementUser.appendChild(passwordElement);
+
             }
+
+
 
             trimWhiteSpace(element);
 
