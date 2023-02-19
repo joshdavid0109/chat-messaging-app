@@ -36,7 +36,7 @@ public class GroupChatClientHandler extends Thread {
 
     @Override
     public void run() {
-        XMLParserGC createGC = new XMLParserGC("res/gcUsers.xml");
+        XMLParserGC createGC = new XMLParserGC("res/Users.xml");
         String gcName, admin;
         ArrayList<User> groupMembers;
 

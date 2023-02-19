@@ -42,9 +42,7 @@ public class XMLParserGC {
                 document = documentBuilder.parse(file);
                 users = document.getElementsByTagName("GroupChat");
                 element = users.item(users.getLength() - 1);
-            }
-
-            else {
+            } else {
                 document = documentBuilder.newDocument();
                 element = document.createElement("GroupChat");
                 document.appendChild(element);
@@ -52,11 +50,11 @@ public class XMLParserGC {
 
             UUID randomID = UUID.randomUUID();
 
-            //create element user
+            //create element group chat
             Element groupElement = document.createElement("GroupChat");
             element.appendChild(groupElement);
 
-            //set id for user
+            //set id for group chat
             groupElement.setAttribute("id", String.valueOf(randomID));
 
             Element groupNameElement = document.createElement("GroupName");
@@ -71,34 +69,29 @@ public class XMLParserGC {
             groupElement.appendChild(memberElement);
 
             for (User member : members) {
-
-
                 //create element user
                 Element elementUser = document.createElement("User");
-                element.appendChild(elementUser);
+                memberElement.appendChild(elementUser);
 
                 //set id for user
                 elementUser.setAttribute("id", String.valueOf(member.id()));
 
                 Element nameElement = document.createElement("name");
-                nameElement.appendChild(document.createTextNode(name));
+                nameElement.appendChild(document.createTextNode(member.name()));
                 elementUser.appendChild(nameElement);
 
                 Element ageElement = document.createElement("Age");
-                ageElement.appendChild(document.createTextNode(age));
+                ageElement.appendChild(document.createTextNode(member.age()));
                 elementUser.appendChild(ageElement);
 
                 Element usernameElement = document.createElement("Username");
-                usernameElement.appendChild(document.createTextNode(username));
+                usernameElement.appendChild(document.createTextNode(member.username()));
                 elementUser.appendChild(usernameElement);
 
                 Element passwordElement = document.createElement("Password");
-                passwordElement.appendChild(document.createTextNode(password));
+                passwordElement.appendChild(document.createTextNode(member.password()));
                 elementUser.appendChild(passwordElement);
-
             }
-
-
 
             trimWhiteSpace(element);
 

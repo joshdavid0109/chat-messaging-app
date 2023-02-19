@@ -103,7 +103,6 @@ public class Server {
                     element.getElementsByTagName("status").item(0).setTextContent("offline");
 
                     Server.updateXML(users, document);
-
                 }
             }
         }
