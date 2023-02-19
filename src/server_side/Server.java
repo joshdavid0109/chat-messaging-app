@@ -31,7 +31,7 @@ public class Server {
     static BufferedReader bufferedReader;
     static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
     public static List<User> registeredUsersList = new ArrayList<>();
-    public static List<GroupChatUsersSample> groupChatList = new ArrayList<>();
+    public static List<GroupChatUsersSample> groupChatUsers = new ArrayList<>();
     static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
 

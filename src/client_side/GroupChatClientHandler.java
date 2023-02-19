@@ -7,11 +7,15 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.Server;
 import shared_classes.User;
+import shared_classes.XMLParse;
 import shared_classes.XMLParserGC;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -46,13 +50,9 @@ public class GroupChatClientHandler extends Thread {
                 printWriter.println(gcName);
                 //gcName = checkGroupname();
 
-                admin = user.name();
+                groupMembers = populateMembers(this.user, gcName);
 
-                groupMembers = populateMembers();
-                for(int i = 0; i<groupMembers.size(); i++){
-                    printWriter.println(groupMembers.get(i));
-                }
-                createGC.GroupChat(gcName, admin, groupMembers);
+                createGC.GroupChat(gcName, groupMembers);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -60,39 +60,96 @@ public class GroupChatClientHandler extends Thread {
 
     }
 
-    private ArrayList<User> populateMembers() throws IOException, SAXException, ParserConfigurationException {
+    private ArrayList<User> populateMembers(User admin, String groupName) throws IOException, SAXException, ParserConfigurationException, TransformerException {
         ArrayList<User> users = new ArrayList<>();
+        File file = new File("res/users.xml");
+        users.add(admin);
         Document document;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        document = documentBuilder.parse("res/users.xml");
-        NodeList usersNodeList;
-        usersNodeList = document.getElementsByTagName("User");
+        document = documentBuilder.parse(file);
+        NodeList usersNodeList = document.getElementsByTagName("User");
         String m = "";
         while (!m.equals("finished")) {
-
-            printWriter.println("Enter username of member: ");
-            m = bufferedReader.readLine();
             boolean userExists = false;
-            /*for (int i = 0; i < usersNodeList.getLength(); i++) {
-                Element u = (Element) usersNodeList.item(i);
-                String nameNode = u.getElementsByTagName("Username").item(0).getTextContent();
-                if (nameNode.equals(m)) {
-                    users.add(u.getElementsByTagName("Username").item(0).getTextContent());
-                    printWriter.println("USER " + u.getElementsByTagName("Username").item(0).getTextContent() + " HAS BEEN ADDED TO ARRAYLIST");
-                    userExists = true;
-                    break;
-                }
-            }*/
+            for (int i = 0; i < Server.registeredUsersList.size(); i++) {
+                User user = Server.registeredUsersList.get(i);
+                if (admin.username().equals(user.username())){
+                    for (int j = 0; j < usersNodeList.getLength(); i ++) {
+                        Element u = (Element) usersNodeList.item(i);
+                        printWriter.println(u.getTextContent());
+                        String username = u.getElementsByTagName("Username").item(0).getTextContent();
+                        printWriter.println(username);
 
-            for (User user: Server.registeredUsersList) {
+                        if (username.equals(admin.username())) {
+                            printWriter.println(username);
+                            Element gcName = document.createElement("Groupname");
+                            gcName.setTextContent(groupName);
+                            gcName.setAttribute("id", "Admin");
+                            u.appendChild(gcName);
+                            users.add(user);
+                            printWriter.println("User" + username + " added to " + groupName);
+                            Server.updateXML(usersNodeList, document);
+                            break;
+                        }
+                    }
+                }
+                else {
+                    printWriter.println("Enter username of member: ");
+                    m = bufferedReader.readLine();
+
+
+                    if (user.username().equals(m) ) {
+                        for (int j = 0; j < usersNodeList.getLength(); j++) {
+                            Element u1 = (Element) usersNodeList.item(j);
+                            String username = u1.getElementsByTagName("username").item(0).getTextContent();
+                            if (username.equals(m)) {
+
+                                Element gcName = document.createElement("Groupname");
+                                gcName.setTextContent(groupName);
+                                gcName.setAttribute("id", "Member");
+                                u1.appendChild(gcName);
+                                users.add(user);
+                                printWriter.println("USER " + u1.getElementsByTagName("Username").item(0).getTextContent() + " HAS BEEN ADDED TO ARRAYLIST");
+                                userExists = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            Element element = (Element) usersNodeList.item(usersNodeList.getLength() - 1);
+            XMLParse.trimWhiteSpace(element);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = null;
+            try {
+                transformer = transformerFactory.newTransformer();
+            } catch (TransformerConfigurationException e) {
+                throw new RuntimeException(e);
+            }
+
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            DOMSource domSource = new DOMSource(document);
+            StreamResult streamResult = new StreamResult(new File(file.toURI()));
+            transformer.transform(domSource, streamResult);
+
+           /* for (User user: Server.registeredUsersList) {
                 if (m.equals(user.username())) {
+
+
+
                     users.add(user);
                     printWriter.println(user);
                     userExists = true;
                     break;
                 }
-            }
+            }*/
 
             if (!userExists && !m.equals("finished")) {
                 printWriter.println("USER NOT FOUND");

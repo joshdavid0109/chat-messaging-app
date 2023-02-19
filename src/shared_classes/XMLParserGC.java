@@ -29,7 +29,7 @@ public class XMLParserGC {
         this.file = file;
     }
 
-    public void GroupChat(String groupName, String admin, ArrayList<User> members) {
+    public void GroupChat(String groupName, ArrayList<User> members) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -63,37 +63,33 @@ public class XMLParserGC {
             groupNameElement.appendChild(document.createTextNode(groupName));
             groupElement.appendChild(groupNameElement);
 
-            Element groupAdminElement = document.createElement("Admin");
-            groupAdminElement.appendChild(document.createTextNode(admin));
-            groupElement.appendChild(groupAdminElement);
-
             Element memberElement = document.createElement("Members");
             groupElement.appendChild(memberElement);
 
-            for (User member : members) {
-
-
+            for (int i = 0; i < members.size(); i++) {
+                User member = members.get(i);
                 //create element user
                 Element elementUser = document.createElement("User");
                 element.appendChild(elementUser);
 
-                //set id for user
+                    //set id for user
+                elementUser.setAttribute("Group", "GroupName");
                 elementUser.setAttribute("id", String.valueOf(member.id()));
 
                 Element nameElement = document.createElement("name");
-                nameElement.appendChild(document.createTextNode(name));
+                nameElement.appendChild(document.createTextNode(member.name()));
                 elementUser.appendChild(nameElement);
 
                 Element ageElement = document.createElement("Age");
-                ageElement.appendChild(document.createTextNode(age));
+                ageElement.appendChild(document.createTextNode(member.age()));
                 elementUser.appendChild(ageElement);
 
                 Element usernameElement = document.createElement("Username");
-                usernameElement.appendChild(document.createTextNode(username));
+                usernameElement.appendChild(document.createTextNode(member.username()));
                 elementUser.appendChild(usernameElement);
 
                 Element passwordElement = document.createElement("Password");
-                passwordElement.appendChild(document.createTextNode(password));
+                passwordElement.appendChild(document.createTextNode(member.password()));
                 elementUser.appendChild(passwordElement);
 
             }
