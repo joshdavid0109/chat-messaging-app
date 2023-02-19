@@ -66,13 +66,41 @@ public class ClientHandler implements Runnable {
 //        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
         try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(new File("res/messages.xml"));
+            Element root = document.getDocumentElement();
+            NodeList messageList = root.getElementsByTagName("message");
+            int messageCount = messageList.getLength();
+            int i = 0;
+            while (i < messageCount) {
+
+                Element msg = (Element) messageList.item(i);
+                //check if username has message to be delivered from messages xml by checking
+                //if adda his name sa recipient tag sa lahat ng msg sa msg xml
+                if(user.name().equals(String.valueOf(msg.getElementsByTagName("recipient")))){
+                    String sender = String.valueOf(msg.getElementsByTagName("sender"));
+                    String text = String.valueOf(msg.getElementsByTagName("message"));
+                }
+                i++;
+
+                /*ClientHandler loginHandler = null;
+                loginHandler.sendMessage("[PM] - "+user.name() + ": " + msg);
+                i++;*/
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        try {
             broadcast(user.name() + " joined the chat");
             messagePrompt(user.name());
 
             boolean exit = false;
 
             while (!exit && (message = bufferedReader.readLine()) != null) {
-                xmlParse.addMessage(user.username(), message, "toall");
+                //xmlParse.addMessage(user.username(), message, "toall");
 
                 if (message.startsWith("/")) {
                     String[] words = message.split("/");
@@ -113,7 +141,9 @@ public class ClientHandler implements Runnable {
                                             }
                                         }
                                         break;
+                                        //check if offline yung user, if offline yung user, store yung message sa messages.xml
                                     } else if (u.status().equals("offline")){
+                                        printWriter.println("user "+u.name()+" is offline, "+u.name()+" will receive your message if "+u.name()+" goes online:)");
                                         xmlParse.addMessage(u.name(), message, recipient);
                                         break;
                                     } else
