@@ -31,6 +31,9 @@ public class Frame implements ActionListener {
     private static JTextField pmTextField;
     private static JScrollPane pmTextArea;
     private static JScrollPane broadcastArea;
+    private static JPanel privateMessagePanel;
+    private static JScrollPane scrollPane;
+    private static JTextArea textArea;
 
     Frame() {
         contactList = new JList<>(getAllContacts());
@@ -73,6 +76,7 @@ public class Frame implements ActionListener {
         sendButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         sendButton.setFocusable(false);
         sendButton.setBounds(270, 570, 50, 20);
+        sendButton.addActionListener(this);
 
         bookmarkButton = new JButton("Star");
         bookmarkButton.setVisible(true);
@@ -125,6 +129,13 @@ public class Frame implements ActionListener {
         pmTextArea.setBorder(BorderFactory.createEmptyBorder());
         pmTextArea.setBounds(30, 70, 290, 470);
 
+        textArea = new JTextArea();
+        pmTextArea.setViewportView(textArea);
+
+        textArea.append("New message\n");
+        //textArea.setCaretPosition(textArea.getDocument().getLength());
+
+
         broadcastArea = new JScrollPane();
         broadcastArea.setVisible(true);
         broadcastArea.getViewport().setForeground(new Color(0X23272A));
@@ -146,7 +157,7 @@ public class Frame implements ActionListener {
         broadCastPanel.setBounds(50,50,350, 750);
         broadCastPanel.setLayout(null);
 
-        JPanel privateMessagePanel = new JPanel();
+        privateMessagePanel = new JPanel();
         privateMessagePanel.setBackground(new Color(0X2C2F33));
         privateMessagePanel.setBounds(400,50,350, 750);
         privateMessagePanel.setLayout(null);
@@ -187,6 +198,9 @@ public class Frame implements ActionListener {
         listOfMembers.add(scrollPaneListMembers);
         listOfMembers.add(bookmarkButton);
         listOfMembers.add(bookmarkedContactsLabel);
+        privateMessagePanel.add(new JLabel("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHELLO"));
+        pmTextArea.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
+        pmTextArea.add(new JLabel("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
     }
 
     public void sendMessage() {
@@ -199,6 +213,11 @@ public class Frame implements ActionListener {
             output.println(message);
             pmTextField.requestFocus();
             pmTextField.setText(null);
+/*
+            pmTextArea.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
+            privateMessagePanel.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
+            privateMessagePanel.revalidate();
+            privateMessagePanel.repaint();*/
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             System.exit(0);
@@ -269,6 +288,10 @@ public class Frame implements ActionListener {
                 updateBookmarkedContactsLabel();
                 updateContactList(getAllContacts());
             }
+        }
+        if(e.getSource() == sendButton){
+//            System.out.println("messagebutton");
+            textArea.append(pmTextField.getText()+"\n");
         }
     }
 }
