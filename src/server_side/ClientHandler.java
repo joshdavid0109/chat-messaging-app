@@ -17,6 +17,8 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
+import java.util.Date;
+import java.time.LocalDateTime;
 
 
 public class ClientHandler implements Runnable {
@@ -148,8 +150,9 @@ public class ClientHandler implements Runnable {
                                         break;
                                         //check if offline yung user, if offline yung user, store yung message sa messages.xml
                                     } else if (u.status().equals("offline")){
+                                        LocalDateTime timeSent = LocalDateTime.now();
                                         printWriter.println("user "+u.name()+" is offline, "+u.name()+" will receive your message if "+u.name()+" goes online:)");
-                                        xmlParse.addMessage(user.name(), message, u.name());
+                                        xmlParse.addMessage(user.name(), message, u.name(),timeSent);
                                         break;
                                     } else
                                         sendMessage("User not existing");

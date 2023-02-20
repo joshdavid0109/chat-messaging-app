@@ -17,6 +17,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 
@@ -99,7 +101,7 @@ public class XMLParse {
 
     }
 
-    public void addMessage(String sender, String message, String recipient) {
+    public void addMessage(String sender, String message, String recipient, LocalDateTime timeSent) {
 
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -128,6 +130,13 @@ public class XMLParse {
 
             //set id for user
             msgElement.setAttribute("id", "xxx");
+
+            //dtf example 2023-02-20 7:30
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            Element timeElement = document.createElement("Time");
+            timeElement.appendChild(document.createTextNode(timeSent.format(dtf)));
+            msgElement.appendChild(timeElement);
 
             Element senderElement = document.createElement("Sender");
             senderElement.appendChild(document.createTextNode(sender));

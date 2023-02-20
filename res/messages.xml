@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Messages>
     <Message id="xxx">
-        <Recipient>Ariel</Recipient>
+        <Time>2023-02-20 13:30</Time>
         <Sender>Darren</Sender>
-        <Text>HELLOBOI</Text>
-    </Message>
-    <Message id="xxx">
-        <Recipient>Joshua</Recipient>
-        <Sender>Darren</Sender>
-        <Text>HOY</Text>
-    </Message>
-    <Message id="xxx">
-        <Sender>Ariel</Sender>
-        <Text>HELLO</Text>
-        <Recipient>Darren</Recipient>
+        <Text>hello boi</Text>
+        <Recipient>Rey</Recipient>
     </Message>
 </Messages>
