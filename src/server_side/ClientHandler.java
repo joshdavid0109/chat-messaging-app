@@ -81,22 +81,22 @@ public class ClientHandler implements Runnable {
 
                 //check if username has message to be delivered from messages xml by checking
                 //if adda his name sa recipient tag sa lahat ng msg sa msg xml
-
+                //TODO remove sa xml file kung sent na
                 if(user.name().equals(msg.getElementsByTagName("Recipient").item(0).getTextContent())){
-                    printWriter.println("gumana");
+                    printWriter.println("eto yung mga unread messages");
 
-                    //why u not working why u always null bruh
                     String sender = msg.getElementsByTagName("Sender").item(0).getTextContent();
-                    String text = msg.getElementsByTagName("Message").item(0).getTextContent();
-                    printWriter.println("[PM] "+msg.getElementsByTagName("Sender").item(0).getTextContent()+": "+msg.getElementsByTagName("Message").item(0).getTextContent());
-                    printWriter.println("asdasdhello");
+                    String text = msg.getElementsByTagName("Text").item(0).getTextContent();
+                    printWriter.println("[PM] "+sender+": "+text);
+
                 }
                 i++;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        //debug statemetns
+        printWriter.println("yun lang para sayo :)");
 
         try {
             broadcast(user.name() + " joined the chat");

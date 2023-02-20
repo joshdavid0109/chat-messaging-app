@@ -10,4 +10,9 @@
         <Sender>Darren</Sender>
         <Text>HOY</Text>
     </Message>
+    <Message id="xxx">
+        <Sender>Ariel</Sender>
+        <Text>HELLO</Text>
+        <Recipient>Darren</Recipient>
+    </Message>
 </Messages>
