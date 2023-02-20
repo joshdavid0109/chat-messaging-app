@@ -20,25 +20,21 @@ public class BookmarkContacts extends JPanel {
     private final ArrayList<String> bookmarkedContacts;
     private final JList<String> contactList;
     private final JLabel bookmarkedContactsLabel;
-    public static JButton bookmarkButton;
 
     public BookmarkContacts() {
         bookmarkedContacts = new ArrayList<>();
         contactList = new JList<>(getAllContacts());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-
 //        Icon bookmarkIcon = new ImageIcon(new ImageIcon("src/groupniSir/Updates/BookmarkIcon.png")
 //                .getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
 
-        bookmarkButton = new JButton("CLICK");
+        JButton bookmarkButton = new JButton("CLICK");
         bookmarkButton.setBackground(Color.black);
         bookmarkButton.setOpaque(false);
         bookmarkButton.setBorder(BorderFactory.createEmptyBorder());
         bookmarkButton.setFocusable(false);
-
         bookmarkedContactsLabel = new JLabel("Bookmarked Contacts:");
-        bookmarkedContactsLabel.setSize(100, 100);
 
         bookmarkButton.addActionListener(e -> {
             String selectedContact = contactList.getSelectedValue();
@@ -88,7 +84,7 @@ public class BookmarkContacts extends JPanel {
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
                     String name = userElement.getElementsByTagName("name").item(0).getTextContent();
-                    contacts[i] = name;
+                    contacts[i] = "Name: " + name;
                 }
             }
         } catch (SAXException | IOException | ParserConfigurationException e) {

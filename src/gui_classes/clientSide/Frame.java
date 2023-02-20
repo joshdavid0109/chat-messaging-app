@@ -21,8 +21,10 @@ public class Frame implements ActionListener {
     private final JList<String> contactList;
     private final JLabel bookmarkedContactsLabel;
     private static JButton bookmarkButton;
-    private static JScrollPane scrollPaneListMembers;
-
+    private static JButton sendButton;
+    private static JTextField pmTextField;
+    private static JScrollPane pmTextArea;
+    private static JScrollPane broadcastArea;
 
     Frame() {
         contactList = new JList<>(getAllContacts());
@@ -58,6 +60,14 @@ public class Frame implements ActionListener {
         listOfMembersName.setFont(new Font("Arial", Font.BOLD, 18));
         listOfMembersName.setBounds(90, 0, 200, 75);
 
+        sendButton = new JButton("Send");
+        sendButton.setVisible(true);
+        sendButton.setForeground(Color.BLACK);
+        sendButton.setBackground(Color.WHITE);
+        sendButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        sendButton.setFocusable(false);
+        sendButton.setBounds(270, 570, 50, 20);
+
         bookmarkButton = new JButton("Star");
         bookmarkButton.setVisible(true);
         bookmarkButton.setForeground(Color.BLACK);
@@ -72,9 +82,27 @@ public class Frame implements ActionListener {
         bookmarkedContactsLabel.setForeground(Color.WHITE);
         bookmarkedContactsLabel.setBounds(40,250,200,200);
 
-        scrollPaneListMembers = new JScrollPane(contactList);
+        pmTextField = new JTextField();
+        pmTextField.setVisible(true);
+        pmTextField.setBorder(BorderFactory.createEmptyBorder());
+        pmTextField.setBounds(30, 570, 220, 20);
+
+        JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
         scrollPaneListMembers.setVisible(true);
+        scrollPaneListMembers.setBorder(BorderFactory.createEmptyBorder());
         scrollPaneListMembers.setBounds(40, 70, 200, 200);
+
+        pmTextArea = new JScrollPane();
+        pmTextArea.setVisible(true);
+        pmTextArea.setBorder(BorderFactory.createEmptyBorder());
+        pmTextArea.setBounds(30, 70, 290, 470);
+
+        broadcastArea = new JScrollPane();
+        broadcastArea.setVisible(true);
+        broadcastArea.getViewport().setForeground(new Color(0X23272A));
+        broadcastArea.getViewport().setBackground(new Color(0X23272A));
+        broadcastArea.setBorder(BorderFactory.createEmptyBorder());
+        broadcastArea.setBounds(30, 70, 290, 470);
 
         JPanel header = new JPanel();
         header.setBackground(Color.BLACK);
@@ -117,10 +145,14 @@ public class Frame implements ActionListener {
 
         frame.add(broadCastPanel);
         broadCastPanel.add(broadCast);
+        broadCastPanel.add(broadcastArea);
 
         frame.add(privateMessagePanel);
         privateMessagePanel.add(currentUserName);
         privateMessagePanel.add(currentUserStatus);
+        privateMessagePanel.add(sendButton);
+        privateMessagePanel.add(pmTextField);
+        privateMessagePanel.add(pmTextArea);
 
         frame.add(listOfMembers);
         listOfMembers.add(listOfMembersName);
@@ -130,7 +162,6 @@ public class Frame implements ActionListener {
     }
 
     private String[] getAllContacts() {
-
         String[] contacts;
         try {
 
@@ -146,7 +177,12 @@ public class Frame implements ActionListener {
                 if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element userElement = (Element) userNode;
                     String name = userElement.getElementsByTagName("name").item(0).getTextContent();
-                    contacts[i] = name;
+                    String status = userElement.getElementsByTagName("status").item(0).getTextContent();
+
+                    if (status.equals("online")) {
+
+                    }
+                    contacts[i] = name + " : " + status;
                 }
             }
         } catch (SAXException | IOException | ParserConfigurationException e) {
