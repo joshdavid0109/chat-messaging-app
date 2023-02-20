@@ -1,5 +1,6 @@
 package server_side;
 
+import gui_classes.LoginGUI;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -25,11 +26,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-    static String f = "res/users.xml";
+    public static String f = "res/users.xml";
     static Socket clientSocket;
     static PrintWriter printWriter;
     static BufferedReader bufferedReader;
-    static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
+    public static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
     public static List<User> registeredUsersList = new ArrayList<>();
     public static List<GroupChatUsersSample> groupChatUsers = new ArrayList<>();
     static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
@@ -45,6 +46,10 @@ public class Server {
             System.out.println("Add a user - /add");
 
             ExecutorService executorService = Executors.newCachedThreadPool();
+
+            getRegisteredUsers();
+
+            LoginGUI loginGUI = new LoginGUI();
 
             new Thread(() -> {
                 String input;
@@ -67,7 +72,7 @@ public class Server {
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
-                getRegisteredUsers();
+
 
                 //here
 

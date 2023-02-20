@@ -1,15 +1,23 @@
 package gui_classes.ServerSide;
 
 import gui_classes.clientSide.BookmarkContacts;
+import shared_classes.User;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ServerMain {
-    public static void main(String[] args) {
+public class ServerMain implements Runnable{
+    User user;
+
+
+    public ServerMain(User user) {
+        this.user = user;
+    }
+    @Override
+    public void run() {
 
         JLabel headerName = new JLabel();
-        headerName.setText("USERNAME");
+        headerName.setText(user.username());
         headerName.setForeground(Color.WHITE);
         headerName.setFont(new Font("Arial", Font.BOLD, 12));
         headerName.setBounds(920, -15, 200, 75);
@@ -27,7 +35,7 @@ public class ServerMain {
         broadCast.setBounds(100, 0, 200, 75);
 
         JLabel currentUserName = new JLabel();
-        currentUserName.setText("USERNAME");
+        currentUserName.setText(user.name());
         currentUserName.setForeground(Color.WHITE);
         currentUserName.setFont(new Font("Arial", Font.BOLD, 18));
         currentUserName.setBounds(30, 0, 200, 75);

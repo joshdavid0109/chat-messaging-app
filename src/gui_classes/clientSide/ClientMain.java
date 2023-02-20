@@ -1,8 +1,15 @@
 package gui_classes.clientSide;
 
-public class ClientMain {
+import shared_classes.User;
 
-    public static void main(String[] args) {
+public class ClientMain implements Runnable{
+    User user;
+
+    public ClientMain(User user) {
+        this.user = user;
+    }
+
+    public void run(){
         new Frame();
     }
 }

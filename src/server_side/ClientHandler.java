@@ -1,6 +1,8 @@
 package server_side;
 
 import client_side.GroupChatClientHandler;
+import gui_classes.ServerSide.ServerMain;
+import gui_classes.clientSide.ClientMain;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -307,7 +309,9 @@ public class ClientHandler implements Runnable {
                                 }
 
 
-                                    Server.loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
+
+                                // Add users to lists
+                              /*      Server.loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
                                 User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
                                         u.getElementsByTagName("Username").item(0).getTextContent(),
                                         u.getElementsByTagName("Password").item(0).getTextContent(), u.getElementsByTagName("status").item(0).getTextContent(), u.getElementsByTagName("BanStatus").item(0).getTextContent());
@@ -318,13 +322,17 @@ public class ClientHandler implements Runnable {
                                 u.getElementsByTagName("status").item(0).setTextContent("online");
                                 Server.updateXML(users, document);
 
-
+*/
                                 System.out.println("Login Successful!");
 
                                 System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " +  u.getElementsByTagName("status").item(0).getTextContent());
 
-                                joinServer(user, users);
-                                broadcast(name + ": ");
+
+                                /*ClientMain clientMain = new ClientMain(user);
+                                clientMain.run();*/
+
+                                /*joinServer(user, users);
+                                broadcast(name + ": ");*/
                                 break;
                             }
                             printWriter.println("Invalid password.");
@@ -333,7 +341,7 @@ public class ClientHandler implements Runnable {
                     } else if (i == users.getLength() - 1)
                         printWriter.println("User is not existing");
                 }
-            } catch (IOException | ParserConfigurationException | SAXException | TransformerException e) {
+            } catch (IOException | ParserConfigurationException | SAXException e) {
                 throw new RuntimeException(e);
             }
         }
