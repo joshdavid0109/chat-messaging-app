@@ -48,9 +48,13 @@ public class Server {
             ExecutorService executorService = Executors.newCachedThreadPool();
 
             getRegisteredUsers();
-           /* LoginGUI loginGUI = new LoginGUI(clientSocket);
-            loginGUI.run();
-*/
+
+
+            /**
+             * Ito ung sa login
+             */
+/*            LoginGUI loginGUI = new LoginGUI(clientSocket);
+            loginGUI.run();*/
 
             bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
