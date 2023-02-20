@@ -1,6 +1,6 @@
 package gui_classes;
 
-import gui_classes.clientSide.ClientMain;
+import gui_classes.clientside.ClientMain;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -20,7 +20,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.net.Socket;
-import java.rmi.server.RMIClientSocketFactory;
 
 public class LoginGUI extends JFrame implements ActionListener, Runnable {
     Container container = getContentPane();
@@ -84,60 +83,6 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
                             break;
                         }
                     }
-
-                    /*for (int i = 0; i < users.getLength(); i++) {
-                        u = (Element) users.item(i);
-                        String uName = u.getElementsByTagName("Username").item(0).getTextContent();
-
-                        if (uName.equals(username)) {
-                            for (int j = 0; j < users.getLength(); j++) {
-                                printWriter.println("\nPassword: ");
-                                password = bufferedReader.readLine();
-                                String pass = u.getElementsByTagName("Password").item(0).getTextContent();
-                                String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
-
-                                if (pass.equals(password)) {
-                                    name = nameNode;
-                                    loginStatus = true;
-
-                                    if (u.getElementsByTagName("BanStatus").item(0).getTextContent().equalsIgnoreCase("Banned")) {
-                                        printWriter.println("Sorry. Your account is currently banned from the system.");
-                                        break;
-                                    }
-
-
-
-                                    // Add users to lists
-                              *//*      Server.loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
-                                User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
-                                        u.getElementsByTagName("Username").item(0).getTextContent(),
-                                        u.getElementsByTagName("Password").item(0).getTextContent(), u.getElementsByTagName("status").item(0).getTextContent(), u.getElementsByTagName("BanStatus").item(0).getTextContent());
-
-                                // IP, USER HASHMAP
-                                Server.loggedInUserHashMap.put(new ClientHandler(socket, printWriter, bufferedReader), user);
-
-                                u.getElementsByTagName("status").item(0).setTextContent("online");
-                                Server.updateXML(users, document);
-
-*//*
-                                    System.out.println("Login Successful!");
-
-                                    System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " +  u.getElementsByTagName("status").item(0).getTextContent());
-
-
-                                *//*ClientMain clientMain = new ClientMain(user);
-                                clientMain.run();*//*
-
-                     *//*joinServer(user, users);
-                                broadcast(name + ": ");*//*
-                                    break;
-                                }
-                                printWriter.println("Invalid password.");
-                            }
-                            break;
-                        } else if (i == users.getLength() - 1)
-                            printWriter.println("User is not existing");
-                    }*/
                 }
             });
 

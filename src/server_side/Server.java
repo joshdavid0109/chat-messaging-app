@@ -34,7 +34,7 @@ public class Server {
     public static List<User> registeredUsersList = new ArrayList<>();
     public static List<GroupChatUsersSample> groupChatUsers = new ArrayList<>();
     static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
-    static Scanner scanner = new Scanner(System.in);
+//    static Scanner scanner = new Scanner(System.in);
 
     ObjectInputStream objectInputStream;
     ObjectOutputStream objectOutputStream;
@@ -48,13 +48,19 @@ public class Server {
             ExecutorService executorService = Executors.newCachedThreadPool();
 
             getRegisteredUsers();
-            LoginGUI loginGUI = new LoginGUI(clientSocket);
+           /* LoginGUI loginGUI = new LoginGUI(clientSocket);
             loginGUI.run();
+*/
 
+            bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
             new Thread(() -> {
                 String input;
-                input = scanner.nextLine();
+                try {
+                    input = bufferedReader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
                 if (input.startsWith("/ban") || input.startsWith("/unban")) {
                     banUser(input.split(" ")[0], input.split(" ")[1]);
@@ -70,8 +76,6 @@ public class Server {
 
                 System.out.println("A client has connected.");
 
-
-
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
@@ -79,7 +83,7 @@ public class Server {
 
                 //here
 
-//                executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
+                executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
 
 
 //                new Thread(() -> {
@@ -94,11 +98,11 @@ public class Server {
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }
+            } finally {
 
 
-             // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
-            finally {
+                // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
+
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 Document document = documentBuilder.parse(f);

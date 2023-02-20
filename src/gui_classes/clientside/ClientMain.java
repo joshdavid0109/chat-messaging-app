@@ -1,4 +1,4 @@
-package gui_classes.clientSide;
+package gui_classes.clientside;
 
 import shared_classes.User;
 

@@ -93,31 +93,34 @@ public class GroupChatClientHandler extends Thread {
                             break;
                         }
                     }
+                    break;
                 }
-                else {
-                    printWriter.println("Enter username of member: ");
-                    m = bufferedReader.readLine();
+            }
 
+            for (int j = 0; j<10; j++) {
+                printWriter.println("Enter username of member: ");
+                m = bufferedReader.readLine();
+                User user = Server.registeredUsersList.get(j);
+                if (user.username().equals(m)) {
+                    for (int x = 0; x < usersNodeList.getLength(); x++) {
+                        Element u1 = (Element) usersNodeList.item(j);
+                        String username = u1.getElementsByTagName("username").item(0).getTextContent();
+                        if (username.equals(m)) {
 
-                    if (user.username().equals(m) ) {
-                        for (int j = 0; j < usersNodeList.getLength(); j++) {
-                            Element u1 = (Element) usersNodeList.item(j);
-                            String username = u1.getElementsByTagName("username").item(0).getTextContent();
-                            if (username.equals(m)) {
-
-                                Element gcName = document.createElement("Groupname");
-                                gcName.setTextContent(groupName);
-                                gcName.setAttribute("id", "Member");
-                                u1.appendChild(gcName);
-                                users.add(user);
-                                printWriter.println("USER " + u1.getElementsByTagName("Username").item(0).getTextContent() + " HAS BEEN ADDED TO ARRAYLIST");
-                                userExists = true;
-                                break;
-                            }
+                            Element gcName = document.createElement("Groupname");
+                            gcName.setTextContent(groupName);
+                            gcName.setAttribute("id", "Member");
+                            u1.appendChild(gcName);
+                            users.add(user);
+                            printWriter.println("USER " + u1.getElementsByTagName("Username").item(0).getTextContent() + " HAS BEEN ADDED TO ARRAYLIST");
+                            userExists = true;
+                            break;
                         }
                     }
                 }
+
             }
+
 
             Element element = (Element) usersNodeList.item(usersNodeList.getLength() - 1);
             XMLParse.trimWhiteSpace(element);

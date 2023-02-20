@@ -1,6 +1,5 @@
-package gui_classes.ServerSide;
+package gui_classes.serverside;
 
-import gui_classes.clientSide.BookmarkContacts;
 import shared_classes.User;
 
 import javax.swing.*;

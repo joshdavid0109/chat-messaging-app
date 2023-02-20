@@ -1,4 +1,4 @@
-package gui_classes.clientSide;
+package gui_classes.clientside;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

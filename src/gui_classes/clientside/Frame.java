@@ -1,10 +1,11 @@
-package gui_classes.clientSide;
+package gui_classes.clientside;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import server_side.Server;
 import shared_classes.User;
 
 import javax.swing.*;
@@ -227,7 +228,8 @@ public class Frame implements ActionListener {
     }
 
     private String[] getAllContacts() {
-        String[] contacts;
+        String[] contacts = new String[Server.registeredUsersList.size()];
+
         try {
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
