@@ -122,20 +122,25 @@ public class XMLParse {
                 document.appendChild(element);
             }
 
-            //create element user
-            Element senderElement = document.createElement("Sender");
-            element.appendChild(senderElement);
+            //create element MESSAGE
+            Element msgElement = document.createElement("Message");
+            element.appendChild(msgElement);
 
             //set id for user
-            senderElement.setAttribute("id", String.valueOf(sender));
+            msgElement.setAttribute("id", "xxx");
 
-            Element messageElement = document.createElement("Message");
-            messageElement.appendChild(document.createTextNode(message));
-            senderElement.appendChild(messageElement);
+            Element senderElement = document.createElement("Sender");
+            senderElement.appendChild(document.createTextNode(sender));
+            msgElement.appendChild(senderElement);
 
-            Element rElement = document.createElement("Recipient");
-            rElement.appendChild(document.createTextNode(recipient));
-            senderElement.appendChild(messageElement);
+            Element txtElement = document.createElement("Text");
+            txtElement.appendChild(document.createTextNode(message));
+            msgElement.appendChild(txtElement);
+
+            Element recipientElement = document.createElement("Recipient");
+            recipientElement.appendChild(document.createTextNode(recipient));
+            msgElement.appendChild(recipientElement);
+
 
             trimWhiteSpace(element);
 
