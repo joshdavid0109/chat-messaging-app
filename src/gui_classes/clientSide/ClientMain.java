@@ -9,7 +9,7 @@ public class ClientMain implements Runnable{
         this.user = user;
     }
 
-    public void run(){
-        new Frame();
+    public void run() {
+        new Frame(user);
     }
 }

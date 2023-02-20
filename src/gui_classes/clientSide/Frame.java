@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import shared_classes.User;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -35,11 +36,12 @@ public class Frame implements ActionListener {
     private static JScrollPane scrollPane;
     private static JTextArea textArea;
 
-    Frame() {
+    Frame(User user) {
         contactList = new JList<>(getAllContacts());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JLabel headerName = new JLabel("USERNAME");
+        JLabel headerName = new JLabel();
+        headerName.setText(user.username());
         headerName.setForeground(Color.WHITE);
         headerName.setFont(new Font("Arial", Font.BOLD, 12));
         headerName.setBounds(920, -15, 200, 75);
@@ -54,7 +56,7 @@ public class Frame implements ActionListener {
         broadCast.setFont(new Font("Arial", Font.BOLD, 18));
         broadCast.setBounds(100, 0, 200, 75);
 
-        JLabel currentUserName = new JLabel("USERNAME");
+        JLabel currentUserName = new JLabel(user.name());
         currentUserName.setForeground(Color.WHITE);
         currentUserName.setFont(new Font("Arial", Font.BOLD, 18));
         currentUserName.setBounds(30, 0, 200, 75);

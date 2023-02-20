@@ -43,6 +43,9 @@ public class ClientHandler implements Runnable {
 
     }
 
+    public ClientHandler(Socket socket) {
+    }
+
     public void run() {
         String name = null;
 

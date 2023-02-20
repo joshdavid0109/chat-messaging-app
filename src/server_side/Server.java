@@ -48,8 +48,9 @@ public class Server {
             ExecutorService executorService = Executors.newCachedThreadPool();
 
             getRegisteredUsers();
+            LoginGUI loginGUI = new LoginGUI(clientSocket);
+            loginGUI.run();
 
-            LoginGUI loginGUI = new LoginGUI();
 
             new Thread(() -> {
                 String input;
@@ -69,6 +70,8 @@ public class Server {
 
                 System.out.println("A client has connected.");
 
+
+
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
@@ -76,7 +79,7 @@ public class Server {
 
                 //here
 
-                executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
+//                executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
 
 
 //                new Thread(() -> {

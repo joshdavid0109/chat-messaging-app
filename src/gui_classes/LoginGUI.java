@@ -16,11 +16,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.rmi.server.RMIClientSocketFactory;
 
-public class LoginGUI extends JFrame implements ActionListener {
+public class LoginGUI extends JFrame implements ActionListener, Runnable {
     Container container = getContentPane();
     JTextField userTextField = new JTextField();
     JPasswordField passwordField = new JPasswordField();
@@ -29,18 +31,22 @@ public class LoginGUI extends JFrame implements ActionListener {
     JLabel titleLabel = new JLabel("Budget Discord");
     JLabel usernameLabel = new JLabel("Username");
     JLabel passwordLabel = new JLabel("Password");
+    Socket socket;
 
     public LoginGUI(){
 
     }
 
     public LoginGUI(Socket socket) {
+        this.socket = socket;
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
         pack();
 
+    }
 
+    public void run(){
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -48,6 +54,15 @@ public class LoginGUI extends JFrame implements ActionListener {
 
 
 
+            showPassword.addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() == ItemEvent.SELECTED)
+                        passwordField.setEchoChar('\u0000');
+                    else
+                        passwordField.setEchoChar((Character) UIManager.get("PasswordField.echoChar"));
+                }
+            });
 
             loginButton.addActionListener(new ActionListener() {
                 @Override
@@ -62,11 +77,8 @@ public class LoginGUI extends JFrame implements ActionListener {
                         if (user.username().equals(userTextField.getText())) {
                             if (user.password().equals(passwordField.getText())) {
                                 ClientMain clientMain = new ClientMain(user);
-                                /*try {
-                                    Server.loginHandlerArraylist.add(new ClientHandler(socket));
-                                } catch (IOException ex) {
-                                    throw new RuntimeException(ex);
-                                }*/
+                                Server.loginHandlerArraylist.add(new ClientHandler(socket));
+                                clientMain.run();
                                 break;
                             }
                             break;
@@ -116,7 +128,7 @@ public class LoginGUI extends JFrame implements ActionListener {
                                 *//*ClientMain clientMain = new ClientMain(user);
                                 clientMain.run();*//*
 
-                                *//*joinServer(user, users);
+                     *//*joinServer(user, users);
                                 broadcast(name + ": ");*//*
                                     break;
                                 }
@@ -135,14 +147,12 @@ public class LoginGUI extends JFrame implements ActionListener {
         }
 
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(userTextField.getText());
+        this.setTitle("Budget Discord");
+        this.setVisible(true);
 
-            }
-        });
-
+        this.setBounds(500, 250, 960, 540);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
 
 
 
@@ -172,19 +182,6 @@ public class LoginGUI extends JFrame implements ActionListener {
         container.add(passwordLabel);
     }
 
-    public static void main(String[] args) {
-        LoginGUI frame = new LoginGUI();
-        frame.setTitle("Budget Discord");
-        frame.setVisible(true);
-
-
-
-
-        frame.setBounds(500, 250, 960, 540);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-
-    }
     @Override
     public void actionPerformed(ActionEvent e) {
     }
