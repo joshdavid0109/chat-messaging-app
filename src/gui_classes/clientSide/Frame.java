@@ -13,12 +13,18 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Frame implements ActionListener {
     private final ArrayList<String> bookmarkedContacts = new ArrayList<>();
     private final JList<String> contactList;
+    PrintWriter output;
+    private String message = " ";
+
     private final JLabel bookmarkedContactsLabel;
     private static JButton bookmarkButton;
     private static JButton sendButton;
@@ -86,6 +92,28 @@ public class Frame implements ActionListener {
         pmTextField.setVisible(true);
         pmTextField.setBorder(BorderFactory.createEmptyBorder());
         pmTextField.setBounds(30, 570, 220, 20);
+
+        pmTextField.addKeyListener(new KeyAdapter() {
+            // send message on Enter
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    sendMessage();
+                }
+
+                // Get last message typed
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    String currentMessage = pmTextField.getText().trim();
+                    pmTextField.setText(message);
+                    message = currentMessage;
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    String currentMessage = pmTextField.getText().trim();
+                    pmTextField.setText(message);
+                    message = currentMessage;
+                }
+            }
+        });
 
         JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
         scrollPaneListMembers.setVisible(true);
@@ -161,6 +189,22 @@ public class Frame implements ActionListener {
         listOfMembers.add(bookmarkedContactsLabel);
     }
 
+    public void sendMessage() {
+        try {
+            String message = pmTextField.getText().trim();
+            if (message.equals("")) {
+                return;
+            }
+            this.message = message;
+            output.println(message);
+            pmTextField.requestFocus();
+            pmTextField.setText(null);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            System.exit(0);
+        }
+    }
+
     private String[] getAllContacts() {
         String[] contacts;
         try {
@@ -179,9 +223,6 @@ public class Frame implements ActionListener {
                     String name = userElement.getElementsByTagName("name").item(0).getTextContent();
                     String status = userElement.getElementsByTagName("status").item(0).getTextContent();
 
-                    if (status.equals("online")) {
-
-                    }
                     contacts[i] = name + " : " + status;
                 }
             }
