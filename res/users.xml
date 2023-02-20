@@ -17,7 +17,7 @@
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
     </User>
     <User id="ed49f946-fae7-47ba-9027-d158123b906a">
@@ -34,7 +34,6 @@
         <Username>x</Username>
         <Password>x</Password>
         <status>offline</status>
-        <BanStatus>Banned</BanStatus>
     </User>
     <User id="4f2668f6-b75d-4f4e-8f36-bb27028974cd">
         <name>Maervin</name>
@@ -49,7 +48,7 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
     </User>
     <User id="9b5ec170-ddc0-4a12-a152-24082c895785">

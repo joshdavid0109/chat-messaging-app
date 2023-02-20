@@ -70,25 +70,28 @@ public class ClientHandler implements Runnable {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new File("res/messages.xml"));
             Element root = document.getDocumentElement();
-            NodeList messageList = root.getElementsByTagName("message");
+            NodeList messageList = root.getElementsByTagName("Message");
             int messageCount = messageList.getLength();
             int i = 0;
             while (i < messageCount) {
 
+
                 Element msg = (Element) messageList.item(i);
+
+
                 //check if username has message to be delivered from messages xml by checking
                 //if adda his name sa recipient tag sa lahat ng msg sa msg xml
-                if(user.name().equals(String.valueOf(msg.getElementsByTagName("Recipient")))){
-                    String sender = String.valueOf(msg.getElementsByTagName("Sender"));
-                    String text = String.valueOf(msg.getElementsByTagName("Message"));
-                    printWriter.println("[PM] "+sender+": "+text);
+
+                if(user.name().equals(msg.getElementsByTagName("Recipient").item(0).getTextContent())){
+                    printWriter.println("gumana");
+
+                    //why u not working why u always null bruh
+                    String sender = msg.getElementsByTagName("Sender").item(0).getTextContent();
+                    String text = msg.getElementsByTagName("Message").item(0).getTextContent();
+                    printWriter.println("[PM] "+msg.getElementsByTagName("Sender").item(0).getTextContent()+": "+msg.getElementsByTagName("Message").item(0).getTextContent());
+                    printWriter.println("asdasdhello");
                 }
-
                 i++;
-
-                /*ClientHandler loginHandler = null;
-                loginHandler.sendMessage("[PM] - "+user.name() + ": " + msg);
-                i++;*/
             }
         } catch (Exception e) {
             e.printStackTrace();
