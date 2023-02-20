@@ -198,14 +198,18 @@ public class Server {
                 username = element.getElementsByTagName("Username").item(0).getTextContent();
                 password = element.getElementsByTagName("Password").item(0).getTextContent();
                 status = element.getElementsByTagName("status").item(0).getTextContent();
-                banStatus = element.getElementsByTagName("BanStatus").item(0).getTextContent();
 
+                //bigla nag eerror dituy idk why, lagay ko muna ito
+                try{
+                    banStatus = element.getElementsByTagName("BanStatus").item(0).getTextContent();
+                }
+                catch(NullPointerException e){
+                    banStatus = "x";
+                }
                 registeredUsersList.add(new User(id, name, age, username, password, status, banStatus));
 
+
             }
-
-
-
         } catch (ParserConfigurationException | IOException | SAXException e) {
             throw new RuntimeException(e);
         }

@@ -17,6 +17,8 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
+import java.util.Date;
+import java.time.LocalDateTime;
 
 
 public class ClientHandler implements Runnable {
@@ -70,30 +72,33 @@ public class ClientHandler implements Runnable {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new File("res/messages.xml"));
             Element root = document.getDocumentElement();
-            NodeList messageList = root.getElementsByTagName("message");
+            NodeList messageList = root.getElementsByTagName("Message");
             int messageCount = messageList.getLength();
             int i = 0;
             while (i < messageCount) {
 
+
                 Element msg = (Element) messageList.item(i);
+
+
                 //check if username has message to be delivered from messages xml by checking
                 //if adda his name sa recipient tag sa lahat ng msg sa msg xml
-                if(user.name().equals(String.valueOf(msg.getElementsByTagName("Recipient")))){
-                    String sender = String.valueOf(msg.getElementsByTagName("Sender"));
-                    String text = String.valueOf(msg.getElementsByTagName("Message"));
+                //TODO remove sa xml file kung sent na
+                if(user.name().equals(msg.getElementsByTagName("Recipient").item(0).getTextContent())){
+                    printWriter.println("eto yung mga unread messages");
+
+                    String sender = msg.getElementsByTagName("Sender").item(0).getTextContent();
+                    String text = msg.getElementsByTagName("Text").item(0).getTextContent();
                     printWriter.println("[PM] "+sender+": "+text);
+
                 }
-
                 i++;
-
-                /*ClientHandler loginHandler = null;
-                loginHandler.sendMessage("[PM] - "+user.name() + ": " + msg);
-                i++;*/
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        //debug statemetns
+        printWriter.println("yun lang para sayo :)");
 
         try {
             broadcast(user.name() + " joined the chat");
@@ -145,8 +150,9 @@ public class ClientHandler implements Runnable {
                                         break;
                                         //check if offline yung user, if offline yung user, store yung message sa messages.xml
                                     } else if (u.status().equals("offline")){
+                                        LocalDateTime timeSent = LocalDateTime.now();
                                         printWriter.println("user "+u.name()+" is offline, "+u.name()+" will receive your message if "+u.name()+" goes online:)");
-                                        xmlParse.addMessage(user.name(), message, u.name());
+                                        xmlParse.addMessage(user.name(), message, u.name(),timeSent);
                                         break;
                                     } else
                                         sendMessage("User not existing");
