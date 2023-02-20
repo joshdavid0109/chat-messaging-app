@@ -3,6 +3,7 @@ package server_side;
 import client_side.GroupChatClientHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import shared_classes.Messages;
@@ -13,6 +14,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -76,27 +79,31 @@ public class ClientHandler implements Runnable {
             int messageCount = messageList.getLength();
             int i = 0;
             while (i < messageCount) {
-
-
                 Element msg = (Element) messageList.item(i);
 
-
-                //check if username has message to be delivered from messages xml by checking
-                //if adda his name sa recipient tag sa lahat ng msg sa msg xml
-                //TODO remove sa xml file kung sent na
                 if(user.name().equals(msg.getElementsByTagName("Recipient").item(0).getTextContent())){
-                    printWriter.println("eto yung mga unread messages");
-
                     String sender = msg.getElementsByTagName("Sender").item(0).getTextContent();
                     String text = msg.getElementsByTagName("Text").item(0).getTextContent();
-                    printWriter.println("[PM] "+sender+": "+text);
+                    String time = msg.getElementsByTagName("Time").item(0).getTextContent();
+                    printWriter.println(time+" [PM]" +sender+": "+text);
 
+                    //alisin msg element sa messages.xml if nasent na
+                    Node parent = msg.getParentNode();
+                    parent.removeChild(msg);
+                    messageCount--;
+                    i--;
                 }
                 i++;
             }
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(document);
+            StreamResult result = new StreamResult(new File("res/messages.xml"));
+            transformer.transform(source, result);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         //debug statemetns
         printWriter.println("yun lang para sayo :)");
 
