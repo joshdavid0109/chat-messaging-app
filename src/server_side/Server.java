@@ -42,10 +42,9 @@ public class Server {
             System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
             System.out.println("Add a user - /add");
 
-            ExecutorService executorService = Executors.newCachedThreadPool();
+            ExecutorService executorService = Executors.newFixedThreadPool(10);
 
             getRegisteredUsers();
-
 
 
 
@@ -80,10 +79,9 @@ public class Server {
                 /**
                  * Ito ung sa login
                  */
-//                LoginGUI loginGUI = new LoginGUI(clientSocket);
-//                loginGUI.run();
                 //here
 
+//                executorService.execute(new LoginGUI(clientSocket));
                 executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
             } catch (IOException e) {
                 throw new RuntimeException(e);
