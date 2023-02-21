@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class LoginGUI extends JFrame implements ActionListener, Runnable {
@@ -67,9 +68,16 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     NodeList users = document.getElementsByTagName("User");
+                    PrintWriter printWriter = null;
+                    try {
+                        printWriter = new PrintWriter(socket.getOutputStream());
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
 
                     String username, password;
-                    users = document.getElementsByTagName("User");
+                    Frame frame;
+                            users = document.getElementsByTagName("User");
                     Element u;
 
                     int i = 0;
@@ -78,11 +86,12 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
                         if (user.username().equals(userTextField.getText())) {
                             if (user.password().equals(passwordField.getText())) {
-                                ClientMain clientMain = new ClientMain(user);
+                                ClientMain clientMain = new ClientMain(socket, user, printWriter);
                                 Server.loginHandlerArraylist.add(new ClientHandler(socket));
                                 Server.loggedInUserHashMap.put(new ClientHandler(socket), user);
                                 u.getElementsByTagName("status").item(0).setTextContent("online");
                                 clientMain.run();
+
                                 break;
                             }
                             break;

@@ -20,12 +20,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class Frame implements ActionListener {
     private final ArrayList<String> bookmarkedContacts = new ArrayList<>();
     private final JList<String> contactList;
+    Socket socket;
+    User user;
     PrintWriter output;
     private String message = " ";
 
@@ -39,7 +42,11 @@ public class Frame implements ActionListener {
     private static JScrollPane scrollPane;
     private static JTextArea textArea;
 
-    Frame(User user) {
+    public Frame(Socket socket, User user, PrintWriter printWriter) {
+        this.socket= socket;
+        this.user = user;
+
+
         contactList = new JList<>(getAllContacts());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -106,7 +113,7 @@ public class Frame implements ActionListener {
             // send message on Enter
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    sendMessage();
+                    sendMessage(printWriter);
                 }
 
                 // Get last message typed
@@ -208,24 +215,35 @@ public class Frame implements ActionListener {
         pmTextArea.add(new JLabel("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
     }
 
-    public void sendMessage() {
+    public void sendMessage(PrintWriter printWriter) {
+        String message;
+
         try {
-            String message = pmTextField.getText().trim();
+            message = pmTextField.getText().trim();
             if (message.equals("")) {
                 return;
             }
+
+            /*if (message.startsWith("/")) {
+
+            }*/
+
             this.message = message;
-            output.println(message);
+            broadcast(printWriter,message);
             pmTextField.requestFocus();
             pmTextField.setText(null);
-/*
-            pmTextArea.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
-            privateMessagePanel.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
-            privateMessagePanel.revalidate();
-            privateMessagePanel.repaint();*/
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             System.exit(0);
+        }
+    }
+
+    public void broadcast(PrintWriter printWriter, String message) {
+        for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
+            if (loginHandler != null) {
+                loginHandler.sendMessage(printWriter,message);
+            }
         }
     }
 

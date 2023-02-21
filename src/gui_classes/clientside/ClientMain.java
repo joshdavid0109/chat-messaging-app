@@ -2,14 +2,22 @@ package gui_classes.clientside;
 
 import shared_classes.User;
 
-public class ClientMain implements Runnable{
-    User user;
+import java.io.PrintWriter;
+import java.net.Socket;
 
-    public ClientMain(User user) {
+public class ClientMain implements Runnable{
+
+    private Socket socket;
+    User user;
+    private PrintWriter printWriter;
+
+    public ClientMain(Socket socket, User user, PrintWriter printWriter) {
+        this.socket = socket;
         this.user = user;
+        this.printWriter = printWriter;
     }
 
     public void run() {
-        new Frame(user);
+        new Frame(socket,user,printWriter);
     }
 }
