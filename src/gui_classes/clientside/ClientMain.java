@@ -2,25 +2,19 @@ package gui_classes.clientside;
 
 import shared_classes.User;
 
-import java.awt.*;
-import java.io.IOException;
-import java.net.Socket;
-
 public class ClientMain implements Runnable{
-    User user;
-    private Socket socket;
-    Frame frame;
 
-    public ClientMain(User user, Socket socket) {
-        this.user = user;
+    private Socket socket;
+    User user;
+    private PrintWriter printWriter;
+
+    public ClientMain(Socket socket, User user, PrintWriter printWriter) {
         this.socket = socket;
+        this.user = user;
+        this.printWriter = printWriter;
     }
 
     public void run() {
-        try {
-            this.frame = new Frame(user, socket);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        new Frame(socket,user,printWriter);
     }
 }

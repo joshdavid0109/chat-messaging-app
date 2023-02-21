@@ -354,11 +354,7 @@ public class Frame implements ActionListener {
         }
         if(e.getSource() == sendButton){
 //            System.out.println("messagebutton");
-            try {
-                sendMessage();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            textArea.append(pmTextField.getText()+"\n");
         }
     }
 }

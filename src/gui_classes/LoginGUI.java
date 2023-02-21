@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class LoginGUI extends JFrame implements ActionListener, Runnable {
@@ -67,9 +68,16 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     NodeList users = document.getElementsByTagName("User");
+                    PrintWriter printWriter = null;
+                    try {
+                        printWriter = new PrintWriter(socket.getOutputStream());
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
 
                     String username, password;
-                    users = document.getElementsByTagName("User");
+                    Frame frame;
+                            users = document.getElementsByTagName("User");
                     Element u;
 
                     int i = 0;

@@ -153,7 +153,7 @@ public class ClientHandler implements Runnable {
                                             if (hash.getValue().name().equals(recipient)) {
                                                 for (ClientHandler loginHandler : loginHandlerArraylist) {
                                                     if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                                        loginHandler.sendMessage(user.name() + ": " + message);
+                                                        loginHandler.sendMessage(printWriter, user.name() + ": " + message);
                                                         break;
                                                     }
                                                 }
@@ -168,7 +168,7 @@ public class ClientHandler implements Runnable {
                                         xmlParse.addMessage(user.name(), message, u.name(),timeSent);
                                         break;
                                     } else
-                                        sendMessage("User not existing");
+                                        sendMessage(printWriter, "User not existing");
                                 }
                             }
 
@@ -263,20 +263,19 @@ public class ClientHandler implements Runnable {
         printWriter.println("\n\n");
     }
 
-    public void editName(String name, String newName) {
-
-    }
     public void broadcast(String message ){
         for (ClientHandler loginHandler : loginHandlerArraylist) {
             if (loginHandler != null && loginStatus) {
-                loginHandler.sendMessage(message);
+                loginHandler.sendMessage(printWriter, message);
             }
         }
     }
 
-    public void sendMessage ( String message){
+    public void sendMessage (PrintWriter printWriter1, String message){
+        printWriter1 = printWriter;
         printWriter.println(message);
     }
+
 
     public void changeUName(String name, NodeList usersList) {
 
