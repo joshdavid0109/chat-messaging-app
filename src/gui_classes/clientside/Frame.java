@@ -47,7 +47,7 @@ public class Frame implements ActionListener {
     public static JScrollPane scrollPane;
     public static JTextArea textArea;
 
-    Frame(User user, Socket socket) throws IOException {
+    Frame(User user, Socket socket, PrintWriter printWriter) throws IOException {
         this.user = user;
         this.socket = socket;
         output = new PrintWriter(socket.getOutputStream());
@@ -260,13 +260,13 @@ public class Frame implements ActionListener {
 
             for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
                 textArea.append(hash.getKey().toString() + "\n" + socket.toString());
-                if (hash.getKey().socket.equals(this.socket)) {
+                if (hash.getValue().username().equals(user.username())) {
                     if (message.equals("")) {
                         return;
                     } else {
                         this.message = message;
-                        message = hash.getKey().bufferedReader.readLine();
-                        textArea.append(message);
+//                        message = hash.getKey().bufferedReader.readLine();
+                        textArea.append(message +"\n");
                         pmTextField.requestFocus();
                         pmTextField.setText(null);
                     }
@@ -354,7 +354,11 @@ public class Frame implements ActionListener {
         }
         if(e.getSource() == sendButton){
 //            System.out.println("messagebutton");
-            textArea.append(pmTextField.getText()+"\n");
+            try {
+                sendMessage();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

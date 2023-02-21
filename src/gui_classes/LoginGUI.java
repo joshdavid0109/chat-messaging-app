@@ -89,14 +89,18 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
                                 Server.loginHandlerArraylist.add(new ClientHandler(socket));
                                 Server.loggedInUserHashMap.put(new ClientHandler(socket), user);
                                 u.getElementsByTagName("status").item(0).setTextContent("online");
-                                ClientMain clientMain = new ClientMain(user, socket);
+                                ClientMain clientMain = new ClientMain(socket, user, printWriter);
                                 clientMain.run();
                                 dispose();
                                 break;
-                            }
+                            } else
+                                JOptionPane.showMessageDialog(container, "User/Password is invalid.");
                             break;
                         }
                         i++;
+
+                        if (i == Server.registeredUsersList.size()-1)
+                            JOptionPane.showMessageDialog(new JFrame(), "User is not existing."," ", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
