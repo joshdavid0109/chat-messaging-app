@@ -53,8 +53,8 @@ public class Server {
             /**
              * Ito ung sa login
              */
-/*            LoginGUI loginGUI = new LoginGUI(clientSocket);
-            loginGUI.run();*/
+            LoginGUI loginGUI = new LoginGUI(clientSocket);
+            loginGUI.run();
 
             bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
