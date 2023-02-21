@@ -309,7 +309,8 @@ public class ClientHandler implements Runnable {
                                     break;
                                 }
 
-
+                                u.getElementsByTagName("status").item(0).setTextContent("online");
+                                Server.updateXML(users, document);
 
                                 // Add users to lists
                                     Server.loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
@@ -318,10 +319,9 @@ public class ClientHandler implements Runnable {
                                         u.getElementsByTagName("Password").item(0).getTextContent(), u.getElementsByTagName("status").item(0).getTextContent(), u.getElementsByTagName("BanStatus").item(0).getTextContent());
 
                                 // IP, USER HASHMAP
+
                                 Server.loggedInUserHashMap.put(new ClientHandler(socket, printWriter, bufferedReader), user);
 
-                                u.getElementsByTagName("status").item(0).setTextContent("online");
-                                Server.updateXML(users, document);
 
                                 System.out.println("Login Successful!");
 

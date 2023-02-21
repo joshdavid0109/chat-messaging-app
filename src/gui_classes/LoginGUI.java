@@ -70,18 +70,24 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
                     String username, password;
                     users = document.getElementsByTagName("User");
-                    Element u = null;
+                    Element u;
 
+                    int i = 0;
                     for (User user: Server.registeredUsersList) {
+                        u = (Element) users.item(i);
+
                         if (user.username().equals(userTextField.getText())) {
                             if (user.password().equals(passwordField.getText())) {
                                 ClientMain clientMain = new ClientMain(user);
                                 Server.loginHandlerArraylist.add(new ClientHandler(socket));
+                                Server.loggedInUserHashMap.put(new ClientHandler(socket), user);
+                                u.getElementsByTagName("status").item(0).setTextContent("online");
                                 clientMain.run();
                                 break;
                             }
                             break;
                         }
+                        i++;
                     }
                 }
             });
@@ -95,7 +101,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         this.setTitle("Budget Discord");
         this.setVisible(true);
 
-        this.setBounds(500, 250, 960, 540);
+        this.setBounds(500, 250, 930, 540);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
 
