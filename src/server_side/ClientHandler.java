@@ -39,7 +39,10 @@ public class ClientHandler implements Runnable {
 
     }
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket s) throws IOException {
+//        this.socket = s;
+//        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//        printWriter = new PrintWriter(socket.getOutputStream(), true);
     }
 
     public void run() {
@@ -169,7 +172,7 @@ public class ClientHandler implements Runnable {
 
                             break;
                         case "create":
-                            GroupChatClientHandler gcClientHandler = new GroupChatClientHandler(socket, printWriter, bufferedReader, user);
+                            GroupChatClientHandler gcClientHandler = new GroupChatClientHandler(socket, user);
                             gcClientHandler.start();
                             break;
                         case "help":

@@ -81,22 +81,26 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
                     Element u;
 
                     int i = 0;
-                    for (User user: Server.registeredUsersList) {
-                        u = (Element) users.item(i);
+                    try {
+                        for (User user : Server.registeredUsersList) {
+                            u = (Element) users.item(i);
 
-                        if (user.username().equals(userTextField.getText())) {
-                            if (user.password().equals(passwordField.getText())) {
-                                ClientMain clientMain = new ClientMain(socket, user, printWriter);
-                                Server.loginHandlerArraylist.add(new ClientHandler(socket));
-                                Server.loggedInUserHashMap.put(new ClientHandler(socket), user);
-                                u.getElementsByTagName("status").item(0).setTextContent("online");
-                                clientMain.run();
+                            if (user.username().equals(userTextField.getText())) {
+                                if (user.password().equals(passwordField.getText())) {
+                                    ClientMain clientMain = new ClientMain(socket, user, printWriter);
+                                    Server.loginHandlerArraylist.add(new ClientHandler(socket));
+                                    Server.loggedInUserHashMap.put(new ClientHandler(socket), user);
+                                    u.getElementsByTagName("status").item(0).setTextContent("online");
+                                    clientMain.run();
 
+                                    break;
+                                }
                                 break;
                             }
-                            break;
+                            i++;
                         }
-                        i++;
+                    } catch (IOException vv) {
+                        vv.printStackTrace();
                     }
                 }
             });
