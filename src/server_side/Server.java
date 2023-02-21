@@ -80,8 +80,8 @@ public class Server {
                 /**
                  * Ito ung sa login
                  */
-                LoginGUI loginGUI = new LoginGUI(clientSocket);
-                loginGUI.run();
+//                LoginGUI loginGUI = new LoginGUI(clientSocket);
+//                loginGUI.run();
                 //here
 
                 executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));

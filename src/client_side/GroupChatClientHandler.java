@@ -16,10 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -38,16 +35,23 @@ public class GroupChatClientHandler extends Thread {
         this.user = user;
     }
 
+    public GroupChatClientHandler(Socket s, User u) throws IOException {
+        this.socket = s;
+        this.user = u;
+        this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.printWriter = new PrintWriter(socket.getOutputStream(), true);
+    }
+
     @Override
     public void run() {
-        XMLParserGC createGC = new XMLParserGC("res/Users.xml");
+        XMLParserGC createGC = new XMLParserGC("res/users.xml");
         String gcName, admin;
         ArrayList<User> groupMembers;
 
             try {
-                printWriter.println("INPUT GROUP NAME: ");
-                gcName = bufferedReader.readLine();
-                printWriter.println(gcName);
+//                printWriter.println("INPUT GROUP NAME: ");
+//                gcName = bufferedReader.readLine();
+//                //printWriter.println(gcName);
                 gcName = checkGroupname();
 
                 groupMembers = populateMembers(this.user, gcName);
@@ -69,55 +73,91 @@ public class GroupChatClientHandler extends Thread {
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         document = documentBuilder.parse(file);
         NodeList usersNodeList = document.getElementsByTagName("User");
+
+//        for (int i = 0; i < usersNodeList.getLength(); i++) {
+//            element = (Element) usersNodeList.item(i);
+//            UserObj temp = new UserObj();
+//        }
+
+//        if (admin.username().equals(user.username())) {
+//            for (int j = 0; j < usersNodeList.getLength(); i)
+//        }
+
+        for (int i = 0; i < Server.registeredUsersList.size(); i++) {
+            User user = Server.registeredUsersList.get(i);
+            if (admin.username().equals(user.username())) {
+                for (int j = 0; j < usersNodeList.getLength(); j++) {
+                    Element u = (Element) usersNodeList.item(i);
+                    String username = u.getElementsByTagName("Username").item(0).getTextContent();
+                    if (username.equals(admin.username())) {
+                        Element gcName = document.createElement("Groupname");
+                        gcName.setTextContent(groupName);
+                        gcName.setAttribute("id", "Admin");
+                        u.appendChild(gcName);
+                        users.add(user);
+                        printWriter.println("User " + username + " added to " + groupName);
+                        Server.updateXML(usersNodeList, document);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
         String m = "";
         while (!m.equals("finished")) {
             boolean userExists = false;
-            for (int i = 0; i < Server.registeredUsersList.size(); i++) {
-                User user = Server.registeredUsersList.get(i);
-                if (admin.username().equals(user.username())){
-                    for (int j = 0; j < usersNodeList.getLength(); i ++) {
-                        Element u = (Element) usersNodeList.item(i);
-                        String username = u.getElementsByTagName("Username").item(0).getTextContent();
-                        if (username.equals(admin.username())) {
-                            Element gcName = document.createElement("Groupname");
-                            gcName.setTextContent(groupName);
-                            gcName.setAttribute("id", "Admin");
-                            u.appendChild(gcName);
-                            users.add(user);
-                            printWriter.println("User " + username + " added to " + groupName);
-                            Server.updateXML(usersNodeList, document);
-                            break;
-                        }
-                    }
+
+            printWriter.println("Enter username of member: ");
+            m = bufferedReader.readLine();
+
+            for (int j = 0; j < Server.registeredUsersList.size(); j++) {
+                Element element = (Element) usersNodeList.item(j);
+                String username = element.getElementsByTagName("Username").item(0).getTextContent();
+                User user = Server.registeredUsersList.get(j);
+
+//                printWriter.println(user.name());
+
+                if (user.username().equals(m) && !m.equals(admin.username())) {
+                    Element gcName = document.createElement("GroupName");
+                    gcName.setTextContent(groupName);
+                    gcName.setAttribute("id", "Member");
+                    element.appendChild(gcName);
+
+                    users.add(user);
+                    printWriter.println("USER " + username + " HAS BEEN ADDED TO ARRAY LIST.");
+                    userExists = true;
+                    break;
+                } else if (!m.equals(admin.username())) {
+                    printWriter.println("Can't add yourself to the group! Enter another username.");
+                    j -= 1;
+                } else if (!m.equals(username)) {
+                    printWriter.println("Username not found, try again!");
+                    j -= 1;
+                } else if (m.equals("finished")) {
+                    printWriter.println("Group successfully created!");
                     break;
                 }
-            }
 
-            for (int j = 0; j<10; j++) {
-                User user = Server.registeredUsersList.get(j);
-                printWriter.println("Enter username of member: ");
-                m = bufferedReader.readLine();
-
-                printWriter.println(user.name());
-                if (user.username().equals(m)) {
-                    for (int x = 0; x < usersNodeList.getLength(); x++) {
-                        printWriter.println(user.username());
-                        Element u1 = (Element) usersNodeList.item(j);
-                        String username = u1.getElementsByTagName("username").item(0).getTextContent();
-                        if (username.equals(m)) {
-                            printWriter.println(username + "true");
-                            Element gcName = document.createElement("Groupname");
-                            gcName.setTextContent(groupName);
-                            gcName.setAttribute("id", "Member");
-                            u1.appendChild(gcName);
-
-                            users.add(user);
-                            printWriter.println("USER " + u1.getElementsByTagName("Username").item(0).getTextContent() + " HAS BEEN ADDED TO ARRAYLIST");
-                            userExists = true;
-                            break;
-                        }
-                    }
-                }
+//                if (user.username().equals(m)) {
+//                    for (int x = 0; x < usersNodeList.getLength(); x++) {
+//                        printWriter.println(user.username());
+//                        Element u1 = (Element) usersNodeList.item(j);
+//                        String username = u1.getElementsByTagName("username").item(0).getTextContent();
+//                        if (username.equals(m)) {
+//                            printWriter.println(username + "true");
+//                            Element gcName = document.createElement("Groupname");
+//                            gcName.setTextContent(groupName);
+//                            gcName.setAttribute("id", "Member");
+//                            u1.appendChild(gcName);
+//
+//                            users.add(user);
+//                            printWriter.println("USER " + u1.getElementsByTagName("Username").item(0).getTextContent() + " HAS BEEN ADDED TO ARRAYLIST");
+//                            userExists = true;
+//                            break;
+//                        }
+//                    }
+//                }
 
             }
             Element element = (Element) usersNodeList.item(usersNodeList.getLength() - 1);
@@ -151,13 +191,9 @@ public class GroupChatClientHandler extends Thread {
                     break;
                 }
             }*/
-
-            if (!userExists && !m.equals("finished")) {
-                printWriter.println("USER NOT FOUND");
-            }
         }
-        return users;
-    }
+            return users;
+        }
 
 
     // iterate through elements to get usernames then check if entered username is the same
@@ -178,7 +214,7 @@ public class GroupChatClientHandler extends Thread {
     }
 
     private String checkGroupname() throws Exception {
-        System.out.println("Enter Group Name : ");
+        printWriter.println("Enter Group Name : ");
         String groupName = bufferedReader.readLine();
         while (isDuplicate(groupName)) {
             System.out.print(groupName + "\" is already taken! Please enter another Group Name: ");
