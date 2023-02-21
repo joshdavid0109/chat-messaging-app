@@ -33,7 +33,7 @@ public class Server {
     public static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
     public static List<User> registeredUsersList = new ArrayList<>();
     public static List<GroupChatUsersSample> groupChatUsers = new ArrayList<>();
-    static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
+    public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
 //    static Scanner scanner = new Scanner(System.in);
 
     ObjectInputStream objectInputStream;
@@ -50,11 +50,7 @@ public class Server {
             getRegisteredUsers();
 
 
-            /**
-             * Ito ung sa login
-             */
-/*            LoginGUI loginGUI = new LoginGUI(clientSocket);
-            loginGUI.run();*/
+
 
             bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -84,22 +80,14 @@ public class Server {
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
 
-
+                /**
+                 * Ito ung sa login
+                 */
+                LoginGUI loginGUI = new LoginGUI(clientSocket);
+                loginGUI.run();
                 //here
 
                 executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
-
-
-//                new Thread(() -> {
-//                    getRegisteredUsers();
-//                    System.out.println("A client has connected.");
-//                    printWriter.println("Login");
-//                    Thread login = new LoginHandler(clientSocket, printWriter, bufferedReader);
-//                    login.start();
-//
-//                }).start();
-
-
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } finally {

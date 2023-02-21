@@ -65,6 +65,8 @@ public class ServerMain implements Runnable{
         broadCastPanel.setBounds(50,50,350, 750);
         broadCastPanel.setLayout(null);
 
+//        broadCastPanel.add()
+
         JPanel privateMessagePanel = new JPanel();
         privateMessagePanel.setBackground(new Color(0X2C2F33));
         privateMessagePanel.setBounds(400,50,350, 750);

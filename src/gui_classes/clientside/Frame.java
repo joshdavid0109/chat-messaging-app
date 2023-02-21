@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import server_side.ClientHandler;
 import server_side.Server;
 import shared_classes.User;
 
@@ -20,6 +21,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Frame implements ActionListener {
     private final ArrayList<String> bookmarkedContacts = new ArrayList<>();

@@ -13,13 +13,19 @@
         <Groupname id="Admin">s</Groupname>
         <Groupname id="Admin">gfg</Groupname>
         <Groupname id="Admin">sample</Groupname>
+        <Groupname id="Admin">hhh</Groupname>
+        <Groupname id="Admin">gggg</Groupname>
+        <Groupname id="Admin">gggg</Groupname>
+        <Groupname id="Admin">franz</Groupname>
+        <Groupname id="Admin">gc</Groupname>
+        <Groupname id="Admin">gc</Groupname>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>Joshua</name>
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groupname id="Admin">gc</Groupname>
     </User>
