@@ -1,6 +1,7 @@
 package server_side;
 
 import client_side.GroupChatClientHandler;
+import gui_classes.clientside.ClientMain;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,17 +16,21 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
 import java.time.LocalDateTime;
 
+import static server_side.Server.loggedInUserHashMap;
+import static server_side.Server.loginHandlerArraylist;
+
 
 public class ClientHandler implements Runnable {
-    Socket socket;
-    PrintWriter printWriter = null;
-    BufferedReader bufferedReader = null;
+    public Socket socket;
+    public PrintWriter printWriter = null;
+    public BufferedReader bufferedReader = null;
     ObjectInputStream objectInputStream;
     ObjectOutputStream objectOutputStream;
     boolean loginStatus;
@@ -144,9 +149,9 @@ public class ClientHandler implements Runnable {
                             for (User u :Server.registeredUsersList) {
                                 if (u.name().equals(recipient)) {
                                     if (u.status().equals("online")) {
-                                        for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
+                                        for (Map.Entry<ClientHandler, User> hash : loggedInUserHashMap.entrySet()) {
                                             if (hash.getValue().name().equals(recipient)) {
-                                                for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
+                                                for (ClientHandler loginHandler : loginHandlerArraylist) {
                                                     if (loginHandler.socket.equals(hash.getKey().socket)) {
                                                         loginHandler.sendMessage(user.name() + ": " + message);
                                                         break;
@@ -201,6 +206,41 @@ public class ClientHandler implements Runnable {
             socket.close();
         }
     }
+
+
+    public void broadcastMessages(String msg, User userSender) {
+        for (ClientHandler client: loginHandlerArraylist) {
+            client.printWriter.println(
+                    userSender.toString() + "<span>: " + msg+"</span>");
+        }
+    }
+
+    // send list of clients to all Users
+    public void broadcastAllUsers(){
+        for (ClientHandler client: loginHandlerArraylist) {
+            client.printWriter.println(loginHandlerArraylist);
+        }
+    }
+
+    // send message to a User (String)
+    public void sendMessageToUser(String msg, User userSender, String user){
+        boolean find = false;
+        for (Map.Entry<ClientHandler, User> client : loggedInUserHashMap.entrySet()) {
+            if (client.getValue().username().equals(user) && client.getValue() != userSender) {
+                find = true;
+                client.getKey().printWriter.println(userSender.toString() + " -> " + client.toString() +": " + msg);
+                client.getKey().printWriter.println(
+                        "(<b>Private</b>)" + userSender.toString() + "<span>: " + msg+"</span>");
+            }
+        }
+        if (!find) {
+            for (Map.Entry<ClientHandler, User> clientHandlerUserEntry : loggedInUserHashMap.entrySet()) {
+                if (clientHandlerUserEntry.getKey().equals(userSender))
+                    clientHandlerUserEntry.getKey().printWriter.print(userSender.toString() + " -> (<b>no one!</b>): " + msg);
+            }
+        }
+    }
+
     private void messagePrompt(String name) {
         printWriter.println("\n\n" + name + ": ");
     }
@@ -227,7 +267,7 @@ public class ClientHandler implements Runnable {
 
     }
     public void broadcast(String message ){
-        for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
+        for (ClientHandler loginHandler : loginHandlerArraylist) {
             if (loginHandler != null && loginStatus) {
                 loginHandler.sendMessage(message);
             }
@@ -312,18 +352,21 @@ public class ClientHandler implements Runnable {
                                 u.getElementsByTagName("status").item(0).setTextContent("online");
                                 Server.updateXML(users, document);
 
+
+
                                 // Add users to lists
-                                    Server.loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
+                                    loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
                                 User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
                                         u.getElementsByTagName("Username").item(0).getTextContent(),
                                         u.getElementsByTagName("Password").item(0).getTextContent(), u.getElementsByTagName("status").item(0).getTextContent(), u.getElementsByTagName("BanStatus").item(0).getTextContent());
 
                                 // IP, USER HASHMAP
 
-                                Server.loggedInUserHashMap.put(new ClientHandler(socket, printWriter, bufferedReader), user);
+                                loggedInUserHashMap.put(new ClientHandler(socket, printWriter, bufferedReader), user);
 
 
-                                System.out.println("Login Successful!");
+
+                                        System.out.println("Login Successful!");
 
                                 System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " +  u.getElementsByTagName("status").item(0).getTextContent());
 

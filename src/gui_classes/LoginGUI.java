@@ -78,11 +78,12 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
                         if (user.username().equals(userTextField.getText())) {
                             if (user.password().equals(passwordField.getText())) {
-                                ClientMain clientMain = new ClientMain(user);
                                 Server.loginHandlerArraylist.add(new ClientHandler(socket));
                                 Server.loggedInUserHashMap.put(new ClientHandler(socket), user);
                                 u.getElementsByTagName("status").item(0).setTextContent("online");
+                                ClientMain clientMain = new ClientMain(user, socket);
                                 clientMain.run();
+                                dispose();
                                 break;
                             }
                             break;

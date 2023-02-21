@@ -18,28 +18,40 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Frame implements ActionListener {
-    private final ArrayList<String> bookmarkedContacts = new ArrayList<>();
-    private final JList<String> contactList;
+    public final ArrayList<String> bookmarkedContacts = new ArrayList<>();
+    public final JList<String> contactList;
+
+    User user;
+    Socket socket;
     PrintWriter output;
-    private String message = " ";
+    BufferedReader bufferedReader;
+    public String message = " ";
 
-    private final JLabel bookmarkedContactsLabel;
-    private static JButton bookmarkButton;
-    private static JButton sendButton;
-    private static JTextField pmTextField;
-    private static JScrollPane pmTextArea;
-    private static JScrollPane broadcastArea;
-    private static JPanel privateMessagePanel;
-    private static JScrollPane scrollPane;
-    private static JTextArea textArea;
+    public final JLabel bookmarkedContactsLabel;
+    public static JButton bookmarkButton;
+    public static JButton sendButton;
+    public static JTextField pmTextField;
+    public static JScrollPane pmTextArea;
+    public static JScrollPane broadcastArea;
+    public static JPanel privateMessagePanel;
+    public static JScrollPane scrollPane;
+    public static JTextArea textArea;
 
-    Frame(User user) {
+    Frame(User user, Socket socket) throws IOException {
+        this.user = user;
+        this.socket = socket;
+        output = new PrintWriter(socket.getOutputStream());
+        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         contactList = new JList<>(getAllContacts());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -102,7 +114,7 @@ public class Frame implements ActionListener {
         pmTextField.setBorder(BorderFactory.createEmptyBorder());
         pmTextField.setBounds(30, 570, 220, 20);
 
-        pmTextField.addKeyListener(new KeyAdapter() {
+        /*pmTextField.addKeyListener(new KeyAdapter() {
             // send message on Enter
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -122,7 +134,7 @@ public class Frame implements ActionListener {
                     message = currentMessage;
                 }
             }
-        });
+        });*/
 
         JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
         scrollPaneListMembers.setVisible(true);
@@ -177,6 +189,8 @@ public class Frame implements ActionListener {
         frame.setLayout(null);
         frame.setVisible(true);
         frame.setResizable(false);
+        frame.pack();
+        frame.setBounds(500, 250, 930, 540);
         frame.setTitle("Budget Discord");
         frame.setSize(1050, 750);
         frame.getContentPane().setBackground(Color.WHITE);
@@ -208,16 +222,59 @@ public class Frame implements ActionListener {
         pmTextArea.add(new JLabel("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
     }
 
-    public void sendMessage() {
+  /*  public void run() throws IOException {
+        Scanner sc = new Scanner(socket.getInputStream());
+
+        while (sc.hasNextLine()) {
+            message =sc.nextLine();
+            // Gestion des messages private
+            *//*if (message.charAt(0) == '@'){
+                if(message.contains(" ")){
+                    System.out.println("private msg : " + message);
+                    int firstSpace = message.indexOf(" ");
+                    String userPrivate= message.substring(1, firstSpace);
+                    server.sendMessageToUser(
+                            message.substring(
+                                    firstSpace+1, message.length()
+                            ), user, userPrivate
+                    );
+                }
+
+                // Gestion du changement
+            }else if (message.charAt(0) == '#'){
+                user.changeColor(message);
+                // update color for all other users
+                this.server.broadcastAllUsers();
+            }else{}*//*
+                // update user list
+                broadcast(message, user);
+
+        }
+        // end of Thread
+        sc.close();
+    }*/
+
+    public void sendMessage() throws IOException {
         try {
             String message = pmTextField.getText().trim();
-            if (message.equals("")) {
-                return;
+
+            for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
+                textArea.append(hash.getKey().toString() + "\n" + socket.toString());
+                if (hash.getKey().socket.equals(this.socket)) {
+                    if (message.equals("")) {
+                        return;
+                    } else {
+                        this.message = message;
+                        message = hash.getKey().bufferedReader.readLine();
+                        textArea.append(message);
+                        pmTextField.requestFocus();
+                        pmTextField.setText(null);
+                    }
+                }
             }
-            this.message = message;
-            output.println(message);
-            pmTextField.requestFocus();
-            pmTextField.setText(null);
+
+            textArea.append(message);
+
 /*
             pmTextArea.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
             privateMessagePanel.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
@@ -297,7 +354,11 @@ public class Frame implements ActionListener {
         }
         if(e.getSource() == sendButton){
 //            System.out.println("messagebutton");
-            textArea.append(pmTextField.getText()+"\n");
+            try {
+                sendMessage();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 }
