@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.ClientHandler;
+//import server_side.Server;
 import server_side.Server;
 import shared_classes.User;
 
@@ -24,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -95,7 +97,7 @@ public class Frame implements ActionListener {
         sendButton.setBounds(270, 570, 50, 20);
         sendButton.addActionListener(this);
 
-        bookmarkButton = new JButton("Star");
+        bookmarkButton = new JButton("Bookmark");
         bookmarkButton.setVisible(true);
         bookmarkButton.setForeground(Color.BLACK);
         bookmarkButton.setBackground(Color.WHITE);
@@ -290,7 +292,6 @@ public class Frame implements ActionListener {
         String[] contacts = new String[Server.registeredUsersList.size()];
 
         try {
-
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse("res/users.xml");
@@ -304,10 +305,11 @@ public class Frame implements ActionListener {
                     Element userElement = (Element) userNode;
                     String name = userElement.getElementsByTagName("name").item(0).getTextContent();
                     String status = userElement.getElementsByTagName("status").item(0).getTextContent();
-
                     contacts[i] = name + " : " + status;
                 }
             }
+            // Sort contacts alphabetically
+            Arrays.sort(contacts);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -317,13 +319,13 @@ public class Frame implements ActionListener {
     private void updateContactList(String[] allContacts) {
         ArrayList<String> contactsList = new ArrayList<>();
 
+        bookmarkedContacts.sort(String.CASE_INSENSITIVE_ORDER);
         for (String contact : bookmarkedContacts) {
             if (contactsList.contains(contact)) {
                 continue;
             }
             contactsList.add(contact);
         }
-
         for (String contact : allContacts) {
             if (contactsList.contains(contact)) {
                 continue;
@@ -334,31 +336,22 @@ public class Frame implements ActionListener {
     }
 
     private void updateBookmarkedContactsLabel() {
-        bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts);
+        bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts.toString());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == bookmarkButton) {
-            String selectedContact = contactList.getSelectedValue();
-            if (selectedContact != null) {
-                if (bookmarkedContacts.remove(selectedContact)) {
-                    bookmarkButton.setToolTipText("Add to bookmark");
-                } else {
-                    bookmarkedContacts.add(selectedContact);
-                    bookmarkButton.setToolTipText("Remove from bookmark");
-                }
-                updateBookmarkedContactsLabel();
-                updateContactList(getAllContacts());
+        String selectedContact = contactList.getSelectedValue();
+        if (selectedContact != null) {
+            if (bookmarkedContacts.contains(selectedContact)) {
+                bookmarkedContacts.remove(selectedContact);
+                bookmarkButton.setText("Bookmark");
+            } else {
+                bookmarkedContacts.add(selectedContact);
+                bookmarkButton.setText("Unbookmark");
             }
-        }
-        if(e.getSource() == sendButton){
-//            System.out.println("messagebutton");
-            try {
-                sendMessage();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            updateBookmarkedContactsLabel();
+            updateContactList(getAllContacts());
         }
     }
 }
