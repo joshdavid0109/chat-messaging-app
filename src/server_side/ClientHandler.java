@@ -113,8 +113,6 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
         }
 
-        //debug statemetns
-        printWriter.println("yun lang para sayo :)");
 
         try {
             broadcast(user.name() + " joined the chat");
@@ -270,6 +268,7 @@ public class ClientHandler implements Runnable {
         for (ClientHandler loginHandler : loginHandlerArraylist) {
             if (loginHandler != null && loginStatus) {
                 loginHandler.sendMessage(printWriter, message);
+                System.out.println(message);
             }
         }
     }
@@ -325,7 +324,7 @@ public class ClientHandler implements Runnable {
                 users = document.getElementsByTagName("User");
                 Element u = null;
 
-                printWriter.println("\nUsername: ");
+                printWriter.println("\nUsername1: ");
                 username = bufferedReader.readLine();
 
                 for (int i = 0; i < users.getLength(); i++) {

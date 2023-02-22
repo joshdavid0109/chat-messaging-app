@@ -25,7 +25,7 @@ public class Client {
 
 //            System.out.println(objectInputStream.readObject());
             while ((inMessage = bufferedReader.readLine()) !=null) {
-                System.out.println(inMessage);
+                printWriter.println(inMessage);
 //                System.out.println(objectInputStream.readObject());
 
             }

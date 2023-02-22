@@ -29,6 +29,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 
+import static server_side.Server.loginHandlerArraylist;
+
 public class Frame implements ActionListener {
     public final ArrayList<String> bookmarkedContacts = new ArrayList<>();
     public final JList<String> contactList;
@@ -43,11 +45,12 @@ public class Frame implements ActionListener {
     public static JButton bookmarkButton;
     public static JButton sendButton;
     public static JTextField pmTextField;
-    public static JScrollPane pmTextArea;
     public static JScrollPane broadcastArea;
     public static JPanel privateMessagePanel;
     public static JScrollPane scrollPane;
-    public static JTextArea textArea;
+    private static JTextArea textArea;
+
+
 
     Frame(User user, Socket socket, PrintWriter printWriter) throws IOException {
         this.user = user;
@@ -143,7 +146,7 @@ public class Frame implements ActionListener {
         scrollPaneListMembers.setBorder(BorderFactory.createEmptyBorder());
         scrollPaneListMembers.setBounds(40, 70, 200, 200);
 
-        pmTextArea = new JScrollPane();
+        JScrollPane pmTextArea = new JScrollPane();
         pmTextArea.setVisible(true);
         pmTextArea.setBorder(BorderFactory.createEmptyBorder());
         pmTextArea.setBounds(30, 70, 290, 470);
@@ -255,27 +258,42 @@ public class Frame implements ActionListener {
         // end of Thread
         sc.close();
     }*/
+      public JTextArea textAreaPane() {
+          return textArea;
+      }
 
-    public void sendMessage() throws IOException {
+    public void setTextArea(String message) {
+        this.textAreaPane().append(message);
+    }
+
+    public JTextField msgTextField() {
+          return pmTextField;
+    }
+
+    public void setMsgTextField(String message) {
+          this.msgTextField().setText(message);
+    }
+
+
+    public void sendMessage(String m) throws IOException {
         try {
-            String message = pmTextField.getText().trim();
-
             for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
-                textArea.append(hash.getKey().toString() + "\n" + socket.toString());
+
                 if (hash.getValue().username().equals(user.username())) {
-                    if (message.equals("")) {
+                    if (m.equals("")) {
                         return;
                     } else {
-                        this.message = message;
 //                        message = hash.getKey().bufferedReader.readLine();
-                        textArea.append(message +"\n");
+                        System.out.println(m);
+                        textArea.append(m);
                         pmTextField.requestFocus();
                         pmTextField.setText(null);
+                        break;
                     }
-                }
-            }
 
-            textArea.append(message);
+                }
+                break;
+            }
 
 /*
             pmTextArea.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
@@ -285,6 +303,19 @@ public class Frame implements ActionListener {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             System.exit(0);
+        }
+    }
+
+    public void broadcast(String m) throws IOException {
+
+        for (Frame frame : ClientMain.frameList) {
+            if (frame != null ) {
+                if (frame.msgTextField().getText()!= null) {
+                    m = frame.msgTextField().getText();
+                    frame.bookmarkedContactsLabel.setText(frame.user.username());
+                    frame.textAreaPane().append(m);
+                }
+            }
         }
     }
 
@@ -352,6 +383,15 @@ public class Frame implements ActionListener {
             }
             updateBookmarkedContactsLabel();
             updateContactList(getAllContacts());
+        }
+        if (e.getSource() == sendButton) {
+            try {
+                if (!pmTextField.getText().equals(""))
+                    broadcast(pmTextField.getText());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
         }
     }
 }

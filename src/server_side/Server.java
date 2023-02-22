@@ -76,16 +76,11 @@ public class Server {
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
 
 
-                /**
-                 * Ito ung sa login
-                 */
-                //here
-
-//                executorService.execute(new LoginGUI(clientSocket));
+                executorService.submit(new LoginGUI(clientSocket));
                 executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            } finally {
+            }/* finally {
 
 
                 // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
@@ -103,7 +98,7 @@ public class Server {
 
                     Server.updateXML(users, document);
                 }
-            }
+            }*/
         }
     }
 
