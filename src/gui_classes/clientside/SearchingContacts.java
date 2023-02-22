@@ -27,7 +27,7 @@ public class SearchingContacts extends JFrame{
         searchPanel.setBorder(new EmptyBorder(10,10,10,10));
         searchPanel.setLayout(new BorderLayout());
 
-        JLabel searchLabel = new JLabel("Contacts");
+        JLabel searchLabel = new JLabel("Contacts: ");
         searchPanel.add(searchLabel, BorderLayout.WEST);
 
         searchField = new JTextField(20);
