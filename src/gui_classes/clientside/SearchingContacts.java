@@ -82,15 +82,16 @@ public class SearchingContacts extends JFrame{
                     Element element = (Element) nNode;
 
                     String userName = element
-                            .getElementsByTagName("username")
+                            .getElementsByTagName("name")
                             .item(0)
                             .getTextContent();
 
-                    if(userName.equalsIgnoreCase(userName)){
+                    if(userName.equalsIgnoreCase(name)){
                         String info = "Name: " + userName + "\n";
-                        info += "Age: " + element.getElementsByTagName("age")
+                        info += "User name: " +element.getElementsByTagName("Username")
                                 .item(0)
-                                .getTextContent() + "\n";
+                                .getTextContent() +"\n";
+
                         info += "Status: " +element.getElementsByTagName("status")
                                 .item(0)
                                 .getTextContent() +"\n";
