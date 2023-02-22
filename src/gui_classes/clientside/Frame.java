@@ -33,7 +33,7 @@ import java.util.Scanner;
 
 import static server_side.Server.loginHandlerArraylist;
 
-public class Frame implements ActionListener, ListSelectionListener {
+public class Frame implements ListSelectionListener {
     public final ArrayList<String> bookmarkedContacts = new ArrayList<>();
     public final JList<String> contactList;
 
@@ -101,7 +101,18 @@ public class Frame implements ActionListener, ListSelectionListener {
         sendButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         sendButton.setFocusable(false);
         sendButton.setBounds(270, 570, 50, 20);
-        sendButton.addActionListener(this);
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (!pmTextField.getText().equals(""))
+                        broadcast(pmTextField.getText());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
 
         bookmarkButton = new JButton("Bookmark");
         bookmarkButton.setVisible(true);
@@ -110,7 +121,23 @@ public class Frame implements ActionListener, ListSelectionListener {
         bookmarkButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         bookmarkButton.setFocusable(false);
         bookmarkButton.setBounds(40, 300, 100, 20);
-        bookmarkButton.addActionListener(this);
+        bookmarkButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedContact = "";
+                if (selectedContact.equals(contactList.getSelectedValue())) {
+                    if (bookmarkedContacts.contains(selectedContact)) {
+                        bookmarkedContacts.remove(selectedContact);
+                        bookmarkButton.setText("Bookmark");
+                    } else {
+                        bookmarkedContacts.add(selectedContact);
+                        bookmarkButton.setText("Unbookmark");
+                    }
+                    updateBookmarkedContactsLabel();
+                    updateContactList(getAllContacts());
+                }
+            }
+        });
 
         bookmarkedContactsLabel = new JLabel("Bookmarked Contacts:");
         bookmarkedContactsLabel.setVisible(true);
@@ -310,13 +337,11 @@ public class Frame implements ActionListener, ListSelectionListener {
     }
 
     public void broadcast(String m) throws IOException {
-
         for (Frame frame : ClientMain.frameList) {
             if (frame != null ) {
                 if (frame.msgTextField().getText()!= null) {
                     m = frame.msgTextField().getText();
-                    frame.bookmarkedContactsLabel.setText(frame.user.username());
-                    frame.textAreaPane().append(m);
+                    frame.sendMessage(m + " test message \n");
                 }
             }
         }
@@ -371,31 +396,6 @@ public class Frame implements ActionListener, ListSelectionListener {
 
     private void updateBookmarkedContactsLabel() {
         bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts.toString());
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String selectedContact = contactList.getSelectedValue();
-        if (selectedContact != null) {
-            if (bookmarkedContacts.contains(selectedContact)) {
-                bookmarkedContacts.remove(selectedContact);
-                bookmarkButton.setText("Bookmark");
-            } else {
-                bookmarkedContacts.add(selectedContact);
-                bookmarkButton.setText("Unbookmark");
-            }
-            updateBookmarkedContactsLabel();
-            updateContactList(getAllContacts());
-        }
-        if (e.getSource() == sendButton) {
-            try {
-                if (!pmTextField.getText().equals(""))
-                    broadcast(pmTextField.getText());
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-
-        }
     }
 
     public void valueChanged(ListSelectionEvent e) {
