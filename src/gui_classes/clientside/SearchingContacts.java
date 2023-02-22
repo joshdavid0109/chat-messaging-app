@@ -2,7 +2,10 @@ package gui_classes.clientside;
 
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import server_side.Server;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -10,100 +13,86 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.HashMap;
 
 
-
-
-public class SearchingContacts extends JFrame implements ActionListener {
+public class SearchingContacts extends JFrame{
     private JTextField searchField;
     private JTextArea resultsArea;
+    private JLabel resultLabel;
 
-//    private Jlist<User>  listOfUsers = new List<>();
+    private HashMap<String, String> contacts;
 
 
     public SearchingContacts() {
 
-        setTitle("Search");
+        super("Search");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JMenuBar menuBar = new JMenuBar();
-        setJMenuBar(menuBar);
+      JPanel panel = new JPanel(new FlowLayout());
+      searchField = new JTextField(20);
+      JButton searchButton = new JButton("Search");
+      searchButton.addActionListener(new SearchListener());
+      resultLabel = new JLabel();
 
-        //Search Menu bar
-        JMenu messageMenu = new JMenu("Message");
-        menuBar.add(messageMenu);
+      panel.add(searchField);
+      panel.add(searchButton);
+      panel.add(resultLabel);
+      add(panel);
 
-        JMenu bookmark = new JMenu("Bookmark");
-        menuBar.add(bookmark);
-
-        JMenu addFriend = new JMenu("+Add");
-        menuBar.add(addFriend);
-
-
-        // Set up the search panel
-        JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new BorderLayout());
-
-        searchField = new JTextField();
-        searchPanel.add(searchField, BorderLayout.CENTER);
-
-        JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(this);
-        searchPanel.add(searchButton, BorderLayout.EAST);
-
-
-        // Set up the results panel
-        JPanel resultsPanel = new JPanel();
-        resultsPanel.setLayout(new BorderLayout());
-        resultsArea = new JTextArea();
-        resultsArea.setEditable(false);
-        JScrollPane resultsScrollPane = new JScrollPane(resultsArea);
-        resultsPanel.add(resultsScrollPane, BorderLayout.CENTER);
-
-
-
-        // Add the search and results panels to the frame
-        add(searchPanel, BorderLayout.NORTH);
-        add(resultsPanel, BorderLayout.CENTER);
-
-
-        setVisible(true);
+      contacts = parseXMLFile("res/user.xml");
 
     }
 
+    private HashMap<String, String> parseXMLFile(String userFile) {
+        HashMap<String, String> contacts = new HashMap<>();
+        try{
+            File file = new File(userFile);
+            DocumentBuilderFactory documentBuilderFactory =
+                    DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder =
+                    documentBuilderFactory.newDocumentBuilder();
+            Document doc = documentBuilder.parse(file);
 
-    public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
-//        try{
-//            DocumentBuilderFactory documentBuilderFactory =
-//                    DocumentBuilderFactory.newInstance();
-//            DocumentBuilder documentBuilder =
-//                    documentBuilderFactory.newDocumentBuilder();
-//            Document document = documentBuilder.parse("res/users.xml");
-//            NodeList userNodes = document.getElementsByTagName("User");
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//
+            NodeList nodeList = doc.getElementsByTagName("User");
+            for(int i=0; i < nodeList.getLength(); i++){
+                Element element = (Element) nodeList.item(i);
+                String name = element.getElementsByTagName("name")
+                        .item(0)
+                        .getTextContent();
+                String status = element.getElementsByTagName("status")
+                        .item(0)
+                        .getTextContent();
+                contacts.put(name,status);
 
-        if (command.equals("Exit")) {
-            System.exit(0);
-        } else if (command.equals("Search")) {
-            String query = searchField.getText();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return contacts;
+    }
 
-            resultsArea.setText("Results for \"" + query );
+    private void searchName(String contactName){
+        if(contacts.containsKey(contactName)){
+            String attribute = contacts.get(contactName);
+            resultLabel.setText(attribute);
+        }else{
+            resultLabel.setText("User Not Found");
         }
     }
 
+    private class SearchListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e){
+            String name = searchField.getText();
+            searchName(name);
+        }
+    }
 
-    public static void main (String[]args){
-            new SearchingContacts();
+    public static void main(String[] args) {
+        SearchingContacts search = new SearchingContacts();
+        search.setVisible(true);
     }
 }
-
-
-
-
-
-
