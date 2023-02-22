@@ -11,6 +11,8 @@ import server_side.Server;
 import shared_classes.User;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,7 +33,7 @@ import java.util.Scanner;
 
 import static server_side.Server.loginHandlerArraylist;
 
-public class Frame implements ActionListener {
+public class Frame implements ActionListener, ListSelectionListener {
     public final ArrayList<String> bookmarkedContacts = new ArrayList<>();
     public final JList<String> contactList;
 
@@ -59,6 +61,7 @@ public class Frame implements ActionListener {
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         contactList = new JList<>(getAllContacts());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        contactList.addListSelectionListener(this);
 
         JLabel headerName = new JLabel();
         headerName.setText(user.username());
@@ -392,6 +395,17 @@ public class Frame implements ActionListener {
                 throw new RuntimeException(ex);
             }
 
+        }
+    }
+
+    public void valueChanged(ListSelectionEvent e) {
+        String selectedContact = contactList.getSelectedValue();
+        if (selectedContact != null) {
+            if (bookmarkedContacts.contains(selectedContact)) {
+                bookmarkButton.setText("Unbookmark");
+            } else {
+                bookmarkButton.setText("Bookmark");
+            }
         }
     }
 }
