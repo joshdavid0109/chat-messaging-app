@@ -3,93 +3,112 @@ package gui_classes.clientside;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.HashMap;
 
 
 public class SearchingContacts extends JFrame{
     private final JTextField searchField;
-    private final JLabel resultLabel;
-    private final HashMap<String, String> contacts;
+    private final JTextArea resultArea;
 
-
-    public SearchingContacts() {
-
+    public SearchingContacts(){
         super("Search");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panel = new JPanel(new FlowLayout());
+        //Create search bar
+        JPanel searchPanel = new JPanel();
+        searchPanel.setBorder(new EmptyBorder(10,10,10,10));
+        searchPanel.setLayout(new BorderLayout());
+
+        JLabel searchLabel = new JLabel("Contacts: ");
+        searchPanel.add(searchLabel, BorderLayout.WEST);
+
         searchField = new JTextField(20);
+        searchPanel.add(searchField,BorderLayout.CENTER);
+
         JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(new SearchListener());
-        resultLabel = new JLabel();
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String contactName = searchField.getText().trim();
 
-        panel.add(searchField);
-        panel.add(searchButton);
-        panel.add(resultLabel);
-        add(panel);
+                //Search for the name in XML file
+                String info = searchXML(contactName);
 
-        contacts = parseXMLFile("res/user.xml");
+                if(info.isEmpty()){
+                    resultArea.setText(contactName + "  not found.");
+                }else{
+                    resultArea.setText(info);
+                }
+            }
+        });
+        searchPanel.add(searchButton, BorderLayout.EAST);
 
+        //Create result area
+        resultArea = new JTextArea(10,20);
+        resultArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(resultArea);
+
+        Container contentPane = getContentPane();
+        contentPane.add(searchPanel, BorderLayout.NORTH);
+        contentPane.add(scrollPane, BorderLayout.CENTER);
+
+        pack();
+        setVisible(true);
     }
 
-    private HashMap<String, String> parseXMLFile(String userFile) {
-        HashMap<String, String> contacts = new HashMap<>();
+    public String searchXML(String name){
         try{
-            File file = new File(userFile);
             DocumentBuilderFactory documentBuilderFactory =
                     DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder =
                     documentBuilderFactory.newDocumentBuilder();
-            Document doc = documentBuilder.parse(file);
+            Document document = documentBuilder.parse("res/users.xml");
 
-            NodeList nodeList = doc.getElementsByTagName("User");
-            for(int i=0; i < nodeList.getLength(); i++){
-                Element element = (Element) nodeList.item(i);
-                String name = element.getElementsByTagName("name")
-                        .item(0)
-                        .getTextContent();
-                String status = element.getElementsByTagName("status")
-                        .item(0)
-                        .getTextContent();
-                contacts.put(name,status);
+            document.getDocumentElement().normalize();
+            NodeList nodeList = document.getElementsByTagName("User");
 
+            for(int i = 0; i < nodeList.getLength(); i++){
+                Node nNode = nodeList.item(i);
+
+                if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                    Element element = (Element) nNode;
+
+                    String userName = element
+                            .getElementsByTagName("name")
+                            .item(0)
+                            .getTextContent();
+
+                    if(userName.equalsIgnoreCase(name)){
+                        String info = "Name: " + userName + "\n";
+                        info += "User name: " +element.getElementsByTagName("Username")
+                                .item(0)
+                                .getTextContent() +"\n";
+
+                        info += "Status: " +element.getElementsByTagName("status")
+                                .item(0)
+                                .getTextContent() +"\n";
+
+                        return info;
+                    }
+
+                }
             }
-        }catch(Exception e){
+        }catch (Exception e){
             e.printStackTrace();
         }
-        return contacts;
+        return "";
     }
 
-    private void searchName(String contactName){
-        if(contacts.containsKey(contactName)){
-            String attribute = contacts.get(contactName);
-            resultLabel.setText(attribute);
-        }else{
-            resultLabel.setText("User Not Found");
-        }
+    public static void main(String[] args){
+        new SearchingContacts();
     }
 
-    private class SearchListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e){
-            String name = searchField.getText();
-            searchName(name);
-        }
-    }
-
-    public static void main(String[] args) {
-        SearchingContacts search = new SearchingContacts();
-        search.setVisible(true);
-    }
 }
