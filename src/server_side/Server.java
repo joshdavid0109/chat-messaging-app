@@ -22,6 +22,7 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Server {
     public static String f = "res/users.xml";
@@ -70,11 +71,9 @@ public class Server {
         System.out.println("Server created at port: "+port);
 
             try {
-                System.out.println("/ban [NAME] to ban a user\n/unban [NAME] to unban a user");
-                getRegisteredUsers();
-                ExecutorService executorService = Executors.newFixedThreadPool(10);
-                while (true) {
 
+                while (true) {
+                    ExecutorService executorService = Executors.newFixedThreadPool(10);
                         try {
                             clientSocket = serverSocket.accept();
                             System.out.println("A client has connected.");
@@ -85,17 +84,7 @@ public class Server {
                             throw new RuntimeException(e);
                         }
 
-                        if (scanner.nextLine().startsWith("/")) {
-                            executorService.execute(new Thread(() -> {
-                                String input = "";
-                                if ((input = scanner.nextLine()) != null) {
-                                    String finalInput = input;
 
-                                    if ((finalInput.startsWith("/ban") || finalInput.startsWith("/unban")))
-                                        banUser(finalInput.split(" ")[0], finalInput.split(" ")[1]);
-                                }
-                            }));
-                        }
 
                 }
 
@@ -103,43 +92,7 @@ public class Server {
                 e.printStackTrace();
             }
         }
-    private void banUser(String command, String name) {
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(f);
 
-            NodeList users = document.getElementsByTagName("User");
-            Element element = null;
-
-
-            if (command.equals("/ban")) {
-
-                for (int i = 0; i < users.getLength(); i++) {
-                    element = (Element) users.item(i);
-                    if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
-                        element.getElementsByTagName("BanStatus").item(0).setTextContent("Banned");
-                        element.getElementsByTagName("status").item(0).setTextContent("online");
-                        System.out.println(name + " is banned.\n");
-                        break;
-                    }
-                }
-            } else if (command.equals("/unban")) {
-                for (int i = 0; i < users.getLength(); i++) {
-                    element = (Element) users.item(i);
-                    if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
-                        element.getElementsByTagName("BanStatus").item(0).setTextContent(" ");
-                        System.out.println(name + " is unbanned\n");
-                        break;
-                    }
-                }
-            }
-           updateXML(users, document);
-
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static void updateXML(NodeList users, Document document) {
         users = document.getElementsByTagName("Users");
@@ -173,7 +126,7 @@ public class Server {
         }
     }
 
-    private void getRegisteredUsers() {
+    public static void getRegisteredUsers() {
         String id, name, age, username, password, status, banStatus;
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

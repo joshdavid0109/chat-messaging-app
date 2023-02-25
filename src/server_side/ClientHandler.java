@@ -147,10 +147,9 @@ public class ClientHandler implements Runnable {
                             recipient = bufferedReader.readLine();
                             messagePrompt(user.name());
                             message = bufferedReader.readLine();
-
+                            Server.getRegisteredUsers();
                             for (User u :Server.registeredUsersList) {
                                 if (u.name().equals(recipient)) {
-                                    System.out.println(recipient + u.status() );
                                     if (u.status().equals("online")) {
                                         for (Map.Entry<ClientHandler, User> hash : loggedInUserHashMap.entrySet()) {
                                             if (hash.getValue().name().equals(recipient)) {

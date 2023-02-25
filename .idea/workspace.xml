@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
@@ -12,6 +12,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -25,17 +32,51 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/Users/joshdavid0109/IdeaProjects/testBranch"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Server">
+  <component name="RunManager" selected="Application.Admin">
+    <configuration name="Admin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Admin" />
+      <module name="console" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookmarkContacts" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.BookmarkContacts" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="client_side.Client" />
       <module name="console" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="client_side.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SearchingContacts" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.SearchingContacts" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -60,6 +101,9 @@
       <list>
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="Application.Admin" />
+        <item itemvalue="Application.BookmarkContacts" />
+        <item itemvalue="Application.SearchingContacts" />
       </list>
     </recent_temporary>
   </component>
@@ -71,7 +115,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677313708151</updated>
-      <workItem from="1677313709485" duration="6339000" />
+      <workItem from="1677313709485" duration="10404000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -94,24 +138,33 @@
       <option name="project" value="LOCAL" />
       <updated>1677319654425</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="set offline on socket termination">
+      <created>1677320181703</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1677320181703</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="upsdates" />
-    <option name="LAST_COMMIT_MESSAGE" value="upsdates" />
+    <MESSAGE value="set offline" />
+    <MESSAGE value="set offline on socket termination" />
+    <option name="LAST_COMMIT_MESSAGE" value="set offline on socket termination" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/server_side/Server.java</url>
-          <line>75</line>
+          <line>74</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/server_side/Server.java</url>
-          <line>85</line>
+          <line>84</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
