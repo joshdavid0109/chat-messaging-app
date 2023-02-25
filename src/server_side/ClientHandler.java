@@ -154,7 +154,7 @@ public class ClientHandler implements Runnable {
                                             if (hash.getValue().name().equals(recipient)) {
                                                 for (ClientHandler loginHandler : loginHandlerArraylist) {
                                                     if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                                        loginHandler.sendMessage(printWriter, user.name() + ": " + message);
+                                                        loginHandler.sendMessage(user.name() + ": " + message);
                                                         break;
                                                     }
                                                 }
@@ -169,7 +169,7 @@ public class ClientHandler implements Runnable {
                                         xmlParse.addMessage(user.name(), message, u.name(),timeSent);
                                         break;
                                     } else
-                                        sendMessage(printWriter, "User not existing");
+                                        sendMessage("User not existing");
                                 }
                             }
 
@@ -267,14 +267,12 @@ public class ClientHandler implements Runnable {
     public void broadcast(String message ){
         for (ClientHandler loginHandler : loginHandlerArraylist) {
             if (loginHandler != null && loginStatus) {
-                loginHandler.sendMessage(printWriter, message);
-                System.out.println(message);
+                loginHandler.sendMessage( message);
             }
         }
     }
 
-    public void sendMessage (PrintWriter printWriter1, String message){
-        printWriter1 = printWriter;
+    public void sendMessage (String message){
         printWriter.println(message);
     }
 
@@ -324,66 +322,69 @@ public class ClientHandler implements Runnable {
                 users = document.getElementsByTagName("User");
                 Element u = null;
 
-                printWriter.println("\nUsername1: ");
-                username = bufferedReader.readLine();
 
-                for (int i = 0; i < users.getLength(); i++) {
-                    u = (Element) users.item(i);
-                    String uName = u.getElementsByTagName("Username").item(0).getTextContent();
+                username:
+                while (true) {
+                    printWriter.println("\nUsername: ");
+                    username = bufferedReader.readLine();
+                    auth:
+                    for (int i = 0; i < users.getLength(); i++) {
 
-                    if (uName.equals(username)) {
-                        for (int j = 0; j < users.getLength(); j++) {
-                            printWriter.println("\nPassword: ");
-                            password = bufferedReader.readLine();
-                            String pass = u.getElementsByTagName("Password").item(0).getTextContent();
-                            String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
+                        u = (Element) users.item(i);
+                        String uName = u.getElementsByTagName("Username").item(0).getTextContent();
 
-                            if (pass.equals(password)) {
-                                name = nameNode;
-                                loginStatus = true;
+                        if (uName.equals(username)) {
+                            for (int j = 0; j < users.getLength(); j++) {
+                                printWriter.println("\nPassword: ");
+                                password = bufferedReader.readLine();
+                                String pass = u.getElementsByTagName("Password").item(0).getTextContent();
+                                String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
 
-                                if (u.getElementsByTagName("BanStatus").item(0).getTextContent().equalsIgnoreCase("Banned")) {
-                                    printWriter.println("Sorry. Your account is currently banned from the system.");
-                                    break;
-                                } if (u.getElementsByTagName("status").item(0).getTextContent().equals("online")) {
-                                    printWriter.println("User is currently logged in on another device.");
-                                    break;
-                                }
+                                if (pass.equals(password)) {
+                                    name = nameNode;
+                                    loginStatus = true;
 
-                                u.getElementsByTagName("status").item(0).setTextContent("online");
-                                Server.updateXML(users, document);
+                                    if (u.getElementsByTagName("BanStatus").item(0).getTextContent().equalsIgnoreCase("Banned")) {
+                                        printWriter.println("Sorry. Your account is currently banned from the system.");
+                                        continue username;
+                                    }
+                                    if (u.getElementsByTagName("status").item(0).getTextContent().equals("online")) {
+                                        printWriter.println("User is currently logged in on another device.");
+                                        continue username;
+                                    }
 
+                                    u.getElementsByTagName("status").item(0).setTextContent("online");
+                                    Server.updateXML(users, document);
 
-
-                                // Add users to lists
+                                    // Add users to lists
                                     loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
-                                User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
-                                        u.getElementsByTagName("Username").item(0).getTextContent(),
-                                        u.getElementsByTagName("Password").item(0).getTextContent(), u.getElementsByTagName("status").item(0).getTextContent(), u.getElementsByTagName("BanStatus").item(0).getTextContent());
+                                    User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
+                                            u.getElementsByTagName("Username").item(0).getTextContent(),
+                                            u.getElementsByTagName("Password").item(0).getTextContent(), u.getElementsByTagName("status").item(0).getTextContent(), u.getElementsByTagName("BanStatus").item(0).getTextContent());
 
-                                // IP, USER HASHMAP
+                                    // IP, USER HASHMAP
 
-                                loggedInUserHashMap.put(new ClientHandler(socket, printWriter, bufferedReader), user);
+                                    loggedInUserHashMap.put(new ClientHandler(socket, printWriter, bufferedReader), user);
 
 
+                                    System.out.println("Login Successful!");
 
-                                        System.out.println("Login Successful!");
-
-                                System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " +  u.getElementsByTagName("status").item(0).getTextContent());
+                                    System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " + u.getElementsByTagName("status").item(0).getTextContent());
 
 
                                 /*ClientMain clientMain = new ClientMain(user);
                                 clientMain.run();*/
 
-                                joinServer(user, users);
-                                broadcast(name + ": ");
-                                break;
+                                    joinServer(user, users);
+                                    broadcast(name + ": ");
+                                    break;
+                                }
+                                printWriter.println("Invalid password.");
                             }
-                            printWriter.println("Invalid password.");
-                        }
-                        break;
-                    } else if (i == users.getLength() - 1)
-                        printWriter.println("User is not existing");
+                            break;
+                        } else if (i == users.getLength() - 1)
+                            printWriter.println("User is not existing");
+                    }
                 }
             } catch (IOException | ParserConfigurationException | SAXException | TransformerException e) {
                 throw new RuntimeException(e);

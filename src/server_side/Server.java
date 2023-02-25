@@ -46,7 +46,6 @@ public class Server {
     }
 
     public void run() throws IOException, SAXException, ParserConfigurationException {
-
         port = 0;
         boolean validPort = false;
         while(!validPort){
@@ -69,18 +68,37 @@ public class Server {
             }
         }
         System.out.println("Server created at port: "+port);
+
             try {
-                ExecutorService executorService = Executors.newCachedThreadPool();
+                System.out.println("/ban [NAME] to ban a user\n/unban [NAME] to unban a user");
+                getRegisteredUsers();
+                ExecutorService executorService = Executors.newFixedThreadPool(10);
                 while (true) {
-                    clientSocket = serverSocket.accept();
-                    System.out.println("A client has connected.");
-                    bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-                    executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
+
+                        try {
+                            clientSocket = serverSocket.accept();
+                            System.out.println("A client has connected.");
+                            bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                            printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+                            executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
+                        }catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    executorService.execute(new Thread(() -> {
+                        String input ="";
+                    if ((input = scanner.nextLine())!= null) {
+                        String finalInput = input;
+
+                            if ((finalInput.startsWith("/ban") || finalInput.startsWith("/unban")))
+                                banUser(finalInput.split(" ")[0], finalInput.split(" ")[1]);
+                    }
+                    }));
+
                 }
 
-            } catch (RuntimeException | IOException e) {
-                System.out.println(e.getMessage());
+            } catch (RuntimeException e) {
+                e.printStackTrace();
             }
         }
 
@@ -115,7 +133,9 @@ public class Server {
             NodeList users = document.getElementsByTagName("User");
             Element element = null;
 
+
             if (command.equals("/ban")) {
+
                 for (int i = 0; i < users.getLength(); i++) {
                     element = (Element) users.item(i);
                     if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
@@ -135,10 +155,7 @@ public class Server {
                     }
                 }
             }
-
            updateXML(users, document);
-
-
 
         } catch (ParserConfigurationException | IOException | SAXException e) {
             throw new RuntimeException(e);

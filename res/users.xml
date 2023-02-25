@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Users>
     <User id="0c1311ae-50c0-41d1-b817-73540f04a87f">
         <name>Darren</name>
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
         <Groupname id="Admin">ffg</Groupname>
         <Groupname id="Admin">gfg</Groupname>
         <Groupname id="Admin">gfgg</Groupname>
+        f
         <Groupname id="Admin">s</Groupname>
         <Groupname id="Admin">gfg</Groupname>
         <Groupname id="Admin">sample</Groupname>
@@ -28,7 +28,7 @@
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
         <Groupname id="Admin">gc</Groupname>
     </User>
@@ -37,7 +37,7 @@
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
         <Groupname id="Admin">dudes</Groupname>
         <GroupName id="Member">real</GroupName>
@@ -55,7 +55,7 @@
         <Age>20</Age>
         <Username>maervinV</Username>
         <Password>maervin</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
     </User>
     <User id="c88571a6-d57c-4e9e-9e0b-8545046f0069">
@@ -63,7 +63,7 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
         <GroupName id="Member">dudes</GroupName>
     </User>
@@ -72,7 +72,7 @@
         <Age>20</Age>
         <Username>reybans</Username>
         <Password>rey</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
     </User>
     <User id="f1477d6d-3611-439b-801c-372316669a5c">
@@ -80,7 +80,7 @@
         <Age>20</Age>
         <Username>lemao</Username>
         <Password>2221</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
     </User>
 </Users>

@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><Messages>
-    
+    <Message id="xxx">
+        <Time>2023-02-25 16:43</Time>
+        <Sender>Maervin</Sender>
+        <Text>Hello kiko</Text>
+        <Recipient>Kiko</Recipient>
+    </Message>
+    <Message id="xxx">
+        <Time>2023-02-25 16:43</Time>
+        <Sender>Maervin</Sender>
+        <Text>Hello kiko</Text>
+        <Recipient>Kiko</Recipient>
+    </Message>
 </Messages>
