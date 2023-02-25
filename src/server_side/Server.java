@@ -1,6 +1,6 @@
 package server_side;
 
-import gui_classes.LoginGUI;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -47,6 +47,9 @@ public class Server {
     }
 
     public void run() throws IOException, SAXException, ParserConfigurationException {
+        System.out.println("Welcome to the Admin Panel of Budget Discord!");
+        System.out.println("What do you want to do?");
+        adminPanel();
         port = 0;
         boolean validPort = false;
         while(!validPort){
@@ -114,6 +117,97 @@ public class Server {
         } catch (TransformerException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void banUser(String command, String name) {
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(f);
+
+            NodeList users = document.getElementsByTagName("User");
+            Element element = null;
+
+
+            if (command.equals("/ban")) {
+
+                for (int i = 0; i < users.getLength(); i++) {
+                    element = (Element) users.item(i);
+                    if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
+                        element.getElementsByTagName("BanStatus").item(0).setTextContent("Banned");
+                        element.getElementsByTagName("status").item(0).setTextContent("online");
+                        System.out.println(name + " is banned.\n");
+                        break;
+                    }
+                }
+            } else if (command.equals("/unban")) {
+                for (int i = 0; i < users.getLength(); i++) {
+                    element = (Element) users.item(i);
+                    if (element.getElementsByTagName("name").item(0).getTextContent().equals(name)) {
+                        element.getElementsByTagName("BanStatus").item(0).setTextContent(" ");
+                        System.out.println(name + " is unbanned\n");
+                        break;
+                    }
+                }
+            }
+            updateXML(users, document);
+
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void adminPanel() {
+        do {
+            getRegisteredUsers();
+            System.out.println("[1] View list of users");
+            System.out.println("[2] Ban / unban a user");
+            System.out.println("[3] Start server");
+            System.out.println("[4] Exit\n");
+            int choice = Integer.parseInt(scanner.nextLine());
+            if (choice == 1) {
+                printUserList();
+            } else if (choice == 2) {
+                do {
+                    System.out.println("Type /ban [NAME] to ban a user or /unban [NAME] to unban a user");
+                    String whatToDo = scanner.nextLine();
+                    String first = whatToDo.split(" ")[0];
+                    if (!(first.equals("/ban")) && !(first.equals("/unban"))) {
+                        System.out.println("Enter the commands \"/ban\" or \"/unban\" only!\n");
+                        continue;
+                    }
+                    banUser(whatToDo.split(" ")[0], whatToDo.split(" ")[1]);
+                    registeredUsersList.clear();
+                    break;
+                } while (true);
+            } else if (choice == 3) {
+                System.out.println("Starting server...\n");
+                break;
+            } else if (choice == 4) {
+                System.out.println("Closing Budget Discord, have a nice day!");
+                System.exit(0);
+            }
+        } while (true);
+    }
+
+    public void printUserList() {
+        System.out.printf("%n-----------------------------------------------------------------%n");
+        System.out.printf("                  LIST OF REGISTERED USERS                       %n");
+        System.out.printf("-----------------------------------------------------------------%n");
+        System.out.printf("| %-10s | %-4s | %-15s | %-10s | %-8s |%n", "NAME", "AGE", "USERNAME",
+                "STATUS", "BAN STATUS");
+        System.out.printf("-----------------------------------------------------------------%n");
+        for (User user : registeredUsersList) {
+            String banStats;
+            if (Objects.equals(user.banStatus(), "")) {
+                banStats = "NOT BANNED";
+            } else {
+                banStats = "BANNED";
+            }
+            System.out.printf("| %-10s | %-4s | %-15s | %-10s | %-8s |%n",
+                    user.name(), user.age(), user.username(), user.status(), banStats);
+        }
+        System.out.printf("-----------------------------------------------------------------%n%n");
     }
 
 
