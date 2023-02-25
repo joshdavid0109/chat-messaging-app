@@ -34,6 +34,7 @@ public class Server {
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     private int port;
     static Scanner scanner = new Scanner(System.in);
+    static ServerSocket serverSocket;
 
     ObjectInputStream objectInputStream;
     ObjectOutputStream objectOutputStream;
@@ -41,45 +42,51 @@ public class Server {
     public Server(int port){
         this.port = port;
     }
+    public Server(){
+    }
 
     public void run() throws IOException, SAXException, ParserConfigurationException {
 
-        while (true) {
-            System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
-            System.out.println("Add a user - /add");
-            ExecutorService executorService = Executors.newCachedThreadPool();
-            getRegisteredUsers();
-            bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-            new Thread(() -> {
-                String input;
-                try {
-                    input = bufferedReader.readLine();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+        port = 0;
+        boolean validPort = false;
+        while(!validPort){
+            try{
+                System.out.print("INPUT PORT: ");
+                port = Integer.parseInt(scanner.nextLine());
+                serverSocket = new ServerSocket(port);
+                validPort = true;
+            }
+            catch(NumberFormatException e){
+                System.out.println("Input a valid port");
+                System.out.println(e.getMessage());
+            }
+            catch(RuntimeException e){
+                System.out.println(e.getMessage());
+            }
+            catch(BindException e){
+                System.out.println(e.getMessage());
+                System.out.println("PORT IS ALREADY IN USE, INPUT ANOTHER PORT");
+            }
+        }
+        System.out.println("Server created at port: "+port);
+            try {
+                ExecutorService executorService = Executors.newCachedThreadPool();
+                while (true) {
+                    clientSocket = serverSocket.accept();
+                    System.out.println("A client has connected.");
+                    bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+                    executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
                 }
-                if (input.startsWith("/ban") || input.startsWith("/unban")) {
-                    banUser(input.split(" ")[0], input.split(" ")[1]);
-                } else if (input.startsWith("/add")) {
-                    RegClientHandler regClientHandler = new RegClientHandler();
-                    regClientHandler.run();
-                }
-            }).start();
+
+            } catch (RuntimeException | IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 
 
-            try (ServerSocket serverSocket = new ServerSocket(port)) {
-                clientSocket = serverSocket.accept();
-                System.out.println("A client has connected.");
-                bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-//                LoginGUI loginGUI = new LoginGUI(clientSocket);
-//                loginGUI.run();
-                executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }/* finally {
 
-
+            /* finally {
                 // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
 
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -96,8 +103,8 @@ public class Server {
                     Server.updateXML(users, document);
                 }
             }*/
-        }
-    }
+
+
 
     private void banUser(String command, String name) {
         try {
@@ -162,28 +169,11 @@ public class Server {
 
 
     public static void main(String[] args) {
-        int port = 0;
-        boolean valid = false;
-        while(!valid){
-            try{
-                System.out.print("INPUT PORT: ");
-                port = Integer.parseInt(scanner.nextLine());
-                valid = true;
-            }
-            catch(NumberFormatException e){
-                System.out.println("Input a valid port");
-            }
-            catch(RuntimeException e){
-                System.out.println("PORT IS ALREADY IN USE, INPUT ANOTHER PORT");
-            }
-        }
-
-
         try {
-            Server server = new Server(port);
+            Server server = new Server();
             server.run();
         } catch (IOException | SAXException | ParserConfigurationException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
 
 
