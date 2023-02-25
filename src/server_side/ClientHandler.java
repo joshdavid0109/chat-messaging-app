@@ -260,19 +260,23 @@ public class ClientHandler implements Runnable {
 
     private void sendGM(User u) {
         try {
+            printWriter.println("You are a member of the groups: ");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(usersFile);
             Element root = document.getDocumentElement();
             NodeList users = root.getElementsByTagName("User");
+            ArrayList<String> groupList = new ArrayList<>();
             for (int i = 0; i < users.getLength(); i++) {
                 Element element = (Element) users.item(i);
-                NodeList groups = element.getElementsByTagName("Groupname");
-                if (Objects.equals(u.id(), element.getAttribute("id"))) {
+                if (Objects.equals(u.name(), element.getElementsByTagName("name").item(0).getTextContent())) {
+                    NodeList groups = element.getElementsByTagName("Groupname");
                     for (int j = 0; j < groups.getLength(); j++) {
-                        Element nElement = (Element) groups.item(j);
-                        String textContent = nElement.getTextContent();
-                        printWriter.println(textContent + "\n");
+                        Element element1 = (Element) groups.item(j);
+                        String role = element1.getAttribute("id");
+                        String groupName = element1.getTextContent();
+                        printWriter.println("\"" + groupName + "\" with the role \"" + role + "\"");
+                        groupList.add(groupName);
                     }
                 }
             }
