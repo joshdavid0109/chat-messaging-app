@@ -187,7 +187,6 @@ public class ClientHandler implements Runnable {
                             printWriter.close();
                             bufferedReader.close();
                             exit = true;
-                            break;
 
                         case "ban":
                             //TODO
@@ -350,14 +349,13 @@ public class ClientHandler implements Runnable {
                 users = document.getElementsByTagName("User");
                 Element u = null;
 
-
-                username:
+                login:
                 while (true) {
                     printWriter.println("\nUsername: ");
                     username = bufferedReader.readLine();
+
                     auth:
                     for (int i = 0; i < users.getLength(); i++) {
-
                         u = (Element) users.item(i);
                         String uName = u.getElementsByTagName("Username").item(0).getTextContent();
 
@@ -374,15 +372,16 @@ public class ClientHandler implements Runnable {
 
                                     if (u.getElementsByTagName("BanStatus").item(0).getTextContent().equalsIgnoreCase("Banned")) {
                                         printWriter.println("Sorry. Your account is currently banned from the system.");
-                                        continue username;
+                                        continue login;
                                     }
                                     if (u.getElementsByTagName("status").item(0).getTextContent().equals("online")) {
                                         printWriter.println("User is currently logged in on another device.");
-                                        continue username;
+                                        continue login;
                                     }
 
                                     u.getElementsByTagName("status").item(0).setTextContent("online");
                                     Server.updateXML(users, document);
+
 
                                     // Add users to lists
                                     loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));

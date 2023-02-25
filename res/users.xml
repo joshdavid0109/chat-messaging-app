@@ -55,7 +55,7 @@
         <Age>20</Age>
         <Username>maervinV</Username>
         <Password>maervin</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
     </User>
     <User id="c88571a6-d57c-4e9e-9e0b-8545046f0069">
@@ -63,7 +63,7 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <GroupName id="Member">dudes</GroupName>
     </User>
@@ -72,7 +72,7 @@
         <Age>20</Age>
         <Username>reybans</Username>
         <Password>rey</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
     </User>
     <User id="f1477d6d-3611-439b-801c-372316669a5c">
@@ -80,7 +80,7 @@
         <Age>20</Age>
         <Username>lemao</Username>
         <Password>2221</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
     </User>
 </Users>
