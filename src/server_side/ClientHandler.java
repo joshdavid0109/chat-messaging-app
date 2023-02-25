@@ -34,6 +34,7 @@ public class ClientHandler implements Runnable {
     ObjectInputStream objectInputStream;
     ObjectOutputStream objectOutputStream;
     boolean loginStatus;
+    static File usersFile = new File("res/users.xml");
     XMLParse xmlParse = new XMLParse("res/messages.xml");
 //    ObjectInputStream inputStream = new
 
@@ -121,8 +122,6 @@ public class ClientHandler implements Runnable {
             boolean exit = false;
 
             while (!exit && (message = bufferedReader.readLine()) != null) {
-                //xmlParse.addMessage(user.username(), message, "toall");
-
                 if (message.startsWith("/")) {
                     String[] words = message.split("/");
 
@@ -183,6 +182,10 @@ public class ClientHandler implements Runnable {
                             break;
                         case "quit":
                             broadcast(user.name() + " has left the chat.");
+                            setLoginStatus(user.name(), "offline");
+                            socket.close();
+                            printWriter.close();
+                            bufferedReader.close();
                             exit = true;
                             break;
 
@@ -197,9 +200,9 @@ public class ClientHandler implements Runnable {
                     broadcast(user.name() + ": " + message);
                 }
             }
-
-
         } catch (SocketException socketException) {
+            System.out.println(socketException.getMessage());
+            socketException.getCause();
             throw new SocketException("Socket closed");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -207,6 +210,31 @@ public class ClientHandler implements Runnable {
             socket.close();
         }
     }
+
+    private void setLoginStatus(String name, String status) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(usersFile);
+            Element root = document.getDocumentElement();
+            NodeList users = root.getElementsByTagName("User");
+            int userListLength = users.getLength();
+            for(int i = 0; i<userListLength;i++){
+                Element u = (Element) users.item(i);
+                String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
+                if(nameNode.equals(name)){
+                    u.getElementsByTagName("status").item(0).setTextContent(status);
+                    Server.updateXML(users, document);
+                    System.out.println(usersFile.getCanonicalPath()+" has been updated!, status of "+name+" has been set to '"+status+"'.");
+                    break;
+                }
+            }
+        }
+        catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
 
 
     public void broadcastMessages(String msg, User userSender) {
@@ -330,7 +358,6 @@ public class ClientHandler implements Runnable {
                 for (int i = 0; i < users.getLength(); i++) {
                     u = (Element) users.item(i);
                     String uName = u.getElementsByTagName("Username").item(0).getTextContent();
-
                     if (uName.equals(username)) {
                         for (int j = 0; j < users.getLength(); j++) {
                             printWriter.println("\nPassword: ");
@@ -345,15 +372,14 @@ public class ClientHandler implements Runnable {
                                 if (u.getElementsByTagName("BanStatus").item(0).getTextContent().equalsIgnoreCase("Banned")) {
                                     printWriter.println("Sorry. Your account is currently banned from the system.");
                                     break;
-                                } if (u.getElementsByTagName("status").item(0).getTextContent().equals("online")) {
+                                } /*if (u.getElementsByTagName("status").item(0).getTextContent().equals("online")) {
                                     printWriter.println("User is currently logged in on another device.");
                                     break;
-                                }
+                                }*/
 
-                                u.getElementsByTagName("status").item(0).setTextContent("online");
+                                System.out.println("ASDASDASD      "+u.getElementsByTagName("name").item(0).getTextContent());
+                                setLoginStatus(u.getElementsByTagName("name").item(0).getTextContent(), "online");
                                 Server.updateXML(users, document);
-
-
 
                                 // Add users to lists
                                     loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
