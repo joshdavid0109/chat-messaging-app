@@ -119,6 +119,8 @@ public class ClientHandler implements Runnable {
             broadcast(user.name() + " joined the chat");
             messagePrompt(user.name());
 
+            setLoginStatus(user.name(), "online");
+
             boolean exit = false;
 
             while (!exit && (message = bufferedReader.readLine()) != null) {
@@ -378,8 +380,6 @@ public class ClientHandler implements Runnable {
                                 }*/
 
                                 System.out.println("ASDASDASD      "+u.getElementsByTagName("name").item(0).getTextContent());
-                                setLoginStatus(u.getElementsByTagName("name").item(0).getTextContent(), "online");
-                                Server.updateXML(users, document);
 
                                 // Add users to lists
                                     loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
@@ -393,14 +393,10 @@ public class ClientHandler implements Runnable {
 
 
 
-                                        System.out.println("Login Successful!");
-
+                                System.out.println("Login Successful!");
                                 System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " +  u.getElementsByTagName("status").item(0).getTextContent());
-
-
-                                /*ClientMain clientMain = new ClientMain(user);
-                                clientMain.run();*/
-
+                                setLoginStatus(u.getElementsByTagName("name").item(0).getTextContent(), "online");
+                                Server.updateXML(users, document);
                                 joinServer(user, users);
                                 broadcast(name + ": ");
                                 break;
