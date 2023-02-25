@@ -164,7 +164,7 @@ public class ClientHandler implements Runnable {
                                             }
                                         }
                                         break;
-                                        //check if offline yung user, if offline yung user, store yung message sa messages.xml
+                                        //check if offline yung user, if offline yung user, store yung message sa messages.xmls
                                     } else if (u.status().equals("offline")){
                                         LocalDateTime timeSent = LocalDateTime.now();
                                         printWriter.println("user "+u.name()+" is offline, "+u.name()+" will receive your message if "+u.name()+" goes online:)");
