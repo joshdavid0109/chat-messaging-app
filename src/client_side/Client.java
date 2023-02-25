@@ -12,6 +12,7 @@ public class Client {
     ObjectInputStream objectInputStream;
     Scanner scanner = new Scanner(System.in);
     private int port;
+    private String host;
 
     public Client() {
         boolean validPort = false;
@@ -19,7 +20,9 @@ public class Client {
             try {
                 System.out.print("enter port: ");
                 port = Integer.parseInt(scanner.nextLine());
-                client = new Socket("localhost", port);
+                System.out.print("(lagay mo muna localhost dito) enter host: ");
+                host = scanner.nextLine();
+                client = new Socket(host, port);
                 printWriter = new PrintWriter(client.getOutputStream(), true);
                 bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 InputHandler inHandler = new InputHandler();
@@ -39,6 +42,10 @@ public class Client {
                 System.out.println(e.getMessage());
             } catch (IOException e) {
                 System.out.println("ioexcepadwawdad");
+                System.out.println(e.getMessage());
+            }
+            catch (Exception e) {
+                System.out.println("try again");
                 System.out.println(e.getMessage());
             }
         }

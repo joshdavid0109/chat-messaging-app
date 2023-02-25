@@ -58,7 +58,6 @@ public class Server {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-
                 if (input.startsWith("/ban") || input.startsWith("/unban")) {
                     banUser(input.split(" ")[0], input.split(" ")[1]);
                 } else if (input.startsWith("/add")) {
