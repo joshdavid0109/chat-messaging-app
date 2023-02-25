@@ -4,7 +4,7 @@
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groupname id="Admin">ffg</Groupname>
         <Groupname id="Admin">gfg</Groupname>
@@ -28,7 +28,7 @@
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groupname id="Admin">gc</Groupname>
     </User>
@@ -37,7 +37,7 @@
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groupname id="Admin">dudes</Groupname>
         <GroupName id="Member">real</GroupName>

@@ -150,6 +150,7 @@ public class ClientHandler implements Runnable {
 
                             for (User u :Server.registeredUsersList) {
                                 if (u.name().equals(recipient)) {
+                                    System.out.println(recipient + u.status() );
                                     if (u.status().equals("online")) {
                                         for (Map.Entry<ClientHandler, User> hash : loggedInUserHashMap.entrySet()) {
                                             if (hash.getValue().name().equals(recipient)) {
@@ -209,6 +210,19 @@ public class ClientHandler implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse("res/users.xml");
+
+            NodeList users = document.getElementsByTagName("User");
+
+            for (int i = 0; i < users.getLength(); i++) {
+                Element element = (Element) users.item(i);
+
+                element.getElementsByTagName("status").item(0).setTextContent("offline");
+
+                Server.updateXML(users, document);
+            }
             socket.close();
         }
     }

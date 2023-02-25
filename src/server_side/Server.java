@@ -85,15 +85,17 @@ public class Server {
                             throw new RuntimeException(e);
                         }
 
-                    executorService.execute(new Thread(() -> {
-                        String input ="";
-                    if ((input = scanner.nextLine())!= null) {
-                        String finalInput = input;
+                        if (scanner.nextLine().startsWith("/")) {
+                            executorService.execute(new Thread(() -> {
+                                String input = "";
+                                if ((input = scanner.nextLine()) != null) {
+                                    String finalInput = input;
 
-                            if ((finalInput.startsWith("/ban") || finalInput.startsWith("/unban")))
-                                banUser(finalInput.split(" ")[0], finalInput.split(" ")[1]);
-                    }
-                    }));
+                                    if ((finalInput.startsWith("/ban") || finalInput.startsWith("/unban")))
+                                        banUser(finalInput.split(" ")[0], finalInput.split(" ")[1]);
+                                }
+                            }));
+                        }
 
                 }
 
