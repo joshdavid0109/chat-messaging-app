@@ -84,8 +84,6 @@ public class Server {
                             throw new RuntimeException(e);
                         }
 
-
-
                 }
 
             } catch (RuntimeException e) {
