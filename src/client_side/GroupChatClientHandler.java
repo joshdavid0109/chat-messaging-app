@@ -105,93 +105,60 @@ public class GroupChatClientHandler extends Thread {
         }
 
         String m = "";
-        while (!m.equals("finished")) {
-            boolean userExists = false;
+        do {
 
             printWriter.println("Enter username of member: ");
             m = bufferedReader.readLine();
 
-            for (int j = 0; j < Server.registeredUsersList.size(); j++) {
-                Element element = (Element) usersNodeList.item(j);
-                String username = element.getElementsByTagName("Username").item(0).getTextContent();
-                User user = Server.registeredUsersList.get(j);
+            if (m.equals("finished")) {
+                printWriter.println("Group \"" + groupName + "\" has successfully been created!");
+                break;
+            } else {
+                for (int j = 0; j < Server.registeredUsersList.size(); j++) {
+                    Element element = (Element) usersNodeList.item(j);
+                    String username = element.getElementsByTagName("Username").item(0).getTextContent();
+                    User user = Server.registeredUsersList.get(j);
 
-//                printWriter.println(user.name());
+                    if (user.username().equals(m) && !m.equals(admin.username())) {
+                        Element gcName = document.createElement("GroupName");
+                        gcName.setTextContent(groupName);
+                        gcName.setAttribute("id", "Member");
+                        element.appendChild(gcName);
 
-                if (user.username().equals(m) && !m.equals(admin.username())) {
-                    Element gcName = document.createElement("GroupName");
-                    gcName.setTextContent(groupName);
-                    gcName.setAttribute("id", "Member");
-                    element.appendChild(gcName);
-
-                    users.add(user);
-                    printWriter.println("USER " + username + " HAS BEEN ADDED TO ARRAY LIST.");
-                    userExists = true;
-                    break;
-                } else if (!m.equals(admin.username())) {
-                    printWriter.println("Can't add yourself to the group! Enter another username.");
-                    j -= 1;
-                } else if (!m.equals(username)) {
-                    printWriter.println("Username not found, try again!");
-                    j -= 1;
-                } else if (m.equals("finished")) {
-                    printWriter.println("Group successfully created!");
-                    break;
+                        users.add(user);
+                        printWriter.println("USER " + username + " HAS BEEN ADDED TO ARRAY LIST.");
+                        break;
+                    } else if (m.equals(admin.username())){
+                        printWriter.println("You're already added to your own group chat! Try again.");
+                        break;
+                    } else if (!user.username().equals(m)) {
+                        printWriter.println("User not found! Try again.");
+                        break;
+                    }
                 }
-
-//                if (user.username().equals(m)) {
-//                    for (int x = 0; x < usersNodeList.getLength(); x++) {
-//                        printWriter.println(user.username());
-//                        Element u1 = (Element) usersNodeList.item(j);
-//                        String username = u1.getElementsByTagName("username").item(0).getTextContent();
-//                        if (username.equals(m)) {
-//                            printWriter.println(username + "true");
-//                            Element gcName = document.createElement("Groupname");
-//                            gcName.setTextContent(groupName);
-//                            gcName.setAttribute("id", "Member");
-//                            u1.appendChild(gcName);
-//
-//                            users.add(user);
-//                            printWriter.println("USER " + u1.getElementsByTagName("Username").item(0).getTextContent() + " HAS BEEN ADDED TO ARRAYLIST");
-//                            userExists = true;
-//                            break;
-//                        }
-//                    }
-//                }
-
             }
-            Element element = (Element) usersNodeList.item(usersNodeList.getLength() - 1);
-            XMLParse.trimWhiteSpace(element);
+        } while (true);
 
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = null;
-            try {
-                transformer = transformerFactory.newTransformer();
-            } catch (TransformerConfigurationException e) {
-                throw new RuntimeException(e);
-            }
+        Element element = (Element) usersNodeList.item(usersNodeList.getLength() - 1);
+        XMLParse.trimWhiteSpace(element);
 
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-            DOMSource domSource = new DOMSource(document);
-            StreamResult streamResult = new StreamResult(new File(file.toURI()));
-            transformer.transform(domSource, streamResult);
-
-           /* for (User user: Server.registeredUsersList) {
-                if (m.equals(user.username())) {
-
-
-
-                    users.add(user);
-                    printWriter.println(user);
-                    userExists = true;
-                    break;
-                }
-            }*/
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer;
+        try {
+            transformer = transformerFactory.newTransformer();
+        } catch (TransformerConfigurationException e) {
+            throw new RuntimeException(e);
         }
+
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+        DOMSource domSource = new DOMSource(document);
+        StreamResult streamResult = new StreamResult(new File(file.toURI()));
+        transformer.transform(domSource, streamResult);
+
             return users;
         }
 

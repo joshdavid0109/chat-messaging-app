@@ -6,10 +6,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.ClientHandler;
+//import server_side.Server;
 import server_side.Server;
 import shared_classes.User;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,10 +27,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Frame implements ActionListener {
+import static server_side.Server.loginHandlerArraylist;
+
+public class Frame implements ListSelectionListener {
     public final ArrayList<String> bookmarkedContacts = new ArrayList<>();
     public final JList<String> contactList;
 
@@ -41,11 +47,12 @@ public class Frame implements ActionListener {
     public static JButton bookmarkButton;
     public static JButton sendButton;
     public static JTextField pmTextField;
-    public static JScrollPane pmTextArea;
     public static JScrollPane broadcastArea;
     public static JPanel privateMessagePanel;
     public static JScrollPane scrollPane;
-    public static JTextArea textArea;
+    private static JTextArea textArea;
+
+
 
     Frame(User user, Socket socket, PrintWriter printWriter) throws IOException {
         this.user = user;
@@ -54,6 +61,7 @@ public class Frame implements ActionListener {
         bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         contactList = new JList<>(getAllContacts());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        contactList.addListSelectionListener(this);
 
         JLabel headerName = new JLabel();
         headerName.setText(user.username());
@@ -93,16 +101,43 @@ public class Frame implements ActionListener {
         sendButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         sendButton.setFocusable(false);
         sendButton.setBounds(270, 570, 50, 20);
-        sendButton.addActionListener(this);
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (!pmTextField.getText().equals(""))
+                        broadcast(pmTextField.getText());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
 
-        bookmarkButton = new JButton("Star");
+            }
+        });
+
+        bookmarkButton = new JButton("Bookmark");
         bookmarkButton.setVisible(true);
         bookmarkButton.setForeground(Color.BLACK);
         bookmarkButton.setBackground(Color.WHITE);
         bookmarkButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         bookmarkButton.setFocusable(false);
         bookmarkButton.setBounds(40, 300, 100, 20);
-        bookmarkButton.addActionListener(this);
+        bookmarkButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedContact = "";
+                if (selectedContact.equals(contactList.getSelectedValue())) {
+                    if (bookmarkedContacts.contains(selectedContact)) {
+                        bookmarkedContacts.remove(selectedContact);
+                        bookmarkButton.setText("Bookmark");
+                    } else {
+                        bookmarkedContacts.add(selectedContact);
+                        bookmarkButton.setText("Unbookmark");
+                    }
+                    updateBookmarkedContactsLabel();
+                    updateContactList(getAllContacts());
+                }
+            }
+        });
 
         bookmarkedContactsLabel = new JLabel("Bookmarked Contacts:");
         bookmarkedContactsLabel.setVisible(true);
@@ -141,7 +176,7 @@ public class Frame implements ActionListener {
         scrollPaneListMembers.setBorder(BorderFactory.createEmptyBorder());
         scrollPaneListMembers.setBounds(40, 70, 200, 200);
 
-        pmTextArea = new JScrollPane();
+        JScrollPane pmTextArea = new JScrollPane();
         pmTextArea.setVisible(true);
         pmTextArea.setBorder(BorderFactory.createEmptyBorder());
         pmTextArea.setBounds(30, 70, 290, 470);
@@ -253,27 +288,42 @@ public class Frame implements ActionListener {
         // end of Thread
         sc.close();
     }*/
+      public JTextArea textAreaPane() {
+          return textArea;
+      }
 
-    public void sendMessage() throws IOException {
+    public void setTextArea(String message) {
+        this.textAreaPane().append(message);
+    }
+
+    public JTextField msgTextField() {
+          return pmTextField;
+    }
+
+    public void setMsgTextField(String message) {
+          this.msgTextField().setText(message);
+    }
+
+
+    public void sendMessage(String m) throws IOException {
         try {
-            String message = pmTextField.getText().trim();
-
             for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
-                textArea.append(hash.getKey().toString() + "\n" + socket.toString());
+
                 if (hash.getValue().username().equals(user.username())) {
-                    if (message.equals("")) {
+                    if (m.equals("")) {
                         return;
                     } else {
-                        this.message = message;
 //                        message = hash.getKey().bufferedReader.readLine();
-                        textArea.append(message +"\n");
+                        System.out.println(m);
+                        textArea.append(m);
                         pmTextField.requestFocus();
                         pmTextField.setText(null);
+                        break;
                     }
-                }
-            }
 
-            textArea.append(message);
+                }
+                break;
+            }
 
 /*
             pmTextArea.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
@@ -286,11 +336,21 @@ public class Frame implements ActionListener {
         }
     }
 
+    public void broadcast(String m) throws IOException {
+        for (Frame frame : ClientMain.frameList) {
+            if (frame != null ) {
+                if (frame.msgTextField().getText()!= null) {
+                    m = frame.msgTextField().getText();
+                    frame.sendMessage(m + " test message \n");
+                }
+            }
+        }
+    }
+
     private String[] getAllContacts() {
         String[] contacts = new String[Server.registeredUsersList.size()];
 
         try {
-
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse("res/users.xml");
@@ -304,10 +364,11 @@ public class Frame implements ActionListener {
                     Element userElement = (Element) userNode;
                     String name = userElement.getElementsByTagName("name").item(0).getTextContent();
                     String status = userElement.getElementsByTagName("status").item(0).getTextContent();
-
                     contacts[i] = name + " : " + status;
                 }
             }
+            // Sort contacts alphabetically
+            Arrays.sort(contacts);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -317,13 +378,13 @@ public class Frame implements ActionListener {
     private void updateContactList(String[] allContacts) {
         ArrayList<String> contactsList = new ArrayList<>();
 
+        bookmarkedContacts.sort(String.CASE_INSENSITIVE_ORDER);
         for (String contact : bookmarkedContacts) {
             if (contactsList.contains(contact)) {
                 continue;
             }
             contactsList.add(contact);
         }
-
         for (String contact : allContacts) {
             if (contactsList.contains(contact)) {
                 continue;
@@ -334,30 +395,16 @@ public class Frame implements ActionListener {
     }
 
     private void updateBookmarkedContactsLabel() {
-        bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts);
+        bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts.toString());
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == bookmarkButton) {
-            String selectedContact = contactList.getSelectedValue();
-            if (selectedContact != null) {
-                if (bookmarkedContacts.remove(selectedContact)) {
-                    bookmarkButton.setToolTipText("Add to bookmark");
-                } else {
-                    bookmarkedContacts.add(selectedContact);
-                    bookmarkButton.setToolTipText("Remove from bookmark");
-                }
-                updateBookmarkedContactsLabel();
-                updateContactList(getAllContacts());
-            }
-        }
-        if(e.getSource() == sendButton){
-//            System.out.println("messagebutton");
-            try {
-                sendMessage();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+    public void valueChanged(ListSelectionEvent e) {
+        String selectedContact = contactList.getSelectedValue();
+        if (selectedContact != null) {
+            if (bookmarkedContacts.contains(selectedContact)) {
+                bookmarkButton.setText("Unbookmark");
+            } else {
+                bookmarkButton.setText("Bookmark");
             }
         }
     }

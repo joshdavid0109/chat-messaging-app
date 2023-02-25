@@ -20,6 +20,8 @@
         <Groupname id="Admin">gc</Groupname>
         <Groupname id="Admin">gc</Groupname>
         <GroupName id="Member">dudes</GroupName>
+        <Groupname id="Admin">real</Groupname>
+        <Groupname id="Admin">realzz</Groupname>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>Joshua</name>
@@ -35,9 +37,10 @@
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groupname id="Admin">dudes</Groupname>
+        <GroupName id="Member">real</GroupName>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>TEST</name>

@@ -86,18 +86,16 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
                         if (user.username().equals(userTextField.getText())) {
                             if (user.password().equals(passwordField.getText())) {
-                                try {
-                                    Server.loginHandlerArraylist.add(new ClientHandler(socket));
-                                    Server.loggedInUserHashMap.put(new ClientHandler(socket), user);
-                                } catch (IOException ex) {
-                                    ex.printStackTrace();
-                                }
+                                Server.loginHandlerArraylist.add(new ClientHandler(socket));
+                                Server.loggedInUserHashMap.put(new ClientHandler(socket), user);
                                 u.getElementsByTagName("status").item(0).setTextContent("online");
                                 ClientMain clientMain = new ClientMain(socket, user, printWriter);
                                 clientMain.run();
                                 dispose();
                                 break;
-                            } else
+                            } else if (user.status().equals("online"))
+                                JOptionPane.showMessageDialog(container,"User is currently logged in on another device.");
+                            else
                                 JOptionPane.showMessageDialog(container, "User/Password is invalid.");
                             break;
                         }

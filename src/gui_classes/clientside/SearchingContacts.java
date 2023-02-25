@@ -2,9 +2,12 @@ package gui_classes.clientside;
 
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
@@ -12,98 +15,100 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+public class SearchingContacts extends JFrame{
+    private final JTextField searchField;
+    private final JTextArea resultArea;
 
+    public SearchingContacts(){
+        super("Search");
 
-public class SearchingContacts extends JFrame implements ActionListener {
-    private JTextField searchField;
-    private JTextArea resultsArea;
-
-//    private Jlist<User>  listOfUsers = new List<>();
-
-
-    public SearchingContacts() {
-
-        setTitle("Search");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JMenuBar menuBar = new JMenuBar();
-        setJMenuBar(menuBar);
-
-        //Search Menu bar
-        JMenu messageMenu = new JMenu("Message");
-        menuBar.add(messageMenu);
-
-        JMenu bookmark = new JMenu("Bookmark");
-        menuBar.add(bookmark);
-
-        JMenu addFriend = new JMenu("+Add");
-        menuBar.add(addFriend);
-
-
-        // Set up the search panel
+        //Create search bar
         JPanel searchPanel = new JPanel();
+        searchPanel.setBorder(new EmptyBorder(10,10,10,10));
         searchPanel.setLayout(new BorderLayout());
 
-        searchField = new JTextField();
-        searchPanel.add(searchField, BorderLayout.CENTER);
+        JLabel searchLabel = new JLabel("Contacts: ");
+        searchPanel.add(searchLabel, BorderLayout.WEST);
+
+        searchField = new JTextField(20);
+        searchPanel.add(searchField,BorderLayout.CENTER);
 
         JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(this);
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String contactName = searchField.getText().trim();
+
+                //Search for the name in XML file
+                String info = searchXML(contactName);
+
+                if(info.isEmpty()){
+                    resultArea.setText(contactName + "  not found.");
+                }else{
+                    resultArea.setText(info);
+                }
+            }
+        });
         searchPanel.add(searchButton, BorderLayout.EAST);
 
+        //Create result area
+        resultArea = new JTextArea(10,20);
+        resultArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(resultArea);
 
-        // Set up the results panel
-        JPanel resultsPanel = new JPanel();
-        resultsPanel.setLayout(new BorderLayout());
-        resultsArea = new JTextArea();
-        resultsArea.setEditable(false);
-        JScrollPane resultsScrollPane = new JScrollPane(resultsArea);
-        resultsPanel.add(resultsScrollPane, BorderLayout.CENTER);
+        Container contentPane = getContentPane();
+        contentPane.add(searchPanel, BorderLayout.NORTH);
+        contentPane.add(scrollPane, BorderLayout.CENTER);
 
-
-
-        // Add the search and results panels to the frame
-        add(searchPanel, BorderLayout.NORTH);
-        add(resultsPanel, BorderLayout.CENTER);
-
-
+        pack();
         setVisible(true);
-
     }
 
+    public String searchXML(String name){
+        try{
+            DocumentBuilderFactory documentBuilderFactory =
+                    DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder =
+                    documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse("res/users.xml");
 
-    public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
-//        try{
-//            DocumentBuilderFactory documentBuilderFactory =
-//                    DocumentBuilderFactory.newInstance();
-//            DocumentBuilder documentBuilder =
-//                    documentBuilderFactory.newDocumentBuilder();
-//            Document document = documentBuilder.parse("res/users.xml");
-//            NodeList userNodes = document.getElementsByTagName("User");
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//
+            document.getDocumentElement().normalize();
+            NodeList nodeList = document.getElementsByTagName("User");
 
-        if (command.equals("Exit")) {
-            System.exit(0);
-        } else if (command.equals("Search")) {
-            String query = searchField.getText();
+            for(int i = 0; i < nodeList.getLength(); i++){
+                Node nNode = nodeList.item(i);
 
-            resultsArea.setText("Results for \"" + query );
+                if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                    Element element = (Element) nNode;
+
+                    String userName = element
+                            .getElementsByTagName("name")
+                            .item(0)
+                            .getTextContent();
+
+                    if(userName.equalsIgnoreCase(name)){
+                        String info = "Name: " + userName + "\n";
+                        info += "User name: " +element.getElementsByTagName("Username")
+                                .item(0)
+                                .getTextContent() +"\n";
+
+                        info += "Status: " +element.getElementsByTagName("status")
+                                .item(0)
+                                .getTextContent() +"\n";
+
+                        return info;
+                    }
+
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        return "";
     }
 
-
-    public static void main (String[]args){
-            new SearchingContacts();
+    public static void main(String[] args){
+        new SearchingContacts();
     }
+
 }
-
-
-
-
-
-
