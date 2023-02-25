@@ -22,6 +22,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Map;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static server_side.Server.loggedInUserHashMap;
 import static server_side.Server.loginHandlerArraylist;
@@ -195,6 +196,9 @@ public class ClientHandler implements Runnable {
                             //TODO
                             System.out.println();
                             break;
+                        case "gm":
+                            sendGM(user);
+                            break;
                         default:
                             printWriter.println("command not recognized. input '/help' for a list of commands");
                     }
@@ -223,6 +227,29 @@ public class ClientHandler implements Runnable {
                 Server.updateXML(users, document);
             }
             socket.close();
+        }
+    }
+
+    private void sendGM(User u) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(usersFile);
+            Element root = document.getDocumentElement();
+            NodeList users = root.getElementsByTagName("User");
+            for (int i = 0; i < users.getLength(); i++) {
+                Element element = (Element) users.item(i);
+                NodeList groups = element.getElementsByTagName("Groupname");
+                if (Objects.equals(u.id(), element.getAttribute("id"))) {
+                    for (int j = 0; j < groups.getLength(); j++) {
+                        Element nElement = (Element) groups.item(j);
+                        String textContent = nElement.getTextContent();
+                        printWriter.println(textContent + "\n");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
