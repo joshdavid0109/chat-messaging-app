@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Admin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +39,7 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/joshdavid0109/IdeaProjects/testBranch&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.Client">
+  <component name="RunManager" selected="Application.Admin">
     <configuration name="Admin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Admin" />
       <module name="console" />
@@ -100,9 +101,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Admin" />
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
-        <item itemvalue="Application.Admin" />
         <item itemvalue="Application.BookmarkContacts" />
         <item itemvalue="Application.SearchingContacts" />
       </list>
@@ -184,13 +185,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/server_side/Server.java</url>
-          <line>77</line>
+          <line>80</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/server_side/Server.java</url>
-          <line>87</line>
-          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

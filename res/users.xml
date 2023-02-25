@@ -9,7 +9,6 @@
         <Groupname id="Admin">ffg</Groupname>
         <Groupname id="Admin">gfg</Groupname>
         <Groupname id="Admin">gfgg</Groupname>
-        f
         <Groupname id="Admin">s</Groupname>
         <Groupname id="Admin">gfg</Groupname>
         <Groupname id="Admin">sample</Groupname>
@@ -31,16 +30,6 @@
         <status>offline</status>
         <BanStatus/>
         <Groupname id="Admin">gc</Groupname>
-    </User>
-    <User id="ed49f946-fae7-47ba-9027-d158123b906a">
-        <name>Kiko</name>
-        <Age>20</Age>
-        <Username>kikoxcore</Username>
-        <Password>kikoxcore</Password>
-        <status>offline</status>
-        <BanStatus/>
-        <Groupname id="Admin">dudes</Groupname>
-        <GroupName id="Member">real</GroupName>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>TEST</name>
