@@ -16,6 +16,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -31,24 +32,23 @@ public class Server {
     public static List<User> registeredUsersList = new ArrayList<>();
     public static List<GroupChatUsersSample> groupChatUsers = new ArrayList<>();
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
-//    static Scanner scanner = new Scanner(System.in);
+    private int port;
+    static Scanner scanner = new Scanner(System.in);
 
     ObjectInputStream objectInputStream;
     ObjectOutputStream objectOutputStream;
+
+    public Server(int port){
+        this.port = port;
+    }
 
     public void run() throws IOException, SAXException, ParserConfigurationException {
 
         while (true) {
             System.out.println("Ban or unban a user - /ban or /unban + [name]\n");
             System.out.println("Add a user - /add");
-
             ExecutorService executorService = Executors.newCachedThreadPool();
-
             getRegisteredUsers();
-
-
-
-
             bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
             new Thread(() -> {
@@ -68,26 +68,17 @@ public class Server {
             }).start();
 
 
-            try (ServerSocket serverSocket = new ServerSocket(8888)) {
+            try (ServerSocket serverSocket = new ServerSocket(port)) {
                 clientSocket = serverSocket.accept();
-
                 System.out.println("A client has connected.");
-
                 bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-
-
-                /**
-                 * Ito ung sa login
-                 */
 //                LoginGUI loginGUI = new LoginGUI(clientSocket);
 //                loginGUI.run();
-                //here
-
                 executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            } finally {
+            }/* finally {
 
 
                 // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
@@ -105,7 +96,7 @@ public class Server {
 
                     Server.updateXML(users, document);
                 }
-            }
+            }*/
         }
     }
 
@@ -160,7 +151,7 @@ public class Server {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             DOMSource domSource = new DOMSource(document);
             StreamResult streamResult = new StreamResult(new File(f));
@@ -172,8 +163,25 @@ public class Server {
 
 
     public static void main(String[] args) {
+        int port = 0;
+        boolean valid = false;
+        while(!valid){
+            try{
+                System.out.print("INPUT PORT: ");
+                port = Integer.parseInt(scanner.nextLine());
+                valid = true;
+            }
+            catch(NumberFormatException e){
+                System.out.println("Input a valid port");
+            }
+            catch(RuntimeException e){
+                System.out.println("PORT IS ALREADY IN USE, INPUT ANOTHER PORT");
+            }
+        }
+
+
         try {
-            Server server = new Server();
+            Server server = new Server(port);
             server.run();
         } catch (IOException | SAXException | ParserConfigurationException e) {
             throw new RuntimeException(e);
