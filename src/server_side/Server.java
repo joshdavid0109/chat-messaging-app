@@ -101,29 +101,6 @@ public class Server {
                 e.printStackTrace();
             }
         }
-
-
-
-            /* finally {
-                // set status of all users to offline working yung code pero di ko sure san dapat nakalagay
-
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                Document document = documentBuilder.parse(f);
-
-                NodeList users = document.getElementsByTagName("User");
-
-                for (int i = 0; i < users.getLength(); i++) {
-                    Element element = (Element) users.item(i);
-
-                    element.getElementsByTagName("status").item(0).setTextContent("offline");
-
-                    Server.updateXML(users, document);
-                }
-            }*/
-
-
-
     private void banUser(String command, String name) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -170,7 +147,6 @@ public class Server {
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
-
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
@@ -179,6 +155,7 @@ public class Server {
             DOMSource domSource = new DOMSource(document);
             StreamResult streamResult = new StreamResult(new File(f));
             transformer.transform(domSource, streamResult);
+            System.out.println(f+" has been updated!");
         } catch (TransformerException e) {
             throw new RuntimeException(e);
         }
@@ -192,8 +169,6 @@ public class Server {
         } catch (IOException | SAXException | ParserConfigurationException e) {
             System.out.println(e.getMessage());
         }
-
-
     }
 
     private void getRegisteredUsers() {

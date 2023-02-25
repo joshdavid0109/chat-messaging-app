@@ -1,5 +1,7 @@
 package client_side;
 
+import server_side.Server;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -41,7 +43,6 @@ public class Client {
                 System.out.println("INPUT A VALID PORT");
                 System.out.println(e.getMessage());
             } catch (IOException e) {
-                System.out.println("ioexcepadwawdad");
                 System.out.println(e.getMessage());
             }
             catch (Exception e) {
@@ -60,8 +61,9 @@ public class Client {
             if (!client.isClosed()) {
                 client.close();
             }
-        } catch (IOException ignored) {
-
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -73,13 +75,14 @@ public class Client {
                 while (!done) {
                     String message = inReader.readLine();
                     if (message.equals("/quit")) {
-                        inReader.close();
+                        printWriter.println("/quit");
                         shutdown();
                     } else {
                         printWriter.println(message);
                     }
                 }
             } catch (IOException e) {
+                System.out.println(e.getMessage());
                 shutdown();
             }
         }
