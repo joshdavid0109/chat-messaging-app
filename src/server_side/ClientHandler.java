@@ -119,6 +119,8 @@ public class ClientHandler implements Runnable {
             broadcast(user.name() + " joined the chat");
             messagePrompt(user.name());
 
+            setLoginStatus(user.name(), "online");
+
             boolean exit = false;
 
             while (!exit && (message = bufferedReader.readLine()) != null) {
@@ -153,7 +155,7 @@ public class ClientHandler implements Runnable {
                                             if (hash.getValue().name().equals(recipient)) {
                                                 for (ClientHandler loginHandler : loginHandlerArraylist) {
                                                     if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                                        loginHandler.sendMessage(user.name() + ": " + message);
+                                                        loginHandler.sendMessage(printWriter, user.name() + ": " + message);
                                                         break;
                                                     }
                                                 }
@@ -168,7 +170,7 @@ public class ClientHandler implements Runnable {
                                         xmlParse.addMessage(user.name(), message, u.name(),timeSent);
                                         break;
                                     } else
-                                        sendMessage("User not existing");
+                                        sendMessage(printWriter, "User not existing");
                                 }
                             }
 
@@ -187,6 +189,7 @@ public class ClientHandler implements Runnable {
                             printWriter.close();
                             bufferedReader.close();
                             exit = true;
+                            break;
 
                         case "ban":
                             //TODO
