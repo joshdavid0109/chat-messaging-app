@@ -155,7 +155,7 @@ public class ClientHandler implements Runnable {
                                             if (hash.getValue().name().equals(recipient)) {
                                                 for (ClientHandler loginHandler : loginHandlerArraylist) {
                                                     if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                                        loginHandler.sendMessage(printWriter, user.name() + ": " + message);
+                                                        loginHandler.sendMessage(user.name() + ": " + message);
                                                         break;
                                                     }
                                                 }
@@ -170,7 +170,7 @@ public class ClientHandler implements Runnable {
                                         xmlParse.addMessage(user.name(), message, u.name(),timeSent);
                                         break;
                                     } else
-                                        sendMessage(printWriter, "User not existing");
+                                        sendMessage("User not existing");
                                 }
                             }
 
