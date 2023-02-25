@@ -199,33 +199,18 @@ public class ClientHandler implements Runnable {
                             ArrayList<User> membarz = Server.getUsersByGroupName(groupName);
                             System.out.println("MEMBeRS ng group is "+membarz);
                             for (User u :Server.getUsersByGroupName(groupName)) {
-                                if (membarz.contains(u)) {
-                                    //if (u.status().equals("online")) {
-                                    if (true) {
-                                        for (Map.Entry<ClientHandler, User> hash : loggedInUserHashMap.entrySet()) {
-                                            //if (hash.getValue().equals(user)) {
-                                            if (true) {
-                                                for (ClientHandler loginHandler : loginHandlerArraylist) {
-                                                    if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                                        loginHandler.sendMessage("[GM] "+user.name() + ": " + message);
-                                                        break;
-                                                    }
-                                                }
+                                for (Map.Entry<ClientHandler, User> hash : loggedInUserHashMap.entrySet()) {
+                                    if (hash.getValue().name().equals(u.name())) {
+                                        for (ClientHandler clientHandler : loginHandlerArraylist) {
+                                            if (clientHandler.socket.equals(hash.getKey().socket)) {
+                                                clientHandler.sendMessage("[GM] " + user.name() + ": " + message);
                                                 break;
                                             }
                                         }
                                         break;
-                                        //check if offline yung user, if offline yung user, store yung message sa messages.xml
-                                    } else if (u.status().equals("offline")){
-                                        LocalDateTime timeSent = LocalDateTime.now();
-                                        printWriter.println("user "+u.name()+" is offline, "+u.name()+" will receive your message if "+u.name()+" goes online:)");
-                                        xmlParse.addMessage(user.name(), message, u.name(),timeSent);
-                                        break;
-                                    } else
-                                        sendMessage("User not existing");
+                                    }
                                 }
                             }
-
                             break;
                         default:
                             printWriter.println("command not recognized. input '/help' for a list of commands");
