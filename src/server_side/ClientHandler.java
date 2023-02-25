@@ -20,6 +20,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -53,10 +54,9 @@ public class ClientHandler implements Runnable {
     }
 
     public void run() {
+        printWriter.println("CONNECTION ESTABLISHED...");
         String name = null;
-
         while (true){
-
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             try {
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -71,13 +71,13 @@ public class ClientHandler implements Runnable {
                 userValidation(name, users);
 
             } catch (IOException | ParserConfigurationException | SAXException e) {
-                throw new RuntimeException(e);
+                System.out.println(e.getMessage());
             }
         }
     }
 
     private void joinServer(User user, NodeList nodeList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        String message, recipient;
+        String message, groupName;
 //        objectInputStream = new ObjectInputStream(socket.getInputStream());
 //        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
@@ -145,18 +145,18 @@ public class ClientHandler implements Runnable {
                             break;
                         case "pm":
                             printWriter.println("Send to: ");
-                            recipient = bufferedReader.readLine();
+                            groupName = bufferedReader.readLine();
                             messagePrompt(user.name());
                             message = bufferedReader.readLine();
                             Server.getRegisteredUsers();
                             for (User u :Server.registeredUsersList) {
-                                if (u.name().equals(recipient)) {
+                                if (u.name().equals(groupName)) {
                                     if (u.status().equals("online")) {
                                         for (Map.Entry<ClientHandler, User> hash : loggedInUserHashMap.entrySet()) {
-                                            if (hash.getValue().name().equals(recipient)) {
+                                            if (hash.getValue().name().equals(groupName)) {
                                                 for (ClientHandler loginHandler : loginHandlerArraylist) {
                                                     if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                                        loginHandler.sendMessage(user.name() + ": " + message);
+                                                        loginHandler.sendMessage("[PRIVATE] "+user.name() + ": " + message);
                                                         break;
                                                     }
                                                 }
@@ -164,7 +164,7 @@ public class ClientHandler implements Runnable {
                                             }
                                         }
                                         break;
-                                        //check if offline yung user, if offline yung user, store yung message sa messages.xml
+                                        //check if offline yung user, if offline yung user, store yung message sa messages.xmls
                                     } else if (u.status().equals("offline")){
                                         LocalDateTime timeSent = LocalDateTime.now();
                                         printWriter.println("user "+u.name()+" is offline, "+u.name()+" will receive your message if "+u.name()+" goes online:)");
@@ -191,13 +191,41 @@ public class ClientHandler implements Runnable {
                             bufferedReader.close();
                             exit = true;
                             break;
-
-                        case "ban":
-                            //TODO
-                            System.out.println();
-                            break;
                         case "gm":
-                            sendGM(user);
+                            printWriter.println("GROUP: ");
+                            groupName = bufferedReader.readLine();
+                            messagePrompt(user.name());
+                            message = bufferedReader.readLine();
+                            ArrayList<User> membarz = Server.getUsersByGroupName(groupName);
+                            System.out.println("MEMBeRS ng group is "+membarz);
+                            for (User u :Server.getUsersByGroupName(groupName)) {
+                                if (membarz.contains(u)) {
+                                    //if (u.status().equals("online")) {
+                                    if (true) {
+                                        for (Map.Entry<ClientHandler, User> hash : loggedInUserHashMap.entrySet()) {
+                                            //if (hash.getValue().equals(user)) {
+                                            if (true) {
+                                                for (ClientHandler loginHandler : loginHandlerArraylist) {
+                                                    if (loginHandler.socket.equals(hash.getKey().socket)) {
+                                                        loginHandler.sendMessage("[GM] "+user.name() + ": " + message);
+                                                        break;
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                        //check if offline yung user, if offline yung user, store yung message sa messages.xml
+                                    } else if (u.status().equals("offline")){
+                                        LocalDateTime timeSent = LocalDateTime.now();
+                                        printWriter.println("user "+u.name()+" is offline, "+u.name()+" will receive your message if "+u.name()+" goes online:)");
+                                        xmlParse.addMessage(user.name(), message, u.name(),timeSent);
+                                        break;
+                                    } else
+                                        sendMessage("User not existing");
+                                }
+                            }
+
                             break;
                         default:
                             printWriter.println("command not recognized. input '/help' for a list of commands");
@@ -232,19 +260,23 @@ public class ClientHandler implements Runnable {
 
     private void sendGM(User u) {
         try {
+            printWriter.println("You are a member of the groups: ");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(usersFile);
             Element root = document.getDocumentElement();
             NodeList users = root.getElementsByTagName("User");
+            ArrayList<String> groupList = new ArrayList<>();
             for (int i = 0; i < users.getLength(); i++) {
                 Element element = (Element) users.item(i);
-                NodeList groups = element.getElementsByTagName("Groupname");
-                if (Objects.equals(u.id(), element.getAttribute("id"))) {
+                if (Objects.equals(u.name(), element.getElementsByTagName("name").item(0).getTextContent())) {
+                    NodeList groups = element.getElementsByTagName("Groupname");
                     for (int j = 0; j < groups.getLength(); j++) {
-                        Element nElement = (Element) groups.item(j);
-                        String textContent = nElement.getTextContent();
-                        printWriter.println(textContent + "\n");
+                        Element element1 = (Element) groups.item(j);
+                        String role = element1.getAttribute("id");
+                        String groupName = element1.getTextContent();
+                        printWriter.println("\"" + groupName + "\" with the role \"" + role + "\"");
+                        groupList.add(groupName);
                     }
                 }
             }
@@ -337,7 +369,7 @@ public class ClientHandler implements Runnable {
     public void broadcast(String message ){
         for (ClientHandler loginHandler : loginHandlerArraylist) {
             if (loginHandler != null && loginStatus) {
-                loginHandler.sendMessage( message);
+                loginHandler.sendMessage("[BROADCAST] "+message);
             }
         }
     }
@@ -417,10 +449,10 @@ public class ClientHandler implements Runnable {
                                         printWriter.println("Sorry. Your account is currently banned from the system.");
                                         continue login;
                                     }
-                                    if (u.getElementsByTagName("status").item(0).getTextContent().equals("online")) {
+                                    /*if (u.getElementsByTagName("status").item(0).getTextContent().equals("online")) {
                                         printWriter.println("User is currently logged in on another device.");
                                         continue login;
-                                    }
+                                    }*/
 
                                     u.getElementsByTagName("status").item(0).setTextContent("online");
                                     Server.updateXML(users, document);
@@ -457,7 +489,7 @@ public class ClientHandler implements Runnable {
                     }
                 }
             } catch (IOException | ParserConfigurationException | SAXException | TransformerException e) {
-                throw new RuntimeException(e);
+                System.out.println(e.getMessage());
             }
         }
     }

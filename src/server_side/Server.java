@@ -22,7 +22,6 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class Server {
     public static String f = "res/users.xml";
@@ -123,6 +122,37 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<User> getUsersByGroupName(String groupName) {
+        ArrayList<User> users = new ArrayList<>();
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse("res/users.xml");
+            doc.getDocumentElement().normalize();
+            NodeList nodeList = doc.getElementsByTagName("User");
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Element element = (Element) nodeList.item(i);
+                NodeList groupList = element.getElementsByTagName("Groupname");
+                for (int j = 0; j < groupList.getLength(); j++) {
+                    Element group = (Element) groupList.item(j);
+                    if (group.getTextContent().equals(groupName)) {
+                        String id = element.getAttribute("id");
+                        String name = element.getElementsByTagName("name").item(0).getTextContent();
+                        String age = element.getElementsByTagName("Age").item(0).getTextContent();
+                        String username = element.getElementsByTagName("Username").item(0).getTextContent();
+                        String password = element.getElementsByTagName("Password").item(0).getTextContent();
+                        String status = element.getElementsByTagName("status").item(0).getTextContent();
+                        User user = new User(id, name, age, username, password, status, "x");
+                        users.add(user);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
     public static void getRegisteredUsers() {
