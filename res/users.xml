@@ -6,49 +6,34 @@
         <Password>franz</Password>
         <status>online</status>
         <BanStatus/>
-        <Groupname id="Admin">ffg</Groupname>
-        <Groupname id="Admin">gfg</Groupname>
-        <Groupname id="Admin">gfgg</Groupname>
-        f
-        <Groupname id="Admin">s</Groupname>
-        <Groupname id="Admin">gfg</Groupname>
-        <Groupname id="Admin">sample</Groupname>
-        <Groupname id="Admin">hhh</Groupname>
-        <Groupname id="Admin">gggg</Groupname>
-        <Groupname id="Admin">gggg</Groupname>
-        <Groupname id="Admin">franz</Groupname>
-        <Groupname id="Admin">gc</Groupname>
-        <Groupname id="Admin">gc</Groupname>
-        <GroupName id="Member">dudes</GroupName>
-        <Groupname id="Admin">real</Groupname>
-        <Groupname id="Admin">realzz</Groupname>
+        <Groupname id="Admin">REAL</Groupname>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>Joshua</name>
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
-        <Groupname id="Admin">gc</Groupname>
+        <Groupname id="Admin">REAL</Groupname>
     </User>
     <User id="ed49f946-fae7-47ba-9027-d158123b906a">
         <name>Kiko</name>
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
-        <Groupname id="Admin">dudes</Groupname>
-        <GroupName id="Member">real</GroupName>
+        <Groupname id="Member">REAL</Groupname>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>TEST</name>
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <status>offline</status>
-        <GroupName id="Member">damnbro</GroupName>
+        <status>online</status>
+        <BanStatus/>
+        <Groupname id="Member">REAL</Groupname>
     </User>
     <User id="4f2668f6-b75d-4f4e-8f36-bb27028974cd">
         <name>Maervin</name>
@@ -63,9 +48,8 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
-        <GroupName id="Member">dudes</GroupName>
     </User>
     <User id="9b5ec170-ddc0-4a12-a152-24082c895785">
         <name>Rey</name>
