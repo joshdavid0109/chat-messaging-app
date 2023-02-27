@@ -4,15 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="GROUP MESSAGE PACHECK HUHUHUHHU">
-      <change afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/shared_classes/Message.java" afterDir="false" />
+    <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working">
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/intellij-javadocs-4.0.1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LogInGUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared_classes/OfflineMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared_classes/ServerMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/Frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/Frame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/Message.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared_classes/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +54,14 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="server_side" />
+      <recent name="gui_classes.clientside" />
+    </key>
   </component>
   <component name="RunManager" selected="Application.GUIClientController">
     <configuration name="Admin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -72,7 +84,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GUIClientController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="GUIClientController" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.GUIClientController" />
       <module name="console" />
       <extension name="coverage">
@@ -85,12 +97,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="server_side.Server" />
+    <configuration name="LogInGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.LogInGUI" />
       <module name="console" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="server_side.*" />
+          <option name="PATTERN" value="gui_classes.clientside.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -114,17 +126,17 @@
     <list>
       <item itemvalue="Application.Admin" />
       <item itemvalue="Application.Client" />
-      <item itemvalue="Application.Server" />
       <item itemvalue="Application.UserManagement_GUI" />
       <item itemvalue="Application.GUIClientController" />
+      <item itemvalue="Application.LogInGUI" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.GUIClientController" />
         <item itemvalue="Application.Admin" />
+        <item itemvalue="Application.LogInGUI" />
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.UserManagement_GUI" />
-        <item itemvalue="Application.Server" />
       </list>
     </recent_temporary>
   </component>
@@ -138,7 +150,9 @@
       <updated>1677313708151</updated>
       <workItem from="1677313709485" duration="10404000" />
       <workItem from="1677326738086" duration="619000" />
-      <workItem from="1677500437502" duration="5149000" />
+      <workItem from="1677500437502" duration="11131000" />
+      <workItem from="1677512978619" duration="905000" />
+      <workItem from="1677515560488" duration="23795000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -175,7 +189,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677332978319</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working">
+      <created>1677505945151</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1677505945151</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,19 +218,20 @@
     <MESSAGE value="set offline" />
     <MESSAGE value="set offline on socket termination" />
     <MESSAGE value="GROUP MESSAGE PACHECK HUHUHUHHU" />
-    <option name="LAST_COMMIT_MESSAGE" value="GROUP MESSAGE PACHECK HUHUHUHHU" />
+    <MESSAGE value="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working" />
+    <option name="LAST_COMMIT_MESSAGE" value="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java</url>
-          <line>68</line>
-          <properties class="gui_classes.clientside.GUIClientController" method="sendMessage">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.net.SocketException" package="java.net" />
           <option name="timeStamp" value="1" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

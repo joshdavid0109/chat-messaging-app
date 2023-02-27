@@ -1,10 +1,13 @@
 package server_side;
 
 
+import client_side.Client;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import shared_classes.LoginCredentials;
+import shared_classes.Message;
 import shared_classes.User;
 import shared_classes.XMLParse;
 
@@ -25,23 +28,31 @@ import java.util.concurrent.Executors;
 public class Server {
     public static String f = "res/users.xml";
     static Socket clientSocket;
-    static PrintWriter printWriter;
-    static BufferedReader bufferedReader;
     public static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
     public static List<User> registeredUsersList = new ArrayList<>();
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     private int port;
     static Scanner scanner = new Scanner(System.in);
     static ServerSocket serverSocket;
-    private List<User> clients;
+    public List<User> clients;
+    private List<ClientHandler> clientsList;
 
-    ObjectInputStream objectInputStream;
-    ObjectOutputStream objectOutputStream;
+    ObjectInputStream input;
+    ObjectOutputStream output;
 
     public Server(int port){
         this.port = port;
+
+        //arraylist ng mgauser
+        this.clients = new ArrayList<>();
     }
     public Server(){
+    }
+
+    public void addUser(User user){
+        clients.add(user);
+        //debug statment
+        System.out.println(user+ " has been added to ze list of ze users");
     }
 
     /**
@@ -53,7 +64,7 @@ public class Server {
      @throws ParserConfigurationException if a DocumentBuilder cannot be created.
      */
     public void run() throws IOException, SAXException, ParserConfigurationException {
-        port = 0;
+        clientsList = new ArrayList<>();
         boolean validPort = false;
         while(!validPort){
             try{
@@ -75,27 +86,52 @@ public class Server {
             }
         }
         System.out.println("Server created at port: "+port);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
 
             try {
                 while (true) {
-                    ExecutorService executorService = Executors.newFixedThreadPool(10);
-                        try {
-                            clientSocket = serverSocket.accept();
-                            System.out.println("A client has connected.");
-                            /*bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                            printWriter = new PrintWriter(clientSocket.getOutputStream(), true);*/
-                            //HARDCODE MUNA
-                            User user = new User("6969696", "Darren", "@franzxsu");
-                            executorService.execute(new ClientHandler(this, user, clientSocket));
-                        }catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        clientSocket = serverSocket.accept();
+                        // Create an instance of ObjectOutputStream to write the message object to the client
+                        ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+                        ClientHandler clientHandler = new ClientHandler(this, clientSocket, outToClient);
+                        executorService.execute(clientHandler);
+                        clientsList.add(clientHandler);
+                    }catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
         }
+    public void broadcastMessage(Message message) {
+        for (ClientHandler client : clientsList) {
+            try {
+                client.outToClient.writeObject(message);
+                client.outToClient.flush();
+            } catch (IOException e) {
+                System.err.println("Error sending message to client: " + e);
+            }
+        }
+    }
+    public void privateMessage(String recipient, Message message) {
+        ObjectOutputStream outToRecipient;
+        for (ClientHandler client : loginHandlerArraylist) {
+            if (loggedInUserHashMap.get(client).getName().equals(recipient)) {
+                outToRecipient = client.outToClient;
+                try {
+                    outToRecipient.writeObject(message);
+                    outToRecipient.flush();
+                } catch (IOException e) {
+                    System.err.println("Error sending message to client: " + e);
+                }
+                return;
+            }
+        }
+        System.err.println("User not found: " + recipient);
+    }
 
     /**
      This method updates the XML file with new user information.
@@ -126,7 +162,7 @@ public class Server {
     /**
      This method shuts down the server by closing all sockets and streams and exiting the program.
      */
-    public static void shutdown() {
+    /*public static void shutdown() {
         try {
             bufferedReader.close();
             printWriter.close();
@@ -136,7 +172,7 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public static ArrayList<User> getUsersByGroupName(String groupName) {
         ArrayList<User> users = new ArrayList<>();

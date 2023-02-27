@@ -1,48 +1,40 @@
 package shared_classes;
 
-import java.awt.*;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 
-/*public record User(String id, String name, String age, String username, String password, String status, String banStatus) {
-
-
-    @Override
-    public String toString() {
-        return "User: " + name + "\nAge: " + age + "\nUsername: " + username;
-    }
-}*/
-
-public class User {
+public class User implements Serializable {
     private String id;
-    private PrintStream streamOut;
-    private InputStream streamIn;
+    private transient ObjectOutputStream streamOut;
+    private transient ObjectInputStream streamIn;
     private String name;
-    private String age;
     private String username;
-    private String password;
-    private String status;
-    private String banStatus;
+    private transient Socket socket;
 
-    public User(String id, String name, String username){
+    public User(String id, String name, String username, Socket socket) throws IOException {
         this.id = id;
         this.name = name;
-        this.age = age;
         this.username = username;
     }
 
-    public PrintStream getOutStream(){
+/*    public void setSocket(Socket socket) throws IOException {
+        this.socket = socket;
+        this.streamOut = new ObjectOutputStream(socket.getOutputStream());
+        this.streamIn = new ObjectInputStream(socket.getInputStream());
+    }*/
+
+    public ObjectOutputStream getOutStream() {
         return this.streamOut;
     }
 
-    public InputStream getInputStream(){
+    public ObjectInputStream getInputStream() {
         return this.streamIn;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 }
-
-

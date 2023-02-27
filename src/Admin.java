@@ -44,9 +44,9 @@ public class Admin {
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    RegClientHandler regClientHandler = new RegClientHandler();
-                    regClientHandler.run();
-                    break;
+                    //RegClientHandler regClientHandler = new RegClientHandler();
+                    //regClientHandler.run();
+                    //break;
                 case 2:
                     System.out.println("/ban [NAME] to ban a user\n/unban [NAME] to unban a user");
                     executorService.execute(new Thread(() -> {
@@ -72,7 +72,7 @@ public class Admin {
                     server.run();
                     break;
                 case 6:
-                    Server.shutdown();
+                    //Server.shutdown();
                     break;
                 default:
                     break;

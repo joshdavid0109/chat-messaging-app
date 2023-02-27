@@ -1,10 +1,12 @@
 package server_side;
 
+import gui_classes.clientside.GUIClientController;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import shared_classes.LoginCredentials;
 import shared_classes.Message;
 import shared_classes.User;
 import shared_classes.XMLParse;
@@ -19,13 +21,12 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import static server_side.Server.loggedInUserHashMap;
-import static server_side.Server.loginHandlerArraylist;
-
+import static server_side.Server.*;
 
 /**
  * The type Client handler.
@@ -39,12 +40,18 @@ public class ClientHandler implements Runnable {
     static File usersFile = new File("res/users.xml");
     XMLParse xmlParse = new XMLParse("res/messages.xml");
 
+    //private List<User> clients;
     private Server server;
     private User user;
+    public ObjectOutputStream outToClient = null;
 
-    public ClientHandler(Server s, User u, Socket clientSocket) {
+    public ObjectOutputStream getOutToClient() {
+        return outToClient;
+    }
+
+    public ClientHandler(Server s, Socket clientSocket, ObjectOutputStream outToClient) {
         this.server = s;
-        this.user = u;
+        this.outToClient = outToClient;
         this.clientSocket = clientSocket;
         try {
             this.userInput = new ObjectInputStream(clientSocket.getInputStream());
@@ -55,9 +62,65 @@ public class ClientHandler implements Runnable {
 
     public void run() {
         try {
-            while (true) {
-                Message message = (Message) userInput.readObject();
-                System.out.println("Received message: " + message.getContent() +"from: "+message.getRecipient());
+            while (userInput != null) {
+                Object obj = userInput.readObject();
+                if (obj instanceof Message) {
+                    Message message = (Message) obj;
+                    System.out.println("SENDER: "+message.getSender()+" MESSAGE: "+message.getContent()+" RECIPIENT: "+message.getRecipient());
+
+                    if(message.getRecipient().equals("TOALL")){
+                        server.broadcastMessage(message);
+                    }
+
+                    else{
+                        server.privateMessage(message.getRecipient(), message);
+                    }
+                    //outToClient.writeObject(message);
+                } else if (obj instanceof LoginCredentials) {
+                    LoginCredentials loginCredentials = (LoginCredentials) obj;
+
+                    //IF TAMA PASS SEND A USER, HARDCODE MUNA HEHE
+
+                    //TODO - GAWIN PROPER LOGIN NA NAGBABASA SA USERS XML
+                    if (loginCredentials.getUsername().equals("asd") && loginCredentials.getPassword().equals("asd")) {
+                        User user = new User("6", "Darren", "@franz", clientSocket);
+                        outToClient.writeObject(user);
+                        outToClient.flush();
+                        server.clients.add(user);
+                        loginHandlerArraylist.add(this);
+                        loggedInUserHashMap.put(this, user);
+                    }
+                    else if (loginCredentials.getUsername().equals("lol") && loginCredentials.getPassword().equals("lol")) {
+                        User user = new User("7", "Ariel", "@arie;", clientSocket);
+                        outToClient.writeObject(user);
+                        outToClient.flush();
+                        server.clients.add(user);
+                        loginHandlerArraylist.add(this);
+                        loggedInUserHashMap.put(this, user);
+                    }
+                    else if (loginCredentials.getUsername().equals("xxx") && loginCredentials.getPassword().equals("xxx")) {
+                        User user = new User("8", "Joshua", "@joshua", clientSocket);
+                        outToClient.writeObject(user);
+                        outToClient.flush();
+                        server.clients.add(user);
+                        loginHandlerArraylist.add(this);
+                        loggedInUserHashMap.put(this, user);
+                    }
+                    else if (loginCredentials.getUsername().equals("123") && loginCredentials.getPassword().equals("123")) {
+                        User user = new User("9", "Rey", "@rey", clientSocket);
+                        outToClient.writeObject(user);
+                        outToClient.flush();
+                        server.clients.add(user);
+                        loginHandlerArraylist.add(this);
+                        loggedInUserHashMap.put(this, user);
+                    }
+                    else {
+                        outToClient.writeObject(new Message("WRONG CREDENTIALS BOY"));
+                        outToClient.flush();
+                        System.out.println("WRONG");
+                    }
+
+                }
             }
         } catch (IOException e) {
             System.err.println("Error handling client: " + e);
@@ -68,7 +131,7 @@ public class ClientHandler implements Runnable {
                 userInput.close();
                 clientSocket.close();
             } catch (IOException e) {
-                // do nothing
+                e.printStackTrace();
             }
         }
     }
