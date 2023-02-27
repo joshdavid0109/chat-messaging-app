@@ -1,3 +1,4 @@
+/*
 package gui_classes.serverside;
 
 import shared_classes.User;
@@ -103,3 +104,4 @@ public class ServerMain implements Runnable{
         listOfMembers.add(listOfMembersName);
     }
 }
+*/

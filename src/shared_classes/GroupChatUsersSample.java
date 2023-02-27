@@ -1,3 +1,4 @@
+/*
 package shared_classes;
 
 import java.util.List;
@@ -19,3 +20,4 @@ public record GroupChatUsersSample(String id, String groupName, String admin, Li
     }
 }
 
+*/

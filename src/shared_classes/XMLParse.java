@@ -80,7 +80,7 @@ public class XMLParse {
             passwordElement.appendChild(document.createTextNode(password));
             elementUser.appendChild(passwordElement);
 
-            Server.registeredUsersList.add(new User(id, name, age, username, password,status, banStatus));
+            /*Server.registeredUsersList.add(new User(id, name, age, username, password,status, banStatus));*/
 
             trimWhiteSpace(element);
 

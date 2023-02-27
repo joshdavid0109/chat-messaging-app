@@ -1,3 +1,4 @@
+/*
 package gui_classes;
 
 import gui_classes.clientside.ClientMain;
@@ -151,4 +152,4 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
     @Override
     public void actionPerformed(ActionEvent e) {
     }
-}
+}*/

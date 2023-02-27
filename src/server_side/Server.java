@@ -5,7 +5,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import shared_classes.GroupChatUsersSample;
 import shared_classes.User;
 import shared_classes.XMLParse;
 
@@ -30,11 +29,11 @@ public class Server {
     static BufferedReader bufferedReader;
     public static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
     public static List<User> registeredUsersList = new ArrayList<>();
-    public static List<GroupChatUsersSample> groupChatUsers = new ArrayList<>();
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     private int port;
     static Scanner scanner = new Scanner(System.in);
     static ServerSocket serverSocket;
+    private List<User> clients;
 
     ObjectInputStream objectInputStream;
     ObjectOutputStream objectOutputStream;
@@ -45,6 +44,14 @@ public class Server {
     public Server(){
     }
 
+    /**
+     This method creates a server socket and listens to incoming connections.
+     It prompts the user to input a valid port number, and creates a new ServerSocket on that port.
+     Then, it creates a new ClientHandler thread for each incoming client connection.
+     @throws IOException if an I/O error occurs when opening the socket.
+     @throws SAXException if there is an error parsing the XML file.
+     @throws ParserConfigurationException if a DocumentBuilder cannot be created.
+     */
     public void run() throws IOException, SAXException, ParserConfigurationException {
         port = 0;
         boolean validPort = false;
@@ -70,19 +77,19 @@ public class Server {
         System.out.println("Server created at port: "+port);
 
             try {
-
                 while (true) {
                     ExecutorService executorService = Executors.newFixedThreadPool(10);
                         try {
                             clientSocket = serverSocket.accept();
                             System.out.println("A client has connected.");
-                            bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                            printWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-                            executorService.execute(new ClientHandler(clientSocket, printWriter, bufferedReader));
+                            /*bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                            printWriter = new PrintWriter(clientSocket.getOutputStream(), true);*/
+                            //HARDCODE MUNA
+                            User user = new User("6969696", "Darren", "@franzxsu");
+                            executorService.execute(new ClientHandler(this, user, clientSocket));
                         }catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-
                 }
 
             } catch (RuntimeException e) {
@@ -90,7 +97,11 @@ public class Server {
             }
         }
 
-
+    /**
+     This method updates the XML file with new user information.
+     @param users the NodeList containing the user information.
+     @param document the Document object representing the XML file.
+     */
     public static void updateXML(NodeList users, Document document) {
         users = document.getElementsByTagName("Users");
         Element element = (Element) users.item(0);
@@ -112,6 +123,9 @@ public class Server {
         }
     }
 
+    /**
+     This method shuts down the server by closing all sockets and streams and exiting the program.
+     */
     public static void shutdown() {
         try {
             bufferedReader.close();
@@ -144,8 +158,8 @@ public class Server {
                         String username = element.getElementsByTagName("Username").item(0).getTextContent();
                         String password = element.getElementsByTagName("Password").item(0).getTextContent();
                         String status = element.getElementsByTagName("status").item(0).getTextContent();
-                        User user = new User(id, name, age, username, password, status, "x");
-                        users.add(user);
+                        //User user = new User(id, name, age, username, password, status, "x");
+                        //users.add(user);
                     }
                 }
             }
@@ -180,7 +194,7 @@ public class Server {
                 catch(NullPointerException e){
                     banStatus = "x";
                 }
-                registeredUsersList.add(new User(id, name, age, username, password, status, banStatus));
+                //registeredUsersList.add(new User(id, name, age, username, password, status, banStatus));
 
 
             }

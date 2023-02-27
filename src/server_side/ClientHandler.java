@@ -1,12 +1,11 @@
 package server_side;
 
-import client_side.GroupChatClientHandler;
-import gui_classes.clientside.ClientMain;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import shared_classes.Message;
 import shared_classes.User;
 import shared_classes.XMLParse;
 
@@ -16,7 +15,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -29,58 +27,74 @@ import static server_side.Server.loggedInUserHashMap;
 import static server_side.Server.loginHandlerArraylist;
 
 
+/**
+ * The type Client handler.
+ */
 public class ClientHandler implements Runnable {
-    public Socket socket;
+
+    public Socket clientSocket;
     public PrintWriter printWriter = null;
     public BufferedReader bufferedReader = null;
-    ObjectInputStream objectInputStream;
-    ObjectOutputStream objectOutputStream;
-    boolean loginStatus;
+    public ObjectInputStream userInput = null;
     static File usersFile = new File("res/users.xml");
     XMLParse xmlParse = new XMLParse("res/messages.xml");
-//    ObjectInputStream inputStream = new
 
-    public ClientHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) throws IOException {
-        this.socket= clientSocket;
-        this.printWriter = printWriter;
-        this.bufferedReader = bufferedReader;
+    private Server server;
+    private User user;
 
-    }
-
-    public ClientHandler(Socket s) {
-//        this.socket = s;
-//        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//        printWriter = new PrintWriter(socket.getOutputStream(), true);
+    public ClientHandler(Server s, User u, Socket clientSocket) {
+        this.server = s;
+        this.user = u;
+        this.clientSocket = clientSocket;
+        try {
+            this.userInput = new ObjectInputStream(clientSocket.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void run() {
-        printWriter.println("CONNECTION ESTABLISHED...");
-        String name = null;
-        while (true){
+        try {
+            while (true) {
+                Message message = (Message) userInput.readObject();
+                System.out.println("Received message: " + message.getContent() +"from: "+message.getRecipient());
+            }
+        } catch (IOException e) {
+            System.err.println("Error handling client: " + e);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Invalid message received: " + e);
+        } finally {
+            try {
+                userInput.close();
+                clientSocket.close();
+            } catch (IOException e) {
+                // do nothing
+            }
+        }
+    }
+
+
+
+        /*while (true){
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             try {
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 org.w3c.dom.Document document;
                 String f = "res/users.xml";
                 File file= new File(f);
-
                 document = documentBuilder.parse(file);
-
                 NodeList users = document.getElementsByTagName("User");
-
                 userValidation(name, users);
-
             } catch (IOException | ParserConfigurationException | SAXException e) {
                 System.out.println(e.getMessage());
             }
-        }
+        }*/
     }
 
-    private void joinServer(User user, NodeList nodeList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        String message, groupName;
-//        objectInputStream = new ObjectInputStream(socket.getInputStream());
-//        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-
+    /*private void joinServer(User user, NodeList nodeList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+        String message, groupName = null;
+        boolean hasUnread = false;
+        StringBuilder unreadMessages = new StringBuilder();
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -91,12 +105,12 @@ public class ClientHandler implements Runnable {
             int i = 0;
             while (i < messageCount) {
                 Element msg = (Element) messageList.item(i);
-
                 if(user.name().equals(msg.getElementsByTagName("Recipient").item(0).getTextContent())){
+                    hasUnread =true;
                     String sender = msg.getElementsByTagName("Sender").item(0).getTextContent();
                     String text = msg.getElementsByTagName("Text").item(0).getTextContent();
                     String time = msg.getElementsByTagName("Time").item(0).getTextContent();
-                    printWriter.println(time+" [PM]" +sender+": "+text);
+                    unreadMessages.append(time).append(" [PM]").append(sender).append(": ").append(text).append("\n");
 
                     //alisin msg element sa messages.xml if nasent na
                     Node parent = msg.getParentNode();
@@ -114,8 +128,10 @@ public class ClientHandler implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        if(hasUnread){
+            printWriter.println("UNREAD MESSAGES: ");
+            printWriter.println(unreadMessages);
+        }
         try {
             broadcast(user.name() + " joined the chat");
             messagePrompt(user.name());
@@ -164,7 +180,7 @@ public class ClientHandler implements Runnable {
                                             }
                                         }
                                         break;
-                                        //check if offline yung user, if offline yung user, store yung message sa messages.xmls
+                                        //check if offline yung user, if offline yung user, store yung message sa messages.xml
                                     } else if (u.status().equals("offline")){
                                         LocalDateTime timeSent = LocalDateTime.now();
                                         printWriter.println("user "+u.name()+" is offline, "+u.name()+" will receive your message if "+u.name()+" goes online:)");
@@ -196,14 +212,12 @@ public class ClientHandler implements Runnable {
                             groupName = bufferedReader.readLine();
                             messagePrompt(user.name());
                             message = bufferedReader.readLine();
-                            ArrayList<User> membarz = Server.getUsersByGroupName(groupName);
-                            System.out.println("MEMBeRS ng group is "+membarz);
                             for (User u :Server.getUsersByGroupName(groupName)) {
                                 for (Map.Entry<ClientHandler, User> hash : loggedInUserHashMap.entrySet()) {
                                     if (hash.getValue().name().equals(u.name())) {
                                         for (ClientHandler clientHandler : loginHandlerArraylist) {
                                             if (clientHandler.socket.equals(hash.getKey().socket)) {
-                                                clientHandler.sendMessage("[GM] " + user.name() + ": " + message);
+                                                clientHandler.sendMessage("[GROUP @"+groupName+"] " + user.name() + ": " + message);
                                                 break;
                                             }
                                         }
@@ -234,16 +248,14 @@ public class ClientHandler implements Runnable {
 
             for (int i = 0; i < users.getLength(); i++) {
                 Element element = (Element) users.item(i);
-
                 element.getElementsByTagName("status").item(0).setTextContent("offline");
-
                 Server.updateXML(users, document);
             }
             socket.close();
         }
-    }
+    }*/
 
-    private void sendGM(User u) {
+    /*private void sendGM(User u) {
         try {
             printWriter.println("You are a member of the groups: ");
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -268,9 +280,9 @@ public class ClientHandler implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    private void setLoginStatus(String name, String status) {
+    /*private void setLoginStatus(String name, String status) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -295,7 +307,12 @@ public class ClientHandler implements Runnable {
         }
 
 
-
+    *//**
+     * Broadcast messages.
+     *
+     * @param msg        the msg
+     * @param userSender the user sender
+     *//*
     public void broadcastMessages(String msg, User userSender) {
         for (ClientHandler client: loginHandlerArraylist) {
             client.printWriter.println(
@@ -303,14 +320,24 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    // send list of clients to all Users
+    *//**
+     * Broadcast all users.
+     *//*
+// send list of clients to all Users
     public void broadcastAllUsers(){
         for (ClientHandler client: loginHandlerArraylist) {
             client.printWriter.println(loginHandlerArraylist);
         }
     }
 
-    // send message to a User (String)
+    *//**
+     * Send message to user.
+     *
+     * @param msg        the msg
+     * @param userSender the user sender
+     * @param user       the user
+     *//*
+// send message to a User (String)
     public void sendMessageToUser(String msg, User userSender, String user){
         boolean find = false;
         for (Map.Entry<ClientHandler, User> client : loggedInUserHashMap.entrySet()) {
@@ -351,6 +378,11 @@ public class ClientHandler implements Runnable {
         printWriter.println("\n\n");
     }
 
+    *//**
+     * Broadcast.
+     *
+     * @param message the message
+     *//*
     public void broadcast(String message ){
         for (ClientHandler loginHandler : loginHandlerArraylist) {
             if (loginHandler != null && loginStatus) {
@@ -359,11 +391,22 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    *//**
+     * Send message.
+     *
+     * @param message the message
+     *//*
     public void sendMessage (String message){
         printWriter.println(message);
     }
 
 
+    *//**
+     * Change u name.
+     *
+     * @param name      the name
+     * @param usersList the users list
+     *//*
     public void changeUName(String name, NodeList usersList) {
 
         //should check list of usernames muna if available
@@ -397,6 +440,12 @@ public class ClientHandler implements Runnable {
 
     }
 
+    *//**
+     * User validation.
+     *
+     * @param name  the name
+     * @param users the users
+     *//*
     public void userValidation(String name, NodeList users) {
 
         while (!loginStatus) {
@@ -434,10 +483,10 @@ public class ClientHandler implements Runnable {
                                         printWriter.println("Sorry. Your account is currently banned from the system.");
                                         continue login;
                                     }
-                                    /*if (u.getElementsByTagName("status").item(0).getTextContent().equals("online")) {
+                                    *//*if (u.getElementsByTagName("status").item(0).getTextContent().equals("online")) {
                                         printWriter.println("User is currently logged in on another device.");
                                         continue login;
-                                    }*/
+                                    }*//*
 
                                     u.getElementsByTagName("status").item(0).setTextContent("online");
                                     Server.updateXML(users, document);
@@ -458,10 +507,6 @@ public class ClientHandler implements Runnable {
 
                                     System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " + u.getElementsByTagName("status").item(0).getTextContent());
 
-
-                                /*ClientMain clientMain = new ClientMain(user);
-                                clientMain.run();*/
-
                                     joinServer(user, users);
                                     broadcast(name + ": ");
                                     break;
@@ -477,5 +522,4 @@ public class ClientHandler implements Runnable {
                 System.out.println(e.getMessage());
             }
         }
-    }
-}
+    }*/

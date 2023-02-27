@@ -1,3 +1,4 @@
+/*
 package gui_classes.clientside;
 
 import org.w3c.dom.Document;
@@ -149,7 +150,8 @@ public class Frame implements ListSelectionListener {
         pmTextField.setBorder(BorderFactory.createEmptyBorder());
         pmTextField.setBounds(30, 570, 220, 20);
 
-        /*pmTextField.addKeyListener(new KeyAdapter() {
+        */
+/*pmTextField.addKeyListener(new KeyAdapter() {
             // send message on Enter
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -169,7 +171,8 @@ public class Frame implements ListSelectionListener {
                     message = currentMessage;
                 }
             }
-        });*/
+        });*//*
+
 
         JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
         scrollPaneListMembers.setVisible(true);
@@ -257,13 +260,16 @@ public class Frame implements ListSelectionListener {
         pmTextArea.add(new JLabel("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
     }
 
-  /*  public void run() throws IOException {
+  */
+/*  public void run() throws IOException {
         Scanner sc = new Scanner(socket.getInputStream());
 
         while (sc.hasNextLine()) {
             message =sc.nextLine();
             // Gestion des messages private
-            *//*if (message.charAt(0) == '@'){
+            *//*
+*/
+/*if (message.charAt(0) == '@'){
                 if(message.contains(" ")){
                     System.out.println("private msg : " + message);
                     int firstSpace = message.indexOf(" ");
@@ -281,13 +287,16 @@ public class Frame implements ListSelectionListener {
                 // update color for all other users
                 this.server.broadcastAllUsers();
             }else{}*//*
+*/
+/*
                 // update user list
                 broadcast(message, user);
 
         }
         // end of Thread
         sc.close();
-    }*/
+    }*//*
+
       public JTextArea textAreaPane() {
           return textArea;
       }
@@ -325,11 +334,13 @@ public class Frame implements ListSelectionListener {
                 break;
             }
 
+*/
 /*
             pmTextArea.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
             privateMessagePanel.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
             privateMessagePanel.revalidate();
-            privateMessagePanel.repaint();*/
+            privateMessagePanel.repaint();*//*
+
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             System.exit(0);
@@ -409,3 +420,4 @@ public class Frame implements ListSelectionListener {
         }
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package shared_classes;
 
 import org.w3c.dom.Document;
@@ -128,4 +129,4 @@ public class XMLParserGC {
             throw new NullPointerException("Socket closed");
         }
     }
-}
+}*/

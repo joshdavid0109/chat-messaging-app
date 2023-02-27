@@ -1,3 +1,4 @@
+/*
 package gui_classes.clientside;
 
 import shared_classes.User;
@@ -31,3 +32,4 @@ public class ClientMain implements Runnable{
             }).start();
     }
 }
+*/

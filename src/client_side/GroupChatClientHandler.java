@@ -1,3 +1,4 @@
+/*
 package client_side;
 
 import org.w3c.dom.Document;
@@ -190,3 +191,4 @@ public class GroupChatClientHandler extends Thread {
         return groupName;
     }
 }
+*/

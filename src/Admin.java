@@ -6,7 +6,6 @@ import org.xml.sax.SAXException;
 import server_side.RegClientHandler;
 import server_side.Server;
 import shared_classes.User;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -66,7 +65,7 @@ public class Admin {
                     deleteUser(name);
                     break;
                 case 4:
-                    printUserList();
+                    //printUserList();
                     break;
                 case 5:
                     Server server = new Server(port);
@@ -119,7 +118,7 @@ public void deleteUser(String username) {
 
 }
 
-    public void printUserList() {
+    /*public void printUserList() {
         userArrayList = getUsers();
         System.out.printf("%n-----------------------------------------------------------------%n");
         System.out.printf("                  LIST OF REGISTERED USERS                       %n");
@@ -138,7 +137,7 @@ public void deleteUser(String username) {
                     user.name(), user.age(), user.username(), user.status(), banStats);
         }
         System.out.printf("-----------------------------------------------------------------%n%n");
-    }
+    }*/
 
     private static void banUser(String command, String name) {
         try {
@@ -205,7 +204,7 @@ public void deleteUser(String username) {
                 catch(NullPointerException e){
                     banStatus = "x";
                 }
-                userArrayList.add(new User(id, name, age, username, password, status, banStatus));
+                //userArrayList.add(new User(id, name, age, username, password, status, banStatus));
 
 
             }
