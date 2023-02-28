@@ -82,44 +82,20 @@ public class ClientHandler implements Runnable {
                     //IF TAMA PASS SEND A USER, HARDCODE MUNA HEHE
 
                     //TODO - GAWIN PROPER LOGIN NA NAGBABASA SA USERS XML
-                    if (loginCredentials.getUsername().equals("asd") && loginCredentials.getPassword().equals("asd")) {
-                        User user = new User("6", "Darren", "@franz", clientSocket);
-                        outToClient.writeObject(user);
-                        outToClient.flush();
-                        server.clients.add(user);
-                        loginHandlerArraylist.add(this);
-                        loggedInUserHashMap.put(this, user);
-                    }
-                    else if (loginCredentials.getUsername().equals("lol") && loginCredentials.getPassword().equals("lol")) {
-                        User user = new User("7", "Ariel", "@arie;", clientSocket);
-                        outToClient.writeObject(user);
-                        outToClient.flush();
-                        server.clients.add(user);
-                        loginHandlerArraylist.add(this);
-                        loggedInUserHashMap.put(this, user);
-                    }
-                    else if (loginCredentials.getUsername().equals("xxx") && loginCredentials.getPassword().equals("xxx")) {
-                        User user = new User("8", "Joshua", "@joshua", clientSocket);
-                        outToClient.writeObject(user);
-                        outToClient.flush();
-                        server.clients.add(user);
-                        loginHandlerArraylist.add(this);
-                        loggedInUserHashMap.put(this, user);
-                    }
-                    else if (loginCredentials.getUsername().equals("123") && loginCredentials.getPassword().equals("123")) {
-                        User user = new User("9", "Rey", "@rey", clientSocket);
-                        outToClient.writeObject(user);
-                        outToClient.flush();
-                        server.clients.add(user);
-                        loginHandlerArraylist.add(this);
-                        loggedInUserHashMap.put(this, user);
-                    }
-                    else {
-                        outToClient.writeObject(new Message("WRONG CREDENTIALS BOY"));
-                        outToClient.flush();
-                        System.out.println("WRONG");
-                    }
 
+                    getRegisteredUsers();
+
+                    for (User user: registeredUsersList) {
+                        if (user.getUsername().equals(loginCredentials.getUsername())) {
+                            if (user.getPassword().equals(loginCredentials.getPassword())) {
+                                outToClient.writeObject(user);
+                                outToClient.flush();
+                                server.clients.add(user);
+                                loginHandlerArraylist.add(this);
+                                loggedInUserHashMap.put(this, user);
+                            }
+                        }
+                    }
                 }
             }
         } catch (IOException e) {

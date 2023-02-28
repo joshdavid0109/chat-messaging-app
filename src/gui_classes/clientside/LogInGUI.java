@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LogInGUI extends JDialog {
+public class LogInGUI extends JDialog implements Runnable{
     private JLabel usernameLabel;
     private JTextField usernameField;
     private JLabel passwordLabel;
@@ -17,9 +17,9 @@ public class LogInGUI extends JDialog {
     public static final int OK = 1;
     public static final int CANCEL = 0;
 
-    public LogInGUI(JFrame parent) {
+    public LogInGUI(JFrame parent)  {
         super(parent, "Login", true);
-        JPanel panel = new JPanel(new GridLayout(3, 2));
+        JPanel panel = new JPanel(new GridLayout(3,2));
         usernameLabel = new JLabel("Username:");
         usernameField = new JTextField();
         passwordLabel = new JLabel("Password:");
@@ -65,11 +65,16 @@ public class LogInGUI extends JDialog {
         return usernameField.getText();
     }
 
-    public char[] getPassword() {
-        return passwordField.getPassword();
+    public String getPassword() {
+        return passwordField.getText();
     }
 
-    /*public static void main(String[] args) {
+    @Override
+    public void run() {
         new LogInGUI(null);
-    }*/
+    }
+
+    public static void main(String[] args) {
+        new LogInGUI(null);
+    }
 }

@@ -230,7 +230,7 @@ public class Server {
                 catch(NullPointerException e){
                     banStatus = "x";
                 }
-                //registeredUsersList.add(new User(id, name, age, username, password, status, banStatus));
+                registeredUsersList.add(new User(id, name, age, username, password, status, banStatus));
 
 
             }

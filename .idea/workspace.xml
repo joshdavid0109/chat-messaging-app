@@ -5,19 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working">
-      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/intellij-javadocs-4.0.1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LogInGUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/shared_classes/OfflineMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/shared_classes/ServerMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Admin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LogInGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LogInGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared_classes/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,6 +24,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/sandwich" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,12 +47,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH": "208",
+    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "287"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="server_side" />
@@ -67,19 +63,6 @@
     <configuration name="Admin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Admin" />
       <module name="console" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="client_side.Client" />
-      <module name="console" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="client_side.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -110,6 +93,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LoginGUIForm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.LoginGUIForm" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="UserManagement_GUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
       <module name="console" />
@@ -124,8 +120,8 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.LoginGUIForm" />
       <item itemvalue="Application.Admin" />
-      <item itemvalue="Application.Client" />
       <item itemvalue="Application.UserManagement_GUI" />
       <item itemvalue="Application.GUIClientController" />
       <item itemvalue="Application.LogInGUI" />
@@ -134,8 +130,8 @@
       <list>
         <item itemvalue="Application.GUIClientController" />
         <item itemvalue="Application.Admin" />
+        <item itemvalue="Application.LoginGUIForm" />
         <item itemvalue="Application.LogInGUI" />
-        <item itemvalue="Application.Client" />
         <item itemvalue="Application.UserManagement_GUI" />
       </list>
     </recent_temporary>
@@ -230,7 +226,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java</url>
-          <line>78</line>
+          <line>79</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

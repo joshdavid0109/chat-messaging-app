@@ -18,4 +18,7 @@ public class LoginCredentials implements Serializable {
     public String getPassword() {
         return password;
     }
+
+
+
 }

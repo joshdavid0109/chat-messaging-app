@@ -1,5 +1,6 @@
 package gui_classes.clientside;
 
+import client_side.Client;
 import shared_classes.LoginCredentials;
 import shared_classes.Message;
 import shared_classes.User;
@@ -8,13 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class GUIClientController extends JFrame implements ActionListener{
 
-    private JTextArea messageArea;
     private JTextField messageInput;
     private JButton sendButton;
     private JTextPane messagePane;
@@ -72,13 +74,12 @@ public class GUIClientController extends JFrame implements ActionListener{
         boolean loggedIn = false;
         while (!loggedIn) {
             // Prompt the user to enter their username and password
-            String username = JOptionPane.showInputDialog("Enter your username:");
-            String password = JOptionPane.showInputDialog("Enter your password:");
 
+
+            LoginGUIForm log = new LoginGUIForm(this);
             // Create a login message and send it to the server
-            LoginCredentials loginMessage = new LoginCredentials(username, password);
+            LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
             output.writeObject(loginMessage);
-            System.out.println("HELLO BRO");
 
             if(input != null){
                 //System.out.println("HELLOasdASDD");
@@ -153,28 +154,39 @@ public class GUIClientController extends JFrame implements ActionListener{
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        int port;
+        int port = 0;
         String hostName;
         String userName;
         server = null;
         hostName = "localhost";
 
-        System.out.print("INPUT PORT: ");
-        port = Integer.parseInt(scanny.nextLine());
 
-        System.out.println("HINDI NAG POPOP UP PERO MAY LUMABAS NA JOPTION PANE");
-        System.out.println("ALT TAB NIYO NALANG, HINDI PA MAAYOS LOG IN KAYA");
-        System.out.println("ETO LANG PANGTRY NIYO PANG LOG IN:");
-        System.out.println();
-        System.out.println("asd:asd - darren");
-        System.out.println("123:123 - rey");
-        System.out.println("xxx:xxx - joshua");
-        System.out.println("lol:lol - ariel");
-        System.out.println();
-        System.out.println("PAG MALI LOG IN, NAG EERROR EWAN KO KUNG BAKIT");
-        System.out.println("yung pm ganito yung syntax -> /pm Ariel hello ariel its a me");
+        boolean validPort = false;
+        while (!validPort) {
+            try {
+                port = Integer.parseInt(JOptionPane.showInputDialog(new JPanel(), "Input port: "));
+
+                validPort = true;
+            }  catch(NumberFormatException e) {
+
+                JOptionPane.showMessageDialog(new JPanel(), "VALID NUMBER PLEASE", "Errror Message", JOptionPane.ERROR_MESSAGE);
+                System.out.println(e.getMessage());
+            } catch (NullPointerException e) {
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(new JPanel(), "INPUT A VALID PORT", "Error message", JOptionPane.ERROR_MESSAGE);
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(new JPanel(), "TRY AGAIN.", "Error message", JOptionPane.ERROR_MESSAGE);
+
+                System.out.println(e.getMessage());
+            }
+        }
+
+
+
         try{
             server = new Socket(hostName, port);
+            System.out.println("Connected to port: " + port);
         }catch(Exception e){
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -215,9 +227,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                             messagePane.setText(messagePane.getText()+"\n"+"[PRIVATE] "+msg.getSender()+": "+msg.getContent());
                         }
                         System.out.println(msg.getSender()+": " + msg.getContent());
-                    }
-                    else{
-                        System.out.println("WHATTTT");
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
