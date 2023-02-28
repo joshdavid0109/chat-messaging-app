@@ -8,6 +8,7 @@ import javax.swing.border.Border;
 
 public class UserManagement_GUI {
     User user;
+    JList<User> list;
 
     public UserManagement_GUI(/*User user*/) { this.user = user; }
 
@@ -56,7 +57,11 @@ public class UserManagement_GUI {
         unbanUser.setForeground(Color.black);
         unbanUser.setBackground(Color.decode("#c2b225"));
 
+
+        populateList();
         JPanel listOfUsers = new JPanel();
+        listOfUsers.add(new JScrollPane(list));
+        listOfUsers.setBounds(200, 190, 200, 500);
 
 
         frameUM.add(startServer);
@@ -64,6 +69,13 @@ public class UserManagement_GUI {
         frameUM.add(deleteUser);
         frameUM.add(banUser);
         frameUM.add(unbanUser);
+        frameUM.add(listOfUsers);
+    }
+
+    private void populateList() {
+        list = new JList<>();
+        Server.getRegisteredUsers();
+        list.setListData(Server.registeredUsersList.toArray(new User[0]));
     }
 
     public static void main(String[] args) {

@@ -74,8 +74,6 @@ public class GUIClientController extends JFrame implements ActionListener{
         boolean loggedIn = false;
         while (!loggedIn) {
             // Prompt the user to enter their username and password
-
-
             LoginGUIForm log = new LoginGUIForm(this);
             // Create a login message and send it to the server
             LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
@@ -164,8 +162,11 @@ public class GUIClientController extends JFrame implements ActionListener{
         boolean validPort = false;
         while (!validPort) {
             try {
-                port = Integer.parseInt(JOptionPane.showInputDialog(new JPanel(), "Input port: "));
 
+                port = Integer.parseInt(JOptionPane.showInputDialog(new JPanel(), "Input port: ", JOptionPane.YES_NO_CANCEL_OPTION));
+                if (port == JOptionPane.CANCEL_OPTION) {
+                    break;
+                }
                 validPort = true;
             }  catch(NumberFormatException e) {
 
@@ -181,8 +182,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                 System.out.println(e.getMessage());
             }
         }
-
-
 
         try{
             server = new Socket(hostName, port);

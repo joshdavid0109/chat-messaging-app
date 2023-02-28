@@ -65,7 +65,7 @@ public class Frame implements ListSelectionListener {
         contactList.addListSelectionListener(this);
 
         JLabel headerName = new JLabel();
-        headerName.setText(user.username());
+        headerName.setText(user.getUsername());
         headerName.setForeground(Color.WHITE);
         headerName.setFont(new Font("Arial", Font.BOLD, 12));
         headerName.setBounds(920, -15, 200, 75);
@@ -80,7 +80,7 @@ public class Frame implements ListSelectionListener {
         broadCast.setFont(new Font("Arial", Font.BOLD, 18));
         broadCast.setBounds(100, 0, 200, 75);
 
-        JLabel currentUserName = new JLabel(user.name());
+        JLabel currentUserName = new JLabel(user.getName());
         currentUserName.setForeground(Color.WHITE);
         currentUserName.setFont(new Font("Arial", Font.BOLD, 18));
         currentUserName.setBounds(30, 0, 200, 75);
@@ -102,12 +102,14 @@ public class Frame implements ListSelectionListener {
         sendButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         sendButton.setFocusable(false);
         sendButton.setBounds(270, 570, 50, 20);
+
+
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (!pmTextField.getText().equals(""))
-                        broadcast(pmTextField.getText());
+                        GUIClientController.
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -150,28 +152,6 @@ public class Frame implements ListSelectionListener {
         pmTextField.setBorder(BorderFactory.createEmptyBorder());
         pmTextField.setBounds(30, 570, 220, 20);
 
-        */
-/*pmTextField.addKeyListener(new KeyAdapter() {
-            // send message on Enter
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    sendMessage();
-                }
-
-                // Get last message typed
-                if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    String currentMessage = pmTextField.getText().trim();
-                    pmTextField.setText(message);
-                    message = currentMessage;
-                }
-
-                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    String currentMessage = pmTextField.getText().trim();
-                    pmTextField.setText(message);
-                    message = currentMessage;
-                }
-            }
-        });*//*
 
 
         JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
@@ -260,103 +240,6 @@ public class Frame implements ListSelectionListener {
         pmTextArea.add(new JLabel("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
     }
 
-  */
-/*  public void run() throws IOException {
-        Scanner sc = new Scanner(socket.getInputStream());
-
-        while (sc.hasNextLine()) {
-            message =sc.nextLine();
-            // Gestion des messages private
-            *//*
-*/
-/*if (message.charAt(0) == '@'){
-                if(message.contains(" ")){
-                    System.out.println("private msg : " + message);
-                    int firstSpace = message.indexOf(" ");
-                    String userPrivate= message.substring(1, firstSpace);
-                    server.sendMessageToUser(
-                            message.substring(
-                                    firstSpace+1, message.length()
-                            ), user, userPrivate
-                    );
-                }
-
-                // Gestion du changement
-            }else if (message.charAt(0) == '#'){
-                user.changeColor(message);
-                // update color for all other users
-                this.server.broadcastAllUsers();
-            }else{}*//*
-*/
-/*
-                // update user list
-                broadcast(message, user);
-
-        }
-        // end of Thread
-        sc.close();
-    }*//*
-
-      public JTextArea textAreaPane() {
-          return textArea;
-      }
-
-    public void setTextArea(String message) {
-        this.textAreaPane().append(message);
-    }
-
-    public JTextField msgTextField() {
-          return pmTextField;
-    }
-
-    public void setMsgTextField(String message) {
-          this.msgTextField().setText(message);
-    }
-
-
-    public void sendMessage(String m) throws IOException {
-        try {
-            for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
-
-                if (hash.getValue().username().equals(user.username())) {
-                    if (m.equals("")) {
-                        return;
-                    } else {
-//                        message = hash.getKey().bufferedReader.readLine();
-                        System.out.println(m);
-                        textArea.append(m);
-                        pmTextField.requestFocus();
-                        pmTextField.setText(null);
-                        break;
-                    }
-
-                }
-                break;
-            }
-
-*/
-/*
-            pmTextArea.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
-            privateMessagePanel.add(new JLabel("<html><b>" + "Your name" + ":</b> " + message + "</html>"));
-            privateMessagePanel.revalidate();
-            privateMessagePanel.repaint();*//*
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            System.exit(0);
-        }
-    }
-
-    public void broadcast(String m) throws IOException {
-        for (Frame frame : ClientMain.frameList) {
-            if (frame != null ) {
-                if (frame.msgTextField().getText()!= null) {
-                    m = frame.msgTextField().getText();
-                    frame.sendMessage(m + " test message \n");
-                }
-            }
-        }
-    }
 
     private String[] getAllContacts() {
         String[] contacts = new String[Server.registeredUsersList.size()];

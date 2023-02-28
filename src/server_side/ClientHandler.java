@@ -79,10 +79,6 @@ public class ClientHandler implements Runnable {
                 } else if (obj instanceof LoginCredentials) {
                     LoginCredentials loginCredentials = (LoginCredentials) obj;
 
-                    //IF TAMA PASS SEND A USER, HARDCODE MUNA HEHE
-
-                    //TODO - GAWIN PROPER LOGIN NA NAGBABASA SA USERS XML
-
                     getRegisteredUsers();
 
                     for (User user: registeredUsersList) {
