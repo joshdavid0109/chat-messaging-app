@@ -13,7 +13,7 @@
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
         <Groupname id="Admin">REAL</Groupname>
     </User>
@@ -22,7 +22,7 @@
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
         <Groupname id="Member">REAL</Groupname>
     </User>

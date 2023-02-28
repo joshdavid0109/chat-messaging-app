@@ -1,5 +1,9 @@
 package gui_classes.clientside;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import server_side.Server;
 import shared_classes.User;
 
 import javax.swing.*;
@@ -44,9 +48,13 @@ public class LoginGUIForm extends JDialog implements Runnable{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                getRegisteredUsers();
+                Document document = getRegisteredUsers();
+                NodeList nodelist = document.getElementsByTagName("User");
+                Element element;
                 boolean foundUser = false;
+
                 for (User user: registeredUsersList) {
+
                     if (user.getUsername().equals(getUsername())) {
                         foundUser = true;
                         if (user.getPassword().equals(getPassword())) {
@@ -55,6 +63,16 @@ public class LoginGUIForm extends JDialog implements Runnable{
                                 break;
                             }
                             else{
+                                for(int i =0; i < nodelist.getLength();i++) {
+                                    element = (Element) nodelist.item(i);
+                                    String uname = element.getElementsByTagName("Username").item(0).getTextContent();
+                                    String pass = element.getElementsByTagName("Password").item(0).getTextContent();
+                                    if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
+                                        element.getElementsByTagName("status").item(0).setTextContent("online");
+                                        Server.updateXML(nodelist, document);
+                                        break;
+                                    }
+                                }
                                 u = user;
                                 result = OK;
                                 dispose();
@@ -66,6 +84,7 @@ public class LoginGUIForm extends JDialog implements Runnable{
                             break;
                         }
                     }
+
                 }
                 if (!foundUser) {
                     //user doesnot exist
@@ -78,7 +97,7 @@ public class LoginGUIForm extends JDialog implements Runnable{
         getContentPane().add(panel);
         pack();
         setLocationRelativeTo(parent);
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setVisible(true);
 
     }
@@ -99,5 +118,7 @@ public class LoginGUIForm extends JDialog implements Runnable{
         new LoginGUIForm(null);
     }
 
-
+    public static void main(String[] args) {
+        new LoginGUIForm(null);
+    }
 }

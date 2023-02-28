@@ -7,6 +7,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import shared_classes.*;
 
+import javax.print.Doc;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,28 +24,27 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server {
+public class Server extends Thread{
     public static String f = "res/users.xml";
     static Socket clientSocket;
     public static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
     public static List<User> registeredUsersList = new ArrayList<>();
     public static List<String> userNames = new ArrayList<>();
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
-    private int port;
+    public static int port;
     static Scanner scanner = new Scanner(System.in);
     static ServerSocket serverSocket;
     public List<User> clients;
     private List<ClientHandler> clientsList;
     XMLParse xmlParse = new XMLParse("res/messages.xml");
 
-    ObjectInputStream input;
-    ObjectOutputStream output;
 
     public Server(int port){
         this.port = port;
 
         //arraylist ng mgauser
         this.clients = new ArrayList<>();
+        this.run();
     }
     public Server(){
     }
@@ -69,33 +70,19 @@ public class Server {
      This method creates a server socket and listens to incoming connections.
      It prompts the user to input a valid port number, and creates a new ServerSocket on that port.
      Then, it creates a new ClientHandler thread for each incoming client connection.
-     @throws IOException if an I/O error occurs when opening the socket.
-     @throws SAXException if there is an error parsing the XML file.
-     @throws ParserConfigurationException if a DocumentBuilder cannot be created.
      */
-    public void run() throws IOException, SAXException, ParserConfigurationException {
+    @Override
+    public void run() {
         clientsList = new ArrayList<>();
-        boolean validPort = false;
-        while(!validPort){
-            try{
-                System.out.print("\nInput port: ");
-                port = Integer.parseInt(scanner.nextLine());
-                serverSocket = new ServerSocket(port);
-                validPort = true;
-            }
-            catch(NumberFormatException e){
-                System.out.println("Input a valid port");
-                System.out.println(e.getMessage());
-            }
-            catch(RuntimeException e){
-                System.out.println(e.getMessage());
-            }
-            catch(BindException e){
-                System.out.println(e.getMessage());
-                System.out.println("PORT IS ALREADY IN USE, INPUT ANOTHER PORT");
-            }
+
+        try {
+            serverSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        System.out.println("Server created at port: "+port);
+
+        JOptionPane.showMessageDialog(new JPanel(), "Server created at port: " + port);
+
         ExecutorService executorService = Executors.newFixedThreadPool(10);
 
             try {
@@ -236,14 +223,16 @@ public class Server {
         return users;
     }
 
-    public static void getRegisteredUsers() {
+    public static Document getRegisteredUsers() {
+        NodeList users;
+        Document document;
         String id, name, age, username, password, status, banStatus;
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(f);
+            document = documentBuilder.parse(f);
 
-            NodeList users = document.getElementsByTagName("User");
+            users = document.getElementsByTagName("User");
 
             for (int i = 0; i < users.getLength(); i++) {
                 Element element = (Element) users.item(i);
@@ -268,6 +257,7 @@ public class Server {
         } catch (ParserConfigurationException | IOException | SAXException e) {
             throw new RuntimeException(e);
         }
+        return document;
     }
 
 

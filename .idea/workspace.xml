@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="offline message working:)">
+    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/Frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/Frame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/LoginGUI.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/serverside/ServerMain.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,20 +58,13 @@
       <recent name="gui_classes.clientside" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.GUIClientController">
-    <configuration name="Admin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Admin" />
-      <module name="console" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GUIClientController" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.GUIClientController" />
+  <component name="RunManager" selected="Application.UserManagement_GUI (6)">
+    <configuration name="UserManagement_GUI (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
       <module name="console" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="PATTERN" value="server_side.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -77,12 +72,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LogInGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.LogInGUI" />
+    <configuration name="UserManagement_GUI (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
       <module name="console" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="PATTERN" value="server_side.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -90,12 +85,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LoginGUIForm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.LoginGUIForm" />
+    <configuration name="UserManagement_GUI (4)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
       <module name="console" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="PATTERN" value="server_side.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -103,7 +98,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserManagement_GUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="UserManagement_GUI (5)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="server_side.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserManagement_GUI (6)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="server_side.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserManagement_GUI" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
       <module name="console" />
       <extension name="coverage">
@@ -117,19 +138,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.LoginGUIForm" />
-      <item itemvalue="Application.Admin" />
       <item itemvalue="Application.UserManagement_GUI" />
-      <item itemvalue="Application.GUIClientController" />
-      <item itemvalue="Application.LogInGUI" />
+      <item itemvalue="Application.UserManagement_GUI (1)" />
+      <item itemvalue="Application.UserManagement_GUI (2)" />
+      <item itemvalue="Application.UserManagement_GUI (4)" />
+      <item itemvalue="Application.UserManagement_GUI (5)" />
+      <item itemvalue="Application.UserManagement_GUI (6)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.GUIClientController" />
-        <item itemvalue="Application.Admin" />
-        <item itemvalue="Application.LoginGUIForm" />
-        <item itemvalue="Application.LogInGUI" />
-        <item itemvalue="Application.UserManagement_GUI" />
+        <item itemvalue="Application.UserManagement_GUI (6)" />
+        <item itemvalue="Application.UserManagement_GUI (2)" />
+        <item itemvalue="Application.UserManagement_GUI (1)" />
+        <item itemvalue="Application.UserManagement_GUI (5)" />
+        <item itemvalue="Application.UserManagement_GUI (4)" />
       </list>
     </recent_temporary>
   </component>
@@ -238,6 +260,25 @@
           <properties class="java.net.SocketException" package="java.net" />
           <option name="timeStamp" value="1" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
+          <line>187</line>
+          <properties class="server_side.UserManagement_GUI" method="changeTable">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java</url>
+          <line>57</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
+          <line>154</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

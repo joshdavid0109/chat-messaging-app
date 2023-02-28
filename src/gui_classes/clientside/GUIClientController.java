@@ -7,6 +7,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.Server;
+import server_side.UserManagement_GUI;
 import shared_classes.LoginCredentials;
 import shared_classes.Message;
 import shared_classes.OfflineMessage;
@@ -35,6 +36,7 @@ public class GUIClientController extends JFrame implements ActionListener{
     private JTextPane messagePane;
     public static JButton bookmarkButton;
     public static JTextField pmTextField;
+    static File f = new File("res/users.xml");
     static Scanner scanny = new Scanner(System.in);
     User user;
 
@@ -89,7 +91,7 @@ public class GUIClientController extends JFrame implements ActionListener{
         broadCast.setFont(new Font("Arial", Font.BOLD, 18));
         broadCast.setBounds(100, 0, 200, 75);
 
-        JLabel currentUserName = new JLabel("mag log in ka muna");
+        JLabel currentUserName = new JLabel();
         currentUserName.setForeground(Color.WHITE);
         currentUserName.setFont(new Font("Arial", Font.BOLD, 18));
         currentUserName.setBounds(30, 0, 200, 75);
@@ -139,6 +141,9 @@ public class GUIClientController extends JFrame implements ActionListener{
         while (!loggedIn) {
             // Prompt the user to enter their username and password
             LoginGUIForm log = new LoginGUIForm(this);
+
+            UserManagement_GUI userManagementGui = new UserManagement_GUI();
+            userManagementGui.populateList();
             // Create a login message and send it to the server
             LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
             output.writeObject(loginMessage);
@@ -164,6 +169,7 @@ public class GUIClientController extends JFrame implements ActionListener{
             }
         }
         headerName.setText(user.getUsername());
+        currentUserName.setText(user.getName());
 
         JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
         scrollPaneListMembers.setVisible(true);
@@ -248,7 +254,15 @@ public class GUIClientController extends JFrame implements ActionListener{
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sendMessage();
+                try {
+                    sendMessage();
+                } catch (ParserConfigurationException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (SAXException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -267,7 +281,7 @@ public class GUIClientController extends JFrame implements ActionListener{
     }
 
 
-    private void sendMessage() {
+    private void sendMessage() throws ParserConfigurationException, IOException, SAXException {
         // Get the message from the input field
         Message msg = null;
         String message = messageInput.getText();
@@ -293,6 +307,11 @@ public class GUIClientController extends JFrame implements ActionListener{
                     else{
                         messagePane.setText(messagePane.getText()+"\n"+"[ERROR] user "+ recipient+" does not exist.");
                     }
+                    break;
+                case "quit":
+                    setLoginStatus(user.getName(), user.getStatus());
+                    break;
+
 
             }
 
@@ -314,6 +333,32 @@ public class GUIClientController extends JFrame implements ActionListener{
         // Clear the input field
         messageInput.setText("");
     }
+
+    private void setLoginStatus(String name, String status) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(f);
+            Element root = document.getDocumentElement();
+            NodeList users = root.getElementsByTagName("User");
+            int userListLength = users.getLength();
+            for(int i = 0; i<userListLength;i++){
+                Element u = (Element) users.item(i);
+                String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
+                if(nameNode.equals(name)){
+                    u.getElementsByTagName("status").item(0).setTextContent(status);
+                    Server.updateXML(users, document);
+                    System.out.println(f.getCanonicalPath()+" has been updated!, status of "+name+" has been set to '"+status+"'.");
+                    break;
+                }
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     private String[] getAllContacts() {
         String[] contacts = new String[Server.registeredUsersList.size()];
 

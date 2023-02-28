@@ -104,7 +104,20 @@ public class ClientHandler implements Runnable {
             try {
                 userInput.close();
                 clientSocket.close();
-            } catch (IOException e) {
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document document = documentBuilder.parse("res/users.xml");
+
+                NodeList users = document.getElementsByTagName("User");
+
+                for (int i = 0; i < users.getLength(); i++) {
+                    Element element = (Element) users.item(i);
+
+                    element.getElementsByTagName("status").item(0).setTextContent("offline");
+
+                    Server.updateXML(users, document);
+                }
+            } catch (IOException | ParserConfigurationException | SAXException e) {
                 e.printStackTrace();
             }
         }
