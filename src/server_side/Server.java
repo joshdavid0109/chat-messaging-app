@@ -54,7 +54,7 @@ public class Server {
         System.out.println(user+ " has been added to ze list of ze users");
     }
     public static List<String> getRegisteredUserNames() {
-        List<String> userNames = new ArrayList<>();
+        userNames = new ArrayList<>();
         for (User user : registeredUsersList) {
             userNames.add(user.getName());
         }
@@ -129,7 +129,7 @@ public class Server {
     public void privateMessage(String recipient, Message message) {
         ObjectOutputStream outToRecipient;
         for (ClientHandler client : loginHandlerArraylist) {
-            if (loggedInUserHashMap.get(client).getName().equals(recipient)) {
+            if (loggedInUserHashMap.get(client).getName().equalsIgnoreCase(recipient)) {
                 outToRecipient = client.outToClient;
                 try {
                     outToRecipient.writeObject(message);
@@ -140,10 +140,14 @@ public class Server {
                 return;
             }
         }
-        //get yung date, para sa offline message
-        LocalDateTime timeSent = LocalDateTime.now();
-        xmlParse.addMessage(message.getSender(), message.getContent(), message.getRecipient(), timeSent);
-        System.err.println("User: " + recipient +" is offline.... message will be written sa xml file :)");
+
+        //check muna if recipient is actually a user
+        if(getRegisteredUserNames().contains(message.getRecipient())){
+            //get yung date, para sa offline message
+            LocalDateTime timeSent = LocalDateTime.now();
+            xmlParse.addMessage(message.getSender(), message.getContent(), message.getRecipient(), timeSent);
+            System.err.println("User: " + recipient +" is offline.... message will be written sa xml file :)");
+        }
     }
     public void offlineMessage(String recipient, List<OfflineMessage> offlineMessages) {
         ObjectOutputStream outToRecipient;

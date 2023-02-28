@@ -437,7 +437,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                         // Handle incoming message
                         Message msg = (Message) obj;
                         if(msg.getRecipient() == null){
-                            System.out.println("ASZXCCZXC");
                             continue;
                         }
                         else if(msg.getRecipient().equals("TOALL")){
