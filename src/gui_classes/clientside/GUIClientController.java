@@ -151,13 +151,11 @@ public class GUIClientController extends JFrame implements ActionListener{
 //            output.writeObject(f);
 
             if(input != null){
-                //System.out.println("HELLOasdASDD");
-                // Wait for response from server
                 Object obj = input.readObject();
                 if (obj instanceof User) {
-                    // login successful yeahhh
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: "+user.getName());
+                    System.out.println(user.getGroups().toString());
                     loggedIn = true;
                     output.writeObject(f);
                 } else if (obj instanceof Message) {
