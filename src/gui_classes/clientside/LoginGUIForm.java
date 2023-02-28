@@ -45,21 +45,35 @@ public class LoginGUIForm extends JDialog implements Runnable{
             public void actionPerformed(ActionEvent e) {
 
                 getRegisteredUsers();
+                boolean foundUser = false;
                 for (User user: registeredUsersList) {
                     if (user.getUsername().equals(getUsername())) {
+                        foundUser = true;
                         if (user.getPassword().equals(getPassword())) {
-                            u = user;
-                        } else if (user.getStatus().equals("online"))
-                            JOptionPane.showMessageDialog(panel, "User is currently logged in on another device.");
-                        else
-                        JOptionPane.showMessageDialog(panel, "Incorrect Password.");
+                            if(user.getStatus().equals("online")){
+                                JOptionPane.showMessageDialog(panel, "User is currently logged in on another device.");
+                                break;
+                            }
+                            else{
+                                u = user;
+                                result = OK;
+                                dispose();
+                                break;
+                            }
+                        } else {
+                            //user exists pero mali password
+                            JOptionPane.showMessageDialog(panel, "Incorrect password.");
+                            break;
+                        }
                     }
-                    JOptionPane.showMessageDialog(panel, "User is not existing");
                 }
-                result = OK;
-                dispose();
+                if (!foundUser) {
+                    //user doesnot exist
+                    JOptionPane.showMessageDialog(panel, "User does not exist.");
+                }
             }
         });
+
 
         getContentPane().add(panel);
         pack();
