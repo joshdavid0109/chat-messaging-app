@@ -25,12 +25,12 @@ public class Admin {
     static PrintWriter printWriter = new PrintWriter(System.out);
     private int port;
 
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+    public static void main(String[] args) throws Exception {
         Admin admin = new Admin();
         admin.run();
     }
 
-    public void run() throws IOException, ParserConfigurationException, SAXException {
+    public void run() throws Exception {
         scanner = new Scanner(System.in);
         int choice = 0;
         userArrayList = getUsers();

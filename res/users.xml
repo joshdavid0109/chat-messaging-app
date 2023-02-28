@@ -6,7 +6,10 @@
         <Password>franz</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groupname id="Admin">REAL</Groupname>
+        <Groups>
+            <Group id="Member">REAL</Group>
+            <Group id="Member">people</Group>
+        </Groups>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>Joshua</name>
@@ -15,7 +18,10 @@
         <Password>joshdavid</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groupname id="Admin">REAL</Groupname>
+        <Groups>
+            <Group id="Member">REAL</Group>
+            <Group id="Member">people</Group>
+        </Groups>
     </User>
     <User id="ed49f946-fae7-47ba-9027-d158123b906a">
         <name>Kiko</name>
@@ -24,7 +30,10 @@
         <Password>kikoxcore</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groupname id="Member">REAL</Groupname>
+        <Groups>
+            <Group id="Member">REAL</Group>
+            <Group id="Member">people</Group>
+        </Groups>
     </User>
     <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
         <name>TEST</name>
@@ -33,7 +42,10 @@
         <Password>x</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groupname id="Member">REAL</Groupname>
+        <Groups>
+            <Group id="Member">REAL</Group>
+            <Group id="Member">people</Group>
+        </Groups>
     </User>
     <User id="4f2668f6-b75d-4f4e-8f36-bb27028974cd">
         <name>Maervin</name>
@@ -66,5 +78,8 @@
         <Password>2221</Password>
         <status>offline</status>
         <BanStatus/>
+        <Groups>
+            <Group id="Member">REAL</Group>
+        </Groups>
     </User>
 </Users>

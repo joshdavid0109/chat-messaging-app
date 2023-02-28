@@ -1,10 +1,19 @@
 package shared_classes;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class User implements Serializable {
     private String id;
@@ -16,8 +25,9 @@ public class User implements Serializable {
     private String age;
     private String status;
     private String banStatus;
+    private List<Group> listOfGroups;
 
-    public User(String id, String name,String age, String username, String password, String status, String banStatus) throws IOException {
+    public User(String id, String name,String age, String username, String password, String status, String banStatus) throws IOException, ParserConfigurationException, SAXException {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -25,6 +35,54 @@ public class User implements Serializable {
         this.password = password;
         this.status = status;
         this.banStatus = banStatus;
+        populateGroups(this);
+    }
+
+    public static void populateGroups(User user) throws ParserConfigurationException, SAXException, IOException, ParserConfigurationException, SAXException {
+        String fileName = "res/users.xml";
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(new File(fileName));
+        doc.getDocumentElement().normalize();
+
+        NodeList userList = doc.getElementsByTagName("User");
+
+        for (int i = 0; i < userList.getLength(); i++) {
+            Node userNode = userList.item(i);
+            if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element userElement = (Element) userNode;
+                String name = userElement.getElementsByTagName("name").item(0).getTextContent();
+                if (name.equals(user.getName())) {
+                    NodeList groupNodes = userElement.getElementsByTagName("Group");
+                    List<Group> groups = new ArrayList<>();
+                    for (int j = 0; j < groupNodes.getLength(); j++) {
+                        Node groupNode = groupNodes.item(j);
+                        if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
+                            String group = groupNode.getTextContent();
+                            groups.add(new Group(group));
+                        }
+                    }
+                    user.setGroups(groups);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.listOfGroups = groups;
+    }
+    public List<Group> getGroups() {
+        return listOfGroups;
+    }
+
+    public Boolean isMember(String groupName){
+        for(int i = 0; i<listOfGroups.size();i++){
+            if(listOfGroups.get(i).getName().equals(groupName)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public ObjectOutputStream getOutStream() {
@@ -78,4 +136,6 @@ public class User implements Serializable {
     public void setBanStatus(String banStatus) {
         this.banStatus = banStatus;
     }
+
+
 }
