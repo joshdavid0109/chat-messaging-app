@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working">
+    <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="offline message working:)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/OfflineMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/OfflineMessage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +186,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677505945151</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="onting change sa login, sa pm if user does not exist -&gt; sasabihin does not exist sa user, if user exists pero offline siya (wala siya sa loggedinuserhashmap), yung pm sakanya is mastostore sa messages.xml">
+      <created>1677568662033</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1677568662033</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,7 +216,9 @@
     <MESSAGE value="set offline on socket termination" />
     <MESSAGE value="GROUP MESSAGE PACHECK HUHUHUHHU" />
     <MESSAGE value="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working" />
-    <option name="LAST_COMMIT_MESSAGE" value="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working" />
+    <MESSAGE value="onting change sa login, sa pm if user does not exist -&gt; sasabihin does not exist sa user, if user exists pero offline siya (wala siya sa loggedinuserhashmap), yung pm sakanya is mastostore sa messages.xml" />
+    <MESSAGE value="offline message working:)" />
+    <option name="LAST_COMMIT_MESSAGE" value="offline message working:)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -217,11 +227,6 @@
           <properties class="java.net.SocketException" package="java.net" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/server_side/Server.java</url>
-          <line>145</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

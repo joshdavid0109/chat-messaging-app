@@ -6,10 +6,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import shared_classes.LoginCredentials;
-import shared_classes.Message;
-import shared_classes.User;
-import shared_classes.XMLParse;
+import shared_classes.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -60,11 +57,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    //listen to messages from client
     public void run() {
         try {
             while (userInput != null) {
                 Object obj = userInput.readObject();
-                if (obj instanceof Message) {
+                if (obj.getClass().equals(Message.class)) {//ganito muna, kasi if (obj instanceof message) yung nakalagay, pati subclasses nun (like OfflineMessage) ay kasama
                     Message message = (Message) obj;
                     System.out.println("SENDER: "+message.getSender()+" MESSAGE: "+message.getContent()+" RECIPIENT: "+message.getRecipient());
 
@@ -79,10 +77,6 @@ public class ClientHandler implements Runnable {
                 } else if (obj instanceof LoginCredentials) {
                     LoginCredentials loginCredentials = (LoginCredentials) obj;
 
-                    //IF TAMA PASS SEND A USER, HARDCODE MUNA HEHE
-
-                    //TODO - GAWIN PROPER LOGIN NA NAGBABASA SA USERS XML
-
                     getRegisteredUsers();
 
                     for (User user: registeredUsersList) {
@@ -93,6 +87,11 @@ public class ClientHandler implements Runnable {
                                 server.clients.add(user);
                                 loginHandlerArraylist.add(this);
                                 loggedInUserHashMap.put(this, user);
+
+                                //send offline messages to user
+                                List<OfflineMessage> offlineMessages  = getOfflineMessages(user);
+                                server.offlineMessage(user.getName(), offlineMessages);
+                                System.out.println(offlineMessages.size()+"ASDASD");
                             }
                         }
                     }
@@ -111,6 +110,55 @@ public class ClientHandler implements Runnable {
             }
         }
     }
+
+    public List<OfflineMessage> getOfflineMessages(User user) {
+        List<OfflineMessage> offlineMessages = new ArrayList<>();
+        try {
+            File inputFile = new File("res/messages.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("Message");
+
+            // Create a list to hold the messages to be deleted
+            List<Node> messagesToDelete = new ArrayList<>();
+
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+                Node nNode = nList.item(temp);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    String messageRecipient = eElement.getElementsByTagName("Recipient").item(0).getTextContent();
+                    if (messageRecipient.equals(user.getName())) {
+                        String sender = eElement.getElementsByTagName("Sender").item(0).getTextContent();
+                        String messageText = eElement.getElementsByTagName("Text").item(0).getTextContent();
+                        String timestamp = eElement.getElementsByTagName("Time").item(0).getTextContent();
+                        OfflineMessage message = new OfflineMessage(sender, user.getName(), messageText, timestamp);
+                        offlineMessages.add(message);
+                        // Add the message element to the list of messages to be deleted
+                        messagesToDelete.add(eElement);
+                    }
+                }
+            }
+
+            // Delete the message elements from the XML file
+            for (Node messageNode : messagesToDelete) {
+                messageNode.getParentNode().removeChild(messageNode);
+            }
+
+            // Save the changes to the XML file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(inputFile);
+            transformer.transform(source, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return offlineMessages;
+    }
+
+
 
 
 

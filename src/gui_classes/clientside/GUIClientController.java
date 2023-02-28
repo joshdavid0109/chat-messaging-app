@@ -4,6 +4,7 @@ import client_side.Client;
 import server_side.Server;
 import shared_classes.LoginCredentials;
 import shared_classes.Message;
+import shared_classes.OfflineMessage;
 import shared_classes.User;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class GUIClientController extends JFrame implements ActionListener{
@@ -216,7 +218,7 @@ public class GUIClientController extends JFrame implements ActionListener{
         public void run() {
             System.out.println("HELO");
             try {
-/*                input = new ObjectInputStream(server.getInputStream());*/
+                /*                input = new ObjectInputStream(server.getInputStream());*/
                 // Continuously listen for messages from the server
                 while (input != null) {
                     Object obj = input.readObject();
@@ -232,6 +234,18 @@ public class GUIClientController extends JFrame implements ActionListener{
                             messagePane.setText(messagePane.getText()+"\n"+"[PRIVATE] "+msg.getSender()+": "+msg.getContent());
                         }
                         System.out.println(msg.getSender()+": " + msg.getContent());
+                    }
+                    if(obj instanceof List<?>){
+                        List<?> list = (List<?>) obj;
+                        System.out.println("ASDASDASDASDASDASD");
+                        if (!list.isEmpty() && list.get(0) instanceof OfflineMessage) {
+                            List<OfflineMessage> offlineMessages = (List<OfflineMessage>) list;
+                            for (OfflineMessage offlineMessage : offlineMessages) {
+                                String sender = offlineMessage.getSender();
+                                String content = offlineMessage.getContent();
+                                messagePane.setText(messagePane.getText() + "\n" + "[PRIVATE] " + sender + ": " + content);
+                            }
+                        }
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {

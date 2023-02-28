@@ -1,15 +1,11 @@
 package server_side;
 
 
-import client_side.Client;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import shared_classes.LoginCredentials;
-import shared_classes.Message;
-import shared_classes.User;
-import shared_classes.XMLParse;
+import shared_classes.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -148,6 +144,24 @@ public class Server {
         LocalDateTime timeSent = LocalDateTime.now();
         xmlParse.addMessage(message.getSender(), message.getContent(), message.getRecipient(), timeSent);
         System.err.println("User: " + recipient +" is offline.... message will be written sa xml file :)");
+    }
+    public void offlineMessage(String recipient, List<OfflineMessage> offlineMessages) {
+        ObjectOutputStream outToRecipient;
+        for (ClientHandler client : loginHandlerArraylist) {
+            if (loggedInUserHashMap.get(client).getName().equals(recipient)) {
+                outToRecipient = client.outToClient;
+
+                for(int i = 0; i<offlineMessages.size();i++){
+                    try {
+                        outToRecipient.writeObject(offlineMessages);
+                        outToRecipient.flush();
+                    } catch (IOException e) {
+                        System.err.println("Error sending message to client: " + e);
+                    }
+                    return;
+                }
+            }
+        }
     }
 
     /**
