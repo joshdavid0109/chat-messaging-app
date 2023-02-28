@@ -91,7 +91,6 @@ public class ClientHandler implements Runnable {
                                 //send offline messages to user
                                 List<OfflineMessage> offlineMessages  = getOfflineMessages(user);
                                 server.offlineMessage(user.getName(), offlineMessages);
-                                System.out.println(offlineMessages.size()+"ASDASD");
                             }
                         }
                     }
@@ -111,6 +110,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Gets offline messages.
+     *
+     * @param user the user
+     * @return the offline messages
+     */
     public List<OfflineMessage> getOfflineMessages(User user) {
         List<OfflineMessage> offlineMessages = new ArrayList<>();
         try {

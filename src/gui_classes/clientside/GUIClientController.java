@@ -1,6 +1,11 @@
 package gui_classes.clientside;
 
 import client_side.Client;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import server_side.Server;
 import shared_classes.LoginCredentials;
 import shared_classes.Message;
@@ -8,6 +13,9 @@ import shared_classes.OfflineMessage;
 import shared_classes.User;
 
 import javax.swing.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -15,16 +23,21 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 public class GUIClientController extends JFrame implements ActionListener{
 
+    public final JList<String> contactList;
     private JTextField messageInput;
     private JButton sendButton;
     private JTextPane messagePane;
+    public static JButton bookmarkButton;
+    public static JTextField pmTextField;
     static Scanner scanny = new Scanner(System.in);
     User user;
+
 
     // Declare your input and output streams
     private static ObjectInputStream input;
@@ -35,7 +48,10 @@ public class GUIClientController extends JFrame implements ActionListener{
 
 
     public GUIClientController(Socket s) throws IOException, ClassNotFoundException {
-        this.server = s;
+        String fontfamily = "Arial, sans-serif";
+        Font font = new Font(fontfamily, Font.PLAIN, 11);
+
+        server = s;
         input = new ObjectInputStream(server.getInputStream());
         try {
             output = new ObjectOutputStream(server.getOutputStream());
@@ -47,38 +63,81 @@ public class GUIClientController extends JFrame implements ActionListener{
         setTitle("Chat Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
+        contactList = new JList<>(getAllContacts());
+        contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //contactList.addListSelectionListener(GUIClientController);
 
         // Initialize the components
         messagePane = new JTextPane();
+        messagePane.setFont(font);
         messagePane.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(messagePane);
         scrollPane.setPreferredSize(new Dimension(350, 200));
 
-        messageInput = new JTextField();
-        messageInput.setPreferredSize(new Dimension(250, 25));
+        JLabel headerName = new JLabel();
+        headerName.setForeground(Color.WHITE);
+        headerName.setFont(new Font("Arial", Font.BOLD, 12));
+        headerName.setBounds(920, -15, 200, 75);
 
-        sendButton = new JButton("Send");
-        sendButton.setPreferredSize(new Dimension(80, 25));
-        sendButton.addActionListener(new ActionListener() {
+        JLabel headerStatus = new JLabel("Status");
+        headerStatus.setForeground(Color.GREEN);
+        headerStatus.setFont(new Font("Arial", Font.BOLD, 10));
+        headerStatus.setBounds(920, 0, 200, 75);
+
+        JLabel broadCast = new JLabel("BROADCAST");
+        broadCast.setForeground(Color.WHITE);
+        broadCast.setFont(new Font("Arial", Font.BOLD, 18));
+        broadCast.setBounds(100, 0, 200, 75);
+
+        JLabel currentUserName = new JLabel("mag log in ka muna");
+        currentUserName.setForeground(Color.WHITE);
+        currentUserName.setFont(new Font("Arial", Font.BOLD, 18));
+        currentUserName.setBounds(30, 0, 200, 75);
+
+        JLabel currentUserStatus = new JLabel("Status");
+        currentUserStatus.setForeground(Color.GREEN);
+        currentUserStatus.setFont(new Font("Arial", Font.PLAIN, 18));
+        currentUserStatus.setBounds(270, 0, 200, 75);
+
+        JLabel listOfMembersName = new JLabel("MEMBERS");
+        listOfMembersName.setForeground(Color.WHITE);
+        listOfMembersName.setFont(new Font("Arial", Font.BOLD, 18));
+        listOfMembersName.setBounds(90, 0, 200, 75);
+
+        bookmarkButton = new JButton("Bookmark");
+        bookmarkButton.setVisible(true);
+        bookmarkButton.setForeground(Color.BLACK);
+        bookmarkButton.setBackground(Color.WHITE);
+        bookmarkButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        bookmarkButton.setFocusable(false);
+        bookmarkButton.setBounds(40, 300, 100, 20);
+        /*bookmarkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle button click event
-                sendMessage();
+                String selectedContact = "";
+                if (selectedContact.equals(contactList.getSelectedValue())) {
+                    if (bookmarkedContacts.contains(selectedContact)) {
+                        bookmarkedContacts.remove(selectedContact);
+                        bookmarkButton.setText("Bookmark");
+                    } else {
+                        bookmarkedContacts.add(selectedContact);
+                        bookmarkButton.setText("Unbookmark");
+                    }
+                    updateBookmarkedContactsLabel();
+                    updateContactList(getAllContacts());
+                }
             }
-        });
+        });*/
 
+        messageInput = new JTextField();
+        messageInput.setVisible(true);
+        messageInput.setBorder(BorderFactory.createEmptyBorder());
+        messageInput.setBounds(30, 570, 220, 20);
 
-        // Add the components to the frame
-        setLayout(new FlowLayout());
-        add(scrollPane);
-        add(messageInput);
-        add(sendButton);
 
         boolean loggedIn = false;
         while (!loggedIn) {
             // Prompt the user to enter their username and password
-
-
             LoginGUIForm log = new LoginGUIForm(this);
             // Create a login message and send it to the server
             LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
@@ -92,7 +151,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                     // login successful yeahhh
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: "+user.getName());
-
                     loggedIn = true;
                 }
                 else if (obj instanceof Message) {
@@ -105,9 +163,107 @@ public class GUIClientController extends JFrame implements ActionListener{
                 }
             }
         }
+        headerName.setText(user.getUsername());
 
+        JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
+        scrollPaneListMembers.setVisible(true);
+        scrollPaneListMembers.setBorder(BorderFactory.createEmptyBorder());
+        scrollPaneListMembers.setBounds(40, 70, 200, 200);
+
+        messagePane.setVisible(true);
+        messagePane.setBorder(BorderFactory.createEmptyBorder());
+        messagePane.setBounds(30, 70, 290, 470);
+
+        JScrollPane broadcastArea = new JScrollPane();
+        broadcastArea.setVisible(true);
+        broadcastArea.getViewport().setForeground(new Color(0X23272A));
+        broadcastArea.getViewport().setBackground(new Color(0X23272A));
+        broadcastArea.setBorder(BorderFactory.createEmptyBorder());
+        broadcastArea.setBounds(30, 70, 290, 470);
+
+        JPanel header = new JPanel();
+        header.setBackground(Color.BLACK);
+        header.setBounds(0,0,1050, 50);
+        header.setLayout(null);
+
+        JPanel verticalHeader = new JPanel();
+        verticalHeader.setBackground(Color.BLACK);
+        verticalHeader.setBounds(0,50,50, 750);
+
+        JPanel broadCastPanel = new JPanel();
+        broadCastPanel.setBackground(new Color(0X23272A));
+        broadCastPanel.setBounds(50,50,350, 750);
+        broadCastPanel.setLayout(null);
+
+        JPanel privateMessagePanel = new JPanel();
+        privateMessagePanel.setBackground(new Color(0X2C2F33));
+        privateMessagePanel.setBounds(400,50,350, 750);
+        privateMessagePanel.setLayout(null);
+
+        JPanel listOfMembers = new JPanel();
+        listOfMembers.setBackground(new Color(0X23272A));
+        listOfMembers.setBounds(750,50,400, 750);
+        listOfMembers.setLayout(null);
+
+        // Add the components to the frame
+        setLayout(new FlowLayout());
+        add(headerName);
+        add(headerStatus);
+        add(broadCast);
+        add(currentUserName);
+        add(currentUserStatus);
+        add(listOfMembersName);
+        add(bookmarkButton);
+        add(scrollPane);
+        add(messageInput);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setLayout(null);
+        this.setResizable(false);
+        //this.pack();
+        this.setBounds(500, 250, 930, 540);
+        this.setTitle("Budget Discord");
+        this.setSize(1050, 750);
+        this.getContentPane().setBackground(Color.WHITE);
+
+        this.add(header);
+        header.add(headerName);
+        header.add(headerStatus);
+
+        this.add(verticalHeader);
+        this.add(broadCastPanel);
+        this.add(privateMessagePanel);
+        this.add(listOfMembers);
+        listOfMembers.add(listOfMembersName);
+        listOfMembers.add(scrollPaneListMembers);
+        listOfMembers.add(bookmarkButton);
+        //listOfMembers.add(bookmarkedContactsLabel);
+
+        sendButton = new JButton("Send");
+        sendButton.setVisible(true);
+        sendButton.setForeground(Color.BLACK);
+        sendButton.setBackground(Color.WHITE);
+        sendButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        sendButton.setFocusable(false);
+        sendButton.setBounds(270, 570, 50, 20);
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendMessage();
+            }
+        });
+
+        privateMessagePanel.add(currentUserName);
+        privateMessagePanel.add(currentUserStatus);
+        privateMessagePanel.add(messagePane);
+        privateMessagePanel.add(messageInput);
+        privateMessagePanel.add(sendButton);
+
+        broadCastPanel.add(broadCast);
+        broadCastPanel.add(broadcastArea);
         //after log in is successful, makikita nayung main GUI
         this.setVisible(true);
+        messagePane.setText("CONNECTED TO: "+server.getLocalAddress()+" PORT: "+server.getPort());
+
     }
 
 
@@ -157,6 +313,33 @@ public class GUIClientController extends JFrame implements ActionListener{
         }
         // Clear the input field
         messageInput.setText("");
+    }
+    private String[] getAllContacts() {
+        String[] contacts = new String[Server.registeredUsersList.size()];
+
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse("res/users.xml");
+            NodeList userNodes = document.getElementsByTagName("User");
+
+            contacts = new String[userNodes.getLength()];
+
+            for (int i = 0; i < userNodes.getLength(); i++) {
+                Node userNode = userNodes.item(i);
+                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element userElement = (Element) userNode;
+                    String name = userElement.getElementsByTagName("name").item(0).getTextContent();
+                    String status = userElement.getElementsByTagName("status").item(0).getTextContent();
+                    contacts[i] = name + " : " + status;
+                }
+            }
+            // Sort contacts alphabetically
+            Arrays.sort(contacts);
+        } catch (SAXException | IOException | ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        return contacts;
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
