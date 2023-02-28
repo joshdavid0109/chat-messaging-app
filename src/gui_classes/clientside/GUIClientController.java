@@ -7,10 +7,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.Server;
-import shared_classes.LoginCredentials;
-import shared_classes.Message;
-import shared_classes.OfflineMessage;
-import shared_classes.User;
+import shared_classes.*;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -22,14 +19,14 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Scanner;
 
 public class GUIClientController extends JFrame implements ActionListener{
 
     public final JList<String> contactList;
+    public final ArrayList<String> bookmarkedContacts = new ArrayList<>();
+    public final JLabel bookmarkedContactsLabel;
     private JTextField messageInput;
     private JButton sendButton;
     private JTextPane messagePane;
@@ -111,7 +108,7 @@ public class GUIClientController extends JFrame implements ActionListener{
         bookmarkButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         bookmarkButton.setFocusable(false);
         bookmarkButton.setBounds(40, 300, 100, 20);
-        /*bookmarkButton.addActionListener(new ActionListener() {
+        bookmarkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedContact = "";
@@ -127,7 +124,7 @@ public class GUIClientController extends JFrame implements ActionListener{
                     updateContactList(getAllContacts());
                 }
             }
-        });*/
+        });
 
         messageInput = new JTextField();
         messageInput.setVisible(true);
@@ -164,6 +161,7 @@ public class GUIClientController extends JFrame implements ActionListener{
             }
         }
         headerName.setText(user.getUsername());
+        currentUserName.setText(user.getUsername());
 
         JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
         scrollPaneListMembers.setVisible(true);
@@ -205,17 +203,22 @@ public class GUIClientController extends JFrame implements ActionListener{
         listOfMembers.setBounds(750,50,400, 750);
         listOfMembers.setLayout(null);
 
+        bookmarkedContactsLabel = new JLabel("Bookmarked Contacts:");
+        bookmarkedContactsLabel.setVisible(true);
+        bookmarkedContactsLabel.setForeground(Color.WHITE);
+        bookmarkedContactsLabel.setBounds(40,250,200,200);
+
         // Add the components to the frame
-        setLayout(new FlowLayout());
-        add(headerName);
-        add(headerStatus);
-        add(broadCast);
-        add(currentUserName);
-        add(currentUserStatus);
-        add(listOfMembersName);
-        add(bookmarkButton);
-        add(scrollPane);
-        add(messageInput);
+        this.setLayout(new FlowLayout());
+        this.add(headerName);
+        this.add(headerStatus);
+        this.add(broadCast);
+        this.add(currentUserName);
+        this.add(currentUserStatus);
+        this.add(listOfMembersName);
+        this.add(bookmarkButton);
+        this.add(scrollPane);
+        this.add(messageInput);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setResizable(false);
@@ -236,7 +239,7 @@ public class GUIClientController extends JFrame implements ActionListener{
         listOfMembers.add(listOfMembersName);
         listOfMembers.add(scrollPaneListMembers);
         listOfMembers.add(bookmarkButton);
-        //listOfMembers.add(bookmarkedContactsLabel);
+        listOfMembers.add(bookmarkedContactsLabel);
 
         sendButton = new JButton("Send");
         sendButton.setVisible(true);
@@ -266,12 +269,34 @@ public class GUIClientController extends JFrame implements ActionListener{
 
     }
 
+    private void updateContactList(String[] allContacts) {
+        ArrayList<String> contactsList = new ArrayList<>();
+
+        bookmarkedContacts.sort(String.CASE_INSENSITIVE_ORDER);
+        for (String contact : bookmarkedContacts) {
+            if (contactsList.contains(contact)) {
+                continue;
+            }
+            contactsList.add(contact);
+        }
+        for (String contact : allContacts) {
+            if (contactsList.contains(contact)) {
+                continue;
+            }
+            contactsList.add(contact);
+        }
+        contactList.setListData(contactsList.toArray(new String[0]));
+    }
+
+    private void updateBookmarkedContactsLabel() {
+        bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts.toString());
+    }
+
 
     private void sendMessage() {
         // Get the message from the input field
         Message msg = null;
         String message = messageInput.getText();
-
 
         if(message.startsWith("/")){
             String[] words = message.split("[/\\s]+");
@@ -280,24 +305,27 @@ public class GUIClientController extends JFrame implements ActionListener{
             switch (command){
 
                 //yung pm syntax -> /pm ARIEL Hello ariel! hehe
-
                 //message object parin gagawin, pero yung recipient is hindi "toall"
+
                 case "pm":
                     String recipient = words[2];
                     if(Server.getRegisteredUserNames().contains(recipient)){
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
-                        System.out.println("ASd   " + messageContent);
+                        System.out.println("pm xx " + messageContent);
                         msg = new Message(user.getName(), recipient, messageContent);
                         break;
                     }
                     else{
+                        msg = new Message(user.getName(), recipient, message);
                         messagePane.setText(messagePane.getText()+"\n"+"[ERROR] user "+ recipient+" does not exist.");
+                        break;
                     }
-
+                default:
+                    msg = new Message("NOTHING");
+                    messagePane.setText(messagePane.getText()+"\n"+"[ERROR] error in parsing message -> command not recognized???");
+                    break;
             }
-
         }
-
         else{
             //if walang command, send yung message object sa server as message object parin pero "toall" yung
             //recipient which means ibrobroadcast yung message
@@ -407,10 +435,12 @@ public class GUIClientController extends JFrame implements ActionListener{
                     Object obj = input.readObject();
                     if (obj instanceof Message) {
                         // Handle incoming message
-
                         Message msg = (Message) obj;
-
-                        if(msg.getRecipient().equals("TOALL")){
+                        if(msg.getRecipient() == null){
+                            System.out.println("ASZXCCZXC");
+                            continue;
+                        }
+                        else if(msg.getRecipient().equals("TOALL")){
                             messagePane.setText(messagePane.getText()+"\n"+"[BROADCAST] "+msg.getSender()+": "+msg.getContent());
                         }
                         else{
@@ -418,7 +448,7 @@ public class GUIClientController extends JFrame implements ActionListener{
                         }
                         System.out.println(msg.getSender()+": " + msg.getContent());
                     }
-                    if(obj instanceof List<?>){
+                    else if(obj instanceof List<?>){
                         List<?> list = (List<?>) obj;
                         System.out.println("ASDASDASDASDASDASD");
                         if (!list.isEmpty() && list.get(0) instanceof OfflineMessage) {
@@ -429,6 +459,9 @@ public class GUIClientController extends JFrame implements ActionListener{
                                 messagePane.setText(messagePane.getText() + "\n" + "[PRIVATE] " + sender + ": " + content);
                             }
                         }
+                    }
+                    if(obj instanceof errorMessage){
+
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
