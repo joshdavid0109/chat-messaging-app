@@ -1,15 +1,11 @@
 package server_side;
 
 
-import client_side.Client;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import shared_classes.LoginCredentials;
-import shared_classes.Message;
-import shared_classes.User;
-import shared_classes.XMLParse;
+import shared_classes.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,6 +17,7 @@ import java.io.*;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,12 +27,14 @@ public class Server {
     static Socket clientSocket;
     public static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
     public static List<User> registeredUsersList = new ArrayList<>();
+    public static List<String> userNames = new ArrayList<>();
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     private int port;
     static Scanner scanner = new Scanner(System.in);
     static ServerSocket serverSocket;
     public List<User> clients;
     private List<ClientHandler> clientsList;
+    XMLParse xmlParse = new XMLParse("res/messages.xml");
 
     ObjectInputStream input;
     ObjectOutputStream output;
@@ -53,6 +52,17 @@ public class Server {
         clients.add(user);
         //debug statment
         System.out.println(user+ " has been added to ze list of ze users");
+    }
+    public static List<String> getRegisteredUserNames() {
+        List<String> userNames = new ArrayList<>();
+        for (User user : registeredUsersList) {
+            userNames.add(user.getName());
+        }
+        return userNames;
+    }
+
+    public static List<User> getRegisteredUsersList() {
+        return registeredUsersList;
     }
 
     /**
@@ -130,7 +140,28 @@ public class Server {
                 return;
             }
         }
-        System.err.println("User not found: " + recipient);
+        //get yung date, para sa offline message
+        LocalDateTime timeSent = LocalDateTime.now();
+        xmlParse.addMessage(message.getSender(), message.getContent(), message.getRecipient(), timeSent);
+        System.err.println("User: " + recipient +" is offline.... message will be written sa xml file :)");
+    }
+    public void offlineMessage(String recipient, List<OfflineMessage> offlineMessages) {
+        ObjectOutputStream outToRecipient;
+        for (ClientHandler client : loginHandlerArraylist) {
+            if (loggedInUserHashMap.get(client).getName().equals(recipient)) {
+                outToRecipient = client.outToClient;
+
+                for(int i = 0; i<offlineMessages.size();i++){
+                    try {
+                        outToRecipient.writeObject(offlineMessages);
+                        outToRecipient.flush();
+                    } catch (IOException e) {
+                        System.err.println("Error sending message to client: " + e);
+                    }
+                    return;
+                }
+            }
+        }
     }
 
     /**

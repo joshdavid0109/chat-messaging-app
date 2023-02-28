@@ -27,12 +27,6 @@ public class User implements Serializable {
         this.banStatus = banStatus;
     }
 
-/*    public void setSocket(Socket socket) throws IOException {
-        this.socket = socket;
-        this.streamOut = new ObjectOutputStream(socket.getOutputStream());
-        this.streamIn = new ObjectInputStream(socket.getInputStream());
-    }*/
-
     public ObjectOutputStream getOutStream() {
         return this.streamOut;
     }

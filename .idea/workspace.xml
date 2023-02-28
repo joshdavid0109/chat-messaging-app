@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="">
+    <list default="true" id="e551be2f-bf6f-4d75-b951-948be4e22bc1" name="Changes" comment="offline message working:)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Admin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/Frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/Frame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,38 +47,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH": "128",
-    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "399"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="server_side" />
       <recent name="gui_classes.clientside" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\Program Files\IdeaProjects\2022-2_9328-pregrp7OS\src\server_side" />
     </key>
   </component>
   <component name="RunManager" selected="Application.GUIClientController">
     <configuration name="Admin" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Admin" />
       <module name="console" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AdminPanel" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="server_side.AdminPanel" />
-      <module name="console" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="server_side.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -94,8 +77,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SearchingContacts" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.SearchingContacts" />
+    <configuration name="LogInGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.LogInGUI" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LoginGUIForm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.LoginGUIForm" />
       <module name="console" />
       <extension name="coverage">
         <pattern>
@@ -121,18 +117,18 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.AdminPanel" />
-      <item itemvalue="Application.SearchingContacts" />
+      <item itemvalue="Application.LoginGUIForm" />
       <item itemvalue="Application.Admin" />
       <item itemvalue="Application.UserManagement_GUI" />
       <item itemvalue="Application.GUIClientController" />
+      <item itemvalue="Application.LogInGUI" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.GUIClientController" />
         <item itemvalue="Application.Admin" />
-        <item itemvalue="Application.AdminPanel" />
-        <item itemvalue="Application.SearchingContacts" />
+        <item itemvalue="Application.LoginGUIForm" />
+        <item itemvalue="Application.LogInGUI" />
         <item itemvalue="Application.UserManagement_GUI" />
       </list>
     </recent_temporary>
@@ -150,6 +146,7 @@
       <workItem from="1677500437502" duration="11131000" />
       <workItem from="1677512978619" duration="905000" />
       <workItem from="1677515560488" duration="23795000" />
+      <workItem from="1677575401835" duration="3335000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -193,14 +190,21 @@
       <option name="project" value="LOCAL" />
       <updated>1677505945151</updated>
     </task>
-    <task id="LOCAL-00007" summary="LoginGUI/Auth, Port auth">
-      <created>1677563153192</created>
+    <task id="LOCAL-00007" summary="onting change sa login, sa pm if user does not exist -&gt; sasabihin does not exist sa user, if user exists pero offline siya (wala siya sa loggedinuserhashmap), yung pm sakanya is mastostore sa messages.xml">
+      <created>1677568662033</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1677563153192</updated>
+      <updated>1677568662033</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="offline message working:)">
+      <created>1677574239609</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1677574239609</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,8 +227,9 @@
     <MESSAGE value="set offline on socket termination" />
     <MESSAGE value="GROUP MESSAGE PACHECK HUHUHUHHU" />
     <MESSAGE value="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working" />
-    <MESSAGE value="LoginGUI/Auth, Port auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="LoginGUI/Auth, Port auth" />
+    <MESSAGE value="onting change sa login, sa pm if user does not exist -&gt; sasabihin does not exist sa user, if user exists pero offline siya (wala siya sa loggedinuserhashmap), yung pm sakanya is mastostore sa messages.xml" />
+    <MESSAGE value="offline message working:)" />
+    <option name="LAST_COMMIT_MESSAGE" value="offline message working:)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -233,11 +238,6 @@
           <properties class="java.net.SocketException" package="java.net" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java</url>
-          <line>80</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

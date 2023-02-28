@@ -26,7 +26,7 @@ public class Message implements Serializable {
     }
 
     public String getContent() {
-        return content;
+        return this.content;
     }
     @Override
     public String toString() {

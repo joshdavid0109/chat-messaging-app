@@ -118,7 +118,7 @@ public void deleteUser(String username) {
 
 }
 
-    /*public void printUserList() {
+    public void printUserList() {
         userArrayList = getUsers();
         System.out.printf("%n-----------------------------------------------------------------%n");
         System.out.printf("                  LIST OF REGISTERED USERS                       %n");
@@ -128,16 +128,16 @@ public void deleteUser(String username) {
         System.out.printf("-----------------------------------------------------------------%n");
         for (User user : userArrayList) {
             String banStats;
-            if (Objects.equals(user.banStatus(), "")) {
+            if (Objects.equals(user.getBanStatus(), "")) {
                 banStats = "NOT BANNED";
             } else {
                 banStats = "BANNED";
             }
             System.out.printf("| %-10s | %-4s | %-15s | %-10s | %-8s |%n",
-                    user.name(), user.age(), user.username(), user.status(), banStats);
+                    user.getName(), user.getAge(), user.getUsername(), user.getStatus(), banStats);
         }
         System.out.printf("-----------------------------------------------------------------%n%n");
-    }*/
+    }
 
     private static void banUser(String command, String name) {
         try {
