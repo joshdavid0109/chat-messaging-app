@@ -1,9 +1,11 @@
+/*
 package server_side;
 
 import org.w3c.dom.*;
 import shared_classes.User;
 import shared_classes.XMLParse;
 
+import javax.swing.*;
 import javax.xml.parsers.*;
 import java.io.*;
 import java.net.Socket;
@@ -11,9 +13,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegClientHandler implements Runnable {
-    final BufferedReader bufferedReader;
-    final PrintWriter printWriter;
+public class RegClientHandler extends JFrame implements Runnable {
+    ObjectOutputStream outputStream;
 
     public RegClientHandler() {
         this.bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -127,3 +128,4 @@ public class RegClientHandler implements Runnable {
     }
 
 }
+*/

@@ -8,16 +8,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.BindException;
-import java.util.Collection;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import javax.swing.border.Border;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class UserManagement_GUI {
+public class UserManagement_GUI extends JFrame{
     User user;
     JList<User> list;
     DefaultTableModel model;
@@ -48,34 +44,19 @@ public class UserManagement_GUI {
         startServer.setForeground(Color.black);
         startServer.setBackground(Color.decode("#149639"));
 
+        JPanel panel = new JPanel();
+        AtomicBoolean serverStatus = new AtomicBoolean(false); // false offline
+                              // true online
+
         startServer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                boolean validPort = false;
-                while (!validPort) {
-                    try {
-                        port = Integer.parseInt(JOptionPane.showInputDialog(new JPanel(), "Input port: ", JOptionPane.YES_NO_CANCEL_OPTION));
-                        if (port == JOptionPane.CANCEL_OPTION) {
-                            break;
-                        }
-                        validPort = true;
-                    }  catch(NumberFormatException e) {
-
-                        JOptionPane.showMessageDialog(new JPanel(), "VALID NUMBER PLEASE", "Errror Message", JOptionPane.ERROR_MESSAGE);
-                        System.out.println(e.getMessage());
-                    } catch (NullPointerException e) {
-                        System.out.println(e.getMessage());
-                        JOptionPane.showMessageDialog(new JPanel(), "INPUT A VALID PORT", "Error message", JOptionPane.ERROR_MESSAGE);
-                        System.out.println(e.getMessage());
-                    } catch(Exception e) {
-                        JOptionPane.showMessageDialog(new JPanel(), "TRY AGAIN.", "Error message", JOptionPane.ERROR_MESSAGE);
-
-                        System.out.println(e.getMessage());
-                    }
-                    Server server = new Server(port);
-                    break;
+                if (!serverStatus.get()) {
+                    new Thread(() -> {
+                        Server server = new Server(port, frameUM);
+                        serverStatus.set(true);
+                    }).start();
                 }
-                //Pag nagrun, hindi na mapindot other features.. HEHE IDK
             }
         });
 
@@ -86,6 +67,13 @@ public class UserManagement_GUI {
         addUser.setBorder(BorderFactory.createEtchedBorder(000000));
         addUser.setForeground(Color.black);
         addUser.setBackground(Color.WHITE);
+
+        addUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddUserHandler addUserHandler = new AddUserHandler(frameUM);
+            }
+        });
 
         JButton deleteUser = new JButton("Delete User");
         deleteUser.setBounds(570, 135, 150, 45);
@@ -121,6 +109,7 @@ public class UserManagement_GUI {
 
 
                 frameUM.add(userScroll);
+
             }
         });
 

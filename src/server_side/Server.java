@@ -37,14 +37,17 @@ public class Server extends Thread{
     public List<User> clients;
     private List<ClientHandler> clientsList;
     XMLParse xmlParse = new XMLParse("res/messages.xml");
+    JFrame frame;
 
 
-    public Server(int port){
+    public Server(int port, JFrame frame){
         this.port = port;
+        this.frame = frame;
 
         //arraylist ng mgauser
         this.clients = new ArrayList<>();
         this.run();
+
     }
     public Server(){
     }
@@ -74,35 +77,50 @@ public class Server extends Thread{
     @Override
     public void run() {
         clientsList = new ArrayList<>();
-
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        JOptionPane.showMessageDialog(new JPanel(), "Server created at port: " + port);
-
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-
-            try {
-                while (true) {
-                    try {
-                        clientSocket = serverSocket.accept();
-                        // Create an instance of ObjectOutputStream to write the message object to the client
-                        ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
-                        ClientHandler clientHandler = new ClientHandler(this, clientSocket, outToClient);
-                        executorService.execute(clientHandler);
-                        clientsList.add(clientHandler);
-                    }catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-            } catch (RuntimeException e) {
-                e.printStackTrace();
+        boolean validPort = false;
+        while(!validPort){
+            try{
+                port = Integer.parseInt(JOptionPane.showInputDialog(frame, "Input port"));
+                serverSocket = new ServerSocket(port);
+                validPort = true;
+            }
+            catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(frame, "Input a valid port");
+                System.out.println(e.getMessage());
+            }
+            catch(RuntimeException e){
+                System.out.println(e.getMessage());
+            }
+            catch(BindException e){
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(frame, "PORT IS ALREADY IN USE, INPUT ANOTHER PORT");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
+        JOptionPane.showMessageDialog(frame, "Server created at port: "+port);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+        try {
+            while (true) {
+                try {
+                    clientSocket = serverSocket.accept();
+                    // Create an instance of ObjectOutputStream to write the message object to the client
+                    getRegisteredUsers();
+                    ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
+                    ClientHandler clientHandler = new ClientHandler(this, clientSocket, outToClient);
+                    executorService.execute(clientHandler);
+                    clientsList.add(clientHandler);
+                }catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void broadcastMessage(Message message) {
         for (ClientHandler client : clientsList) {
             try {
