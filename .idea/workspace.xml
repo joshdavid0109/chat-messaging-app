@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/RegClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/RegClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +166,7 @@
       <workItem from="1677575401835" duration="3335000" />
       <workItem from="1677639404714" duration="1481000" />
       <workItem from="1677659806645" duration="3386000" />
-      <workItem from="1677664769208" duration="5069000" />
+      <workItem from="1677664769208" duration="5684000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -236,7 +231,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677590660739</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="addusergui">
+      <created>1677675584807</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1677675584807</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,7 +264,8 @@
     <MESSAGE value="onting change sa login, sa pm if user does not exist -&gt; sasabihin does not exist sa user, if user exists pero offline siya (wala siya sa loggedinuserhashmap), yung pm sakanya is mastostore sa messages.xml" />
     <MESSAGE value="offline message working:)" />
     <MESSAGE value="Admin panel GUI, Server-Client port auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="Admin panel GUI, Server-Client port auth" />
+    <MESSAGE value="addusergui" />
+    <option name="LAST_COMMIT_MESSAGE" value="addusergui" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
