@@ -17,6 +17,8 @@ public class User implements Serializable {
     private String status;
     private String banStatus;
 
+    public User(){}
+
     public User(String id, String name,String age, String username, String password, String status, String banStatus) throws IOException {
         this.id = id;
         this.name = name;
@@ -41,6 +43,10 @@ public class User implements Serializable {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setUsername(String username) {

@@ -77,7 +77,7 @@ public class ClientHandler implements Runnable {
                 } else if (obj instanceof LoginCredentials) {
                     LoginCredentials loginCredentials = (LoginCredentials) obj;
 
-                    getRegisteredUsers();
+//                    getRegisteredUsers();
 
                     for (User user: registeredUsersList) {
                         if (user.getUsername().equals(loginCredentials.getUsername())) {

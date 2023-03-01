@@ -28,14 +28,14 @@ public class Server extends Thread{
     public static String f = "res/users.xml";
     static Socket clientSocket;
     public static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
-    public static List<User> registeredUsersList = new ArrayList<>();
-    public static List<String> userNames = new ArrayList<>();
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     public static int port;
     static Scanner scanner = new Scanner(System.in);
     static ServerSocket serverSocket;
     public List<User> clients;
     private List<ClientHandler> clientsList;
+    static XMLParse xmlParse = new XMLParse("res/messages.xml");
+    public static List<User> registeredUsersList = new ArrayList<>(xmlParse.getUserList());
     XMLParse xmlParse = new XMLParse("res/messages.xml");
     JFrame frame;
 
@@ -241,42 +241,42 @@ public class Server extends Thread{
         return users;
     }
 
-    public static Document getRegisteredUsers() {
-        NodeList users;
-        Document document;
-        String id, name, age, username, password, status, banStatus;
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            document = documentBuilder.parse(f);
-
-            users = document.getElementsByTagName("User");
-
-            for (int i = 0; i < users.getLength(); i++) {
-                Element element = (Element) users.item(i);
-                id = element.getAttribute("User");
-                name = element.getElementsByTagName("name").item(0).getTextContent();
-                age = element.getElementsByTagName("Age").item(0).getTextContent();
-                username = element.getElementsByTagName("Username").item(0).getTextContent();
-                password = element.getElementsByTagName("Password").item(0).getTextContent();
-                status = element.getElementsByTagName("status").item(0).getTextContent();
-
-                //bigla nag eerror dituy idk why, lagay ko muna ito
-                try{
-                    banStatus = element.getElementsByTagName("BanStatus").item(0).getTextContent();
-                }
-                catch(NullPointerException e){
-                    banStatus = "x";
-                }
-                registeredUsersList.add(new User(id, name, age, username, password, status, banStatus));
-
-
-            }
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            throw new RuntimeException(e);
-        }
-        return document;
-    }
+//    public static Document getRegisteredUsers() {
+//        NodeList users;
+//        Document document;
+//        String id, name, age, username, password, status, banStatus;
+//        try {
+//            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+//            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+//            document = documentBuilder.parse(f);
+//
+//            users = document.getElementsByTagName("User");
+//
+//            for (int i = 0; i < users.getLength(); i++) {
+//                Element element = (Element) users.item(i);
+//                id = element.getAttribute("User");
+//                name = element.getElementsByTagName("name").item(0).getTextContent();
+//                age = element.getElementsByTagName("Age").item(0).getTextContent();
+//                username = element.getElementsByTagName("Username").item(0).getTextContent();
+//                password = element.getElementsByTagName("Password").item(0).getTextContent();
+//                status = element.getElementsByTagName("status").item(0).getTextContent();
+//
+//                //bigla nag eerror dituy idk why, lagay ko muna ito
+//                try{
+//                    banStatus = element.getElementsByTagName("BanStatus").item(0).getTextContent();
+//                }
+//                catch(NullPointerException e){
+//                    banStatus = "x";
+//                }
+//                registeredUsersList.add(new User(id, name, age, username, password, status, banStatus));
+//
+//
+//            }
+//        } catch (ParserConfigurationException | IOException | SAXException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return document;
+//    }
 
 
 }

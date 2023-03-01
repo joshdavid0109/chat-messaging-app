@@ -4,7 +4,7 @@
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
         <Groupname id="Admin">REAL</Groupname>
     </User>

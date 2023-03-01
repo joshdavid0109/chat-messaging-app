@@ -5,9 +5,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import server_side.Server;
-import shared_classes.User;
 
+import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,15 +18,19 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
 public class XMLParse {
 
+    private static Document usersDoc;
     private String file;
     public XMLParse(String file) {
         this.file = file;
     }
+    public XMLParse(){}
 
 
     public void addUser(String id, String name, String age, String username, String password) {
@@ -98,7 +101,150 @@ public class XMLParse {
         } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    private void getUsersDoc() {
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            File f = new File("res/users.xml");
+            Node element;
+            if (f.exists()) {
+                usersDoc = db.parse(f);
+            } else {
+                usersDoc = db.newDocument();
+                element = usersDoc.createElement("Users");
+                usersDoc.appendChild(element);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User getUser(String userName) {
+        User user = new User();
+        try {
+            getUsersDoc();
+            usersDoc.getDocumentElement().normalize();
+            NodeList nodeList = usersDoc.getElementsByTagName("User");
+            Element element;
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                element = (Element) nodeList.item(i);
+                if (element.getElementsByTagName("Username").item(0).getTextContent().equals(userName)) {
+                    user.setName(element.getElementsByTagName("name").item(0).getTextContent());
+                    user.setAge(element.getElementsByTagName("Age").item(0).getTextContent());
+                    user.setUsername(element.getElementsByTagName("Username").item(0).getTextContent());
+                    user.setPassword(element.getElementsByTagName("Password").item(0).getTextContent());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public void setOnline(User user) {
+        try {
+            getUsersDoc();
+            usersDoc.getDocumentElement().normalize();
+            NodeList nodeList = usersDoc.getElementsByTagName("User");
+            Element element;
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                element = (Element) nodeList.item(i);
+                if (element.getElementsByTagName("Username").item(0).getTextContent().equals(user.getUsername())) {
+                    element.getElementsByTagName("status").item(0).setTextContent("online");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<User> getUserList() {
+        getUsersDoc();
+        usersDoc.getDocumentElement().normalize();
+        NodeList nodeList = usersDoc.getElementsByTagName("User");
+        List<User> userList = new ArrayList<>();
+        Element element;
+
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            element = (Element) nodeList.item(i);
+            User temp = new User();
+            temp.setName(element.getElementsByTagName("name").item(0).getTextContent());
+            temp.setAge(element.getElementsByTagName("Age").item(0).getTextContent());
+            temp.setUsername(element.getElementsByTagName("Username").item(0).getTextContent());
+            temp.setPassword(element.getElementsByTagName("Password").item(0).getTextContent());
+            temp.setStatus(element.getElementsByTagName("status").item(0).getTextContent());
+            temp.setBanStatus(element.getElementsByTagName("BanStatus").item(0).getTextContent());
+            userList.add(temp);
+        }
+
+        System.out.println(userList);
+
+        return userList;
+    }
+
+    public void addUser(User newUser) {
+        try {
+            List<User> userList = getUserList();
+            UUID userID = UUID.randomUUID();
+            clearXML(usersDoc);
+            userList.add(newUser);
+
+            for (User user : userList) {
+                Element usersTag = usersDoc.getDocumentElement();
+                Element nUser = usersDoc.createElement("User");
+                nUser.setAttribute("id", String.valueOf(userID));
+                Element nameElement = usersDoc.createElement("name");
+                nameElement.setTextContent(user.getName());
+                Element ageElement = usersDoc.createElement("Age");
+                ageElement.setTextContent(user.getAge());
+                Element usrnmElement = usersDoc.createElement("Username");
+                usrnmElement.setTextContent(user.getUsername());
+                Element pswdElement = usersDoc.createElement("Password");
+                pswdElement.setTextContent(user.getPassword());
+                Element statusElement = usersDoc.createElement("status");
+                statusElement.setTextContent(user.getStatus());
+                Element banSttsElement = usersDoc.createElement("BanStatus");
+                banSttsElement.setTextContent(user.getBanStatus());
+
+                nUser.appendChild(nameElement);
+                nUser.appendChild(ageElement);
+                nUser.appendChild(usrnmElement);
+                nUser.appendChild(pswdElement);
+                nUser.appendChild(statusElement);
+                nUser.appendChild(banSttsElement);
+
+                usersTag.appendChild(nUser);
+            }
+
+            DOMSource source = new DOMSource(usersDoc);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            StreamResult streamResult = new StreamResult(new File("fakeres/FakeUsers.xml"));
+            transformer.transform(source, streamResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearXML(Document xml) {
+        Element root = xml.getDocumentElement();
+        Node child = root.getFirstChild();
+        while (child != null) {
+            Node nextChild = child.getNextSibling();
+            root.removeChild(child);
+            child = nextChild;
+        }
     }
 
     public void addMessage(String sender, String message, String recipient, LocalDateTime timeSent) {

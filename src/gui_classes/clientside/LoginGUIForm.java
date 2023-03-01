@@ -5,12 +5,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import server_side.Server;
 import shared_classes.User;
+import shared_classes.XMLParse;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 
 import static server_side.Server.*;
 import static server_side.Server.loggedInUserHashMap;
@@ -48,31 +50,30 @@ public class LoginGUIForm extends JDialog implements Runnable{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Document document = getRegisteredUsers();
-                NodeList nodelist = document.getElementsByTagName("User");
-                Element element;
+//                Document document = new File("res/users.xml");
+//                NodeList nodelist = document.getElementsByTagName("User");
+//                Element element;
                 boolean foundUser = false;
 
                 for (User user: registeredUsersList) {
-
                     if (user.getUsername().equals(getUsername())) {
                         foundUser = true;
                         if (user.getPassword().equals(getPassword())) {
-                            if(user.getStatus().equals("online")){
+                            if (user.getStatus().equals("online")) {
                                 JOptionPane.showMessageDialog(panel, "User is currently logged in on another device.");
                                 break;
-                            }
-                            else{
-                                for(int i =0; i < nodelist.getLength();i++) {
-                                    element = (Element) nodelist.item(i);
-                                    String uname = element.getElementsByTagName("Username").item(0).getTextContent();
-                                    String pass = element.getElementsByTagName("Password").item(0).getTextContent();
-                                    if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
-                                        element.getElementsByTagName("status").item(0).setTextContent("online");
-                                        Server.updateXML(nodelist, document);
-                                        break;
-                                    }
-                                }
+                            } else {
+//                                for(int i =0; i < nodelist.getLength();i++) {
+//                                    element = (Element) nodelist.item(i);
+//                                    String uname = element.getElementsByTagName("Username").item(0).getTextContent();
+//                                    String pass = element.getElementsByTagName("Password").item(0).getTextContent();
+//                                    if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
+//                                        element.getElementsByTagName("status").item(0).setTextContent("online");
+//                                        Server.updateXML(nodelist, document);
+//                                        break;
+//                                    }
+//                                }
+                                new XMLParse().setOnline(user);
                                 u = user;
                                 result = OK;
                                 dispose();
