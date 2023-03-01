@@ -143,7 +143,7 @@ public class UserManagement_GUI {
     }
 
     public void populateList() {
-        Server.getRegisteredUsers();
+//        Server.getRegisteredUsers();
 
 
 //            list1.setListData(Server.registeredUsersList.toArray(new User[0]));
