@@ -3,6 +3,7 @@ package gui_classes.clientside;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import server_side.Server;
 import shared_classes.User;
 import shared_classes.XMLParse;
@@ -10,11 +11,15 @@ import shared_classes.XMLParse;
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.IOException;
 
 import static server_side.Server.*;
 import static server_side.Server.loggedInUserHashMap;
@@ -52,20 +57,17 @@ public class LoginGUIForm extends JDialog implements Runnable{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                DocumentBuilderFactory documentBuilderFactory = null;
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = null;
                 Document document = null;
                 NodeList nodelist = null;
-
                 try {
-                    documentBuilderFactory = DocumentBuilderFactory.newInstance();
                     documentBuilder = documentBuilderFactory.newDocumentBuilder();
                     document = documentBuilder.parse("res/users.xml");
-                    nodelist = document.getElementsByTagName("User");
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                   nodelist = document.getElementsByTagName("User");
+                } catch (ParserConfigurationException | IOException | SAXException ex) {
+                    throw new RuntimeException(ex);
                 }
-
 
                 Element element;
                 boolean foundUser = false;
@@ -88,7 +90,7 @@ public class LoginGUIForm extends JDialog implements Runnable{
                                         break;
                                     }
                                 }
-//                                new XMLParse().setOnline(user);
+//                                XMLParse.setOnline(user);
                                 u = user;
                                 result = OK;
                                 dispose();
