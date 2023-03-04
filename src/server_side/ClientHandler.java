@@ -8,6 +8,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import shared_classes.*;
 
+import javax.print.Doc;
+import javax.swing.event.DocumentEvent;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -105,7 +107,20 @@ public class ClientHandler implements Runnable {
                             }
                         }
                     }
-                }
+                } // TODO: 04/03/2023 RECEIVE XML FILE FROM CLIENT THEN PARSE TO CURRENT XML FILE (PAG MAGKAIBANG MACHINE GAMIT) 
+                /*else if (obj instanceof File f) {
+                    System.out.println("File ito");
+                    
+                    try {
+                        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder db = dbf.newDocumentBuilder();
+                        Document d = db.parse(f);
+                        
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }*/
             }
         } catch (IOException e) {
             System.err.println("Error handling client: " + e);
