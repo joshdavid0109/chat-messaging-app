@@ -61,11 +61,12 @@ public class LoginGUIForm extends JDialog implements Runnable{
                     documentBuilderFactory = DocumentBuilderFactory.newInstance();
                     documentBuilder = documentBuilderFactory.newDocumentBuilder();
                     document = documentBuilder.parse("res/users.xml");
+                    nodelist = document.getElementsByTagName("User");
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }
 
-                nodelist = document.getElementsByTagName("User");
+
                 Element element;
                 boolean foundUser = false;
 

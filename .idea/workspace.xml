@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
+    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="UPDATE STATS">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,20 +58,7 @@
       <recent name="gui_classes.clientside" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.UserManagement_GUI (2)">
-    <configuration name="GUIClientController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.GUIClientController" />
-      <module name="console" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="gui_classes.clientside.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.UserManagement_GUI (4)">
     <configuration name="UserManagement_GUI (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
       <module name="console" />
@@ -124,6 +111,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserManagement_GUI (5)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="server_side.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="UserManagement_GUI" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
       <module name="console" />
@@ -139,19 +139,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.UserManagement_GUI" />
-      <item itemvalue="Application.GUIClientController" />
       <item itemvalue="Application.UserManagement_GUI (4)" />
       <item itemvalue="Application.UserManagement_GUI (3)" />
+      <item itemvalue="Application.UserManagement_GUI (5)" />
       <item itemvalue="Application.UserManagement_GUI (1)" />
       <item itemvalue="Application.UserManagement_GUI (2)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.UserManagement_GUI (2)" />
-        <item itemvalue="Application.UserManagement_GUI (1)" />
-        <item itemvalue="Application.GUIClientController" />
         <item itemvalue="Application.UserManagement_GUI (4)" />
         <item itemvalue="Application.UserManagement_GUI (3)" />
+        <item itemvalue="Application.UserManagement_GUI (5)" />
+        <item itemvalue="Application.UserManagement_GUI (2)" />
+        <item itemvalue="Application.UserManagement_GUI (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -251,7 +251,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677676073024</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="UPDATE STATS">
+      <created>1677924775448</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1677924775448</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,7 +287,8 @@
     <MESSAGE value="addusergui" />
     <MESSAGE value="adduser" />
     <MESSAGE value="refresh update" />
-    <option name="LAST_COMMIT_MESSAGE" value="refresh update" />
+    <MESSAGE value="UPDATE STATS" />
+    <option name="LAST_COMMIT_MESSAGE" value="UPDATE STATS" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -300,7 +308,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java</url>
-          <line>72</line>
+          <line>73</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

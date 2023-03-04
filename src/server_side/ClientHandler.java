@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import shared_classes.*;
 
@@ -16,6 +17,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -86,14 +89,35 @@ public class ClientHandler implements Runnable {
                         server.privateMessage(message.getRecipient(), message);
                     }
                     //outToClient.writeObject(message);
-                } else if (obj instanceof LoginCredentials) {
-                    LoginCredentials loginCredentials = (LoginCredentials) obj;
+                } else if (obj instanceof LoginCredentials loginCredentials) {
 
+                    DocumentBuilderFactory documentBuilderFactory = null;
+                    DocumentBuilder documentBuilder = null;
+                    Document document = null;
+                    NodeList nodelist = null;
+
+                    try {
+                        documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                        documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                        document = documentBuilder.parse("res/users.xml");
+                        nodelist = document.getElementsByTagName("User");
+
+                    Element element;
 //                    getRegisteredUsers();
 
                     for (User user: registeredUsersList) {
                         if (user.getUsername().equals(loginCredentials.getUsername())) {
                             if (user.getPassword().equals(loginCredentials.getPassword())) {
+                                for(int i =0; i < nodelist.getLength();i++) {
+                                    element = (Element) nodelist.item(i);
+                                    String uname = element.getElementsByTagName("Username").item(0).getTextContent();
+                                    String pass = element.getElementsByTagName("Password").item(0).getTextContent();
+                                    if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
+                                        element.getElementsByTagName("status").item(0).setTextContent("online");
+                                        Server.updateXML(nodelist, document);
+                                        break;
+                                    }
+                                }
                                 outToClient.writeObject(user);
                                 outToClient.flush();
                                 server.clients.add(user);
@@ -106,20 +130,10 @@ public class ClientHandler implements Runnable {
                             }
                         }
                     }
-                } // TODO: 04/03/2023 RECEIVE XML FILE FROM CLIENT THEN PARSE TO CURRENT XML FILE (PAG MAGKAIBANG MACHINE GAMIT) 
-                /*else if (obj instanceof File f) {
-                    System.out.println("File ito");
-                    
-                    try {
-                        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder db = dbf.newDocumentBuilder();
-                        Document d = db.parse(f);
-                        
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                     }
-
-                }*/
+                } // TODO: 04/03/2023 RECEIVE XML FILE FROM CLIENT THEN PARSE TO CURRENT XML FILE (PAG MAGKAIBANG MACHINE GAMIT)
             }
         } catch (IOException e) {
             System.err.println("Error handling client: " + e);

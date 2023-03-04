@@ -109,6 +109,7 @@ public class Server extends Thread{
                     getRegisteredUsers();
                     ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
                     ClientHandler clientHandler = new ClientHandler(this, clientSocket, outToClient);
+                    outToClient.writeObject(new File("res/users.xml"));
                     executorService.execute(clientHandler);
                     clientsList.add(clientHandler);
                 }catch (IOException e) {
