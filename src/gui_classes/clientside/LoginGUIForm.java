@@ -8,6 +8,8 @@ import shared_classes.User;
 import shared_classes.XMLParse;
 
 import javax.swing.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -50,9 +52,21 @@ public class LoginGUIForm extends JDialog implements Runnable{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-//                Document document = new File("res/users.xml");
-//                NodeList nodelist = document.getElementsByTagName("User");
-//                Element element;
+                DocumentBuilderFactory documentBuilderFactory = null;
+                DocumentBuilder documentBuilder = null;
+                Document document = null;
+                NodeList nodelist = null;
+
+                try {
+                    documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                    documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                    document = documentBuilder.parse("res/users.xml");
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+
+                nodelist = document.getElementsByTagName("User");
+                Element element;
                 boolean foundUser = false;
 
                 for (User user: registeredUsersList) {
@@ -63,17 +77,17 @@ public class LoginGUIForm extends JDialog implements Runnable{
                                 JOptionPane.showMessageDialog(panel, "User is currently logged in on another device.");
                                 break;
                             } else {
-//                                for(int i =0; i < nodelist.getLength();i++) {
-//                                    element = (Element) nodelist.item(i);
-//                                    String uname = element.getElementsByTagName("Username").item(0).getTextContent();
-//                                    String pass = element.getElementsByTagName("Password").item(0).getTextContent();
-//                                    if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
-//                                        element.getElementsByTagName("status").item(0).setTextContent("online");
-//                                        Server.updateXML(nodelist, document);
-//                                        break;
-//                                    }
-//                                }
-                                new XMLParse().setOnline(user);
+                                for(int i =0; i < nodelist.getLength();i++) {
+                                    element = (Element) nodelist.item(i);
+                                    String uname = element.getElementsByTagName("Username").item(0).getTextContent();
+                                    String pass = element.getElementsByTagName("Password").item(0).getTextContent();
+                                    if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
+                                        element.getElementsByTagName("status").item(0).setTextContent("online");
+                                        Server.updateXML(nodelist, document);
+                                        break;
+                                    }
+                                }
+//                                new XMLParse().setOnline(user);
                                 u = user;
                                 result = OK;
                                 dispose();
