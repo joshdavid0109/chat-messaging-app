@@ -8,10 +8,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.Server;
 import server_side.UserManagement_GUI;
-import shared_classes.LoginCredentials;
-import shared_classes.Message;
-import shared_classes.OfflineMessage;
-import shared_classes.User;
+import shared_classes.*;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -23,6 +20,7 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.List;
 
@@ -139,6 +137,9 @@ public class GUIClientController extends JFrame implements ActionListener{
 
         boolean loggedIn = false;
         while (!loggedIn) {
+
+
+
             // Prompt the user to enter their username and password
             LoginGUIForm log = new LoginGUIForm(this);
 
@@ -147,6 +148,7 @@ public class GUIClientController extends JFrame implements ActionListener{
             // Create a login message and send it to the server
             LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
             output.writeObject(loginMessage);
+//            output.writeObject(f);
 
             if(input != null){
                 //System.out.println("HELLOasdASDD");
@@ -157,13 +159,17 @@ public class GUIClientController extends JFrame implements ActionListener{
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: "+user.getName());
                     loggedIn = true;
-                }
-                else if (obj instanceof Message) {
+                    output.writeObject(f);
+                } else if (obj instanceof Message) {
                     //login error message ipriprint ng server sa client
                     Message message = (Message) obj;
                     System.out.println(message.getContent());
                     loggedIn = false;
-                }else {
+                } else if (obj instanceof File f) {
+                    /**
+                     * parse to existing users.xml
+                     */
+                } else {
                     JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
                 }
             }
@@ -426,44 +432,33 @@ public class GUIClientController extends JFrame implements ActionListener{
 
 
         boolean validPort = false;
+        portAuth:
         while (!validPort) {
+                    port = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
+
+                    hostName = JOptionPane.showInputDialog(new JFrame(),"Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);
+                    validPort =true;
+        }
+
+        if (port != 0) {
             try {
-
-                port = Integer.parseInt(JOptionPane.showInputDialog(new JPanel(), "Input port: ", JOptionPane.YES_NO_CANCEL_OPTION));
-                if (port == JOptionPane.CANCEL_OPTION) {
-                    break;
-                }
-                validPort = true;
-            }  catch(NumberFormatException e) {
-
-                JOptionPane.showMessageDialog(new JPanel(), "VALID NUMBER PLEASE", "Errror Message", JOptionPane.ERROR_MESSAGE);
-                System.out.println(e.getMessage());
-            } catch (NullPointerException e) {
-                System.out.println(e.getMessage());
-                JOptionPane.showMessageDialog(new JPanel(), "INPUT A VALID PORT", "Error message", JOptionPane.ERROR_MESSAGE);
-                System.out.println(e.getMessage());
+                server = new Socket(hostName, port);
+                System.out.println("Connected to port: " + port);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(new JPanel(), "TRY AGAIN.", "Error message", JOptionPane.ERROR_MESSAGE);
-
                 System.out.println(e.getMessage());
+                e.printStackTrace();
             }
+
+            // Create a new instance of the controller
+            GUIClientController controller = new GUIClientController(server);
+            ServerMessageListener listener = controller.new ServerMessageListener();
+            listener.start();
+
+            // Show the frame
+            controller.setVisible(true);
         }
-
-        try{
-            server = new Socket(hostName, port);
-            System.out.println("Connected to port: " + port);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-
-        // Create a new instance of the controller
-        GUIClientController controller = new GUIClientController(server);
-        ServerMessageListener listener = controller.new ServerMessageListener();
-        listener.start();
-
-        // Show the frame
-        controller.setVisible(true);
+        else
+            System.exit(0);
     }
 
     @Override

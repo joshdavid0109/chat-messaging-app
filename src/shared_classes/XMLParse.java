@@ -145,7 +145,7 @@ public class XMLParse {
         return user;
     }
 
-    public void setOnline(User user) {
+    public static void setOnline(User user) {
         try {
             getUsersDoc();
             usersDoc.getDocumentElement().normalize();
