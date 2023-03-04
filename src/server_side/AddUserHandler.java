@@ -29,6 +29,7 @@ public class AddUserHandler extends JDialog implements Runnable{
     private JLabel passAuth;
     private JLabel conPassAuth;
     private JTextField nameTF;
+    private JLabel nameAuth;
 
     public AddUserHandler(JFrame parent) {
         super(parent, "Login", true);
@@ -48,13 +49,21 @@ public class AddUserHandler extends JDialog implements Runnable{
                 confirmPassword = confirmPasswordPF.getText();
 
                 try {
-                        if (isDuplicate(username) || isNumeric(age) || (password.length() > 16 || password.length() < 8) ||
+                        if (username.equals("") || name.equals("") || isDuplicate(username) || isNumeric(age) || (password.length() > 16 || password.length() < 8) ||
                                 password.equals(confirmPassword)) {
-                            if (isDuplicate(username))
+                            if (username.equals(""))
+                                usernameAuth.setText("Username field is empty.");
+                            else if (isDuplicate(username) )
                                 usernameAuth.setText("Username is already taken");
-                            if (!isNumeric(age))
+                            if (age.equals(""))
+                                ageAuth.setText("Age field is empty");
+                            else if (!isNumeric(age))
                                 ageAuth.setText("Invalid age");
-                            if (password.length() > 16 || password.length() < 8)
+                            if (name.equals(""))
+                                nameAuth.setText("Name field is empty.");
+                            if (password.equals(""))
+                                passAuth.setText("Password field is empty.");
+                            else if (password.length() > 16 || password.length() < 8)
                                 passAuth.setText("Password must contain 8-16 characters");
                             if (!password.equals(confirmPassword))
                                 conPassAuth.setText("Password does not match.");
@@ -73,7 +82,7 @@ public class AddUserHandler extends JDialog implements Runnable{
 
 
         getContentPane().add(addUserPanel);
-        pack();
+        setSize(500, 600);
         setLocationRelativeTo(parent);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
@@ -131,4 +140,7 @@ public class AddUserHandler extends JDialog implements Runnable{
         return false;
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }

@@ -61,15 +61,25 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             while (userInput != null) {
-                Object obj = userInput.readObject();
+                Object obj = new Object();
+                try{
+                    obj = userInput.readObject();
+                }
+                catch (EOFException e){
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
+
+
                 if (obj.getClass().equals(Message.class)) {//ganito muna, kasi if (obj instanceof message) yung nakalagay, pati subclasses nun (like OfflineMessage) ay kasama
                     Message message = (Message) obj;
                     System.out.println("SENDER: "+message.getSender()+" MESSAGE: "+message.getContent()+" RECIPIENT: "+message.getRecipient());
-
-                    if(message.getRecipient().equals("TOALL")){
+                    if(message.getRecipient() == null){
                         server.broadcastMessage(message);
                     }
-
+                    else if(message.getRecipient().equals("TOALL")){
+                        server.broadcastMessage(message);
+                    }
                     else{
                         server.privateMessage(message.getRecipient(), message);
                     }

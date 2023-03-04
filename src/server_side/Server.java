@@ -32,6 +32,7 @@ public class Server extends Thread{
     public static int port;
     static Scanner scanner = new Scanner(System.in);
     static ServerSocket serverSocket;
+    private static ArrayList<String> userNames;
     public List<User> clients;
     private List<ClientHandler> clientsList;
     static XMLParse xmlParse = new XMLParse("res/messages.xml");
@@ -57,7 +58,7 @@ public class Server extends Thread{
         System.out.println(user+ " has been added to ze list of ze users");
     }
     public static List<String> getRegisteredUserNames() {
-        List<String> userNames = new ArrayList<>();
+        userNames = new ArrayList<>();
         for (User user : registeredUsersList) {
             userNames.add(user.getName());
         }
@@ -133,7 +134,7 @@ public class Server extends Thread{
     public void privateMessage(String recipient, Message message) {
         ObjectOutputStream outToRecipient;
         for (ClientHandler client : loginHandlerArraylist) {
-            if (loggedInUserHashMap.get(client).getName().equals(recipient)) {
+            if (loggedInUserHashMap.get(client).getName().equalsIgnoreCase(recipient)) {
                 outToRecipient = client.outToClient;
                 try {
                     outToRecipient.writeObject(message);
@@ -144,10 +145,14 @@ public class Server extends Thread{
                 return;
             }
         }
-        //get yung date, para sa offline message
-        LocalDateTime timeSent = LocalDateTime.now();
-        xmlParse.addMessage(message.getSender(), message.getContent(), message.getRecipient(), timeSent);
-        System.err.println("User: " + recipient +" is offline.... message will be written sa xml file :)");
+
+        //check muna if recipient is actually a user
+        if(getRegisteredUserNames().contains(message.getRecipient())){
+            //get yung date, para sa offline message
+            LocalDateTime timeSent = LocalDateTime.now();
+            xmlParse.addMessage(message.getSender(), message.getContent(), message.getRecipient(), timeSent);
+            System.err.println("User: " + recipient +" is offline.... message will be written sa xml file :)");
+        }
     }
     public void offlineMessage(String recipient, List<OfflineMessage> offlineMessages) {
         ObjectOutputStream outToRecipient;
@@ -208,6 +213,10 @@ public class Server extends Thread{
             e.printStackTrace();
         }
     }*/
+
+    public static void updateUsersList() {
+        registeredUsersList = new ArrayList<>(XMLParse.getUserList());
+    }
 
     public static ArrayList<User> getUsersByGroupName(String groupName) {
         ArrayList<User> users = new ArrayList<>();

@@ -103,7 +103,7 @@ public class XMLParse {
         }
     }
 
-    private void getUsersDoc() {
+    private static void getUsersDoc() {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -163,7 +163,7 @@ public class XMLParse {
         }
     }
 
-    public List<User> getUserList() {
+    public static List<User> getUserList() {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();
         NodeList nodeList = usersDoc.getElementsByTagName("User");

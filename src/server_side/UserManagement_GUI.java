@@ -2,6 +2,7 @@ package server_side;
 
 import org.xml.sax.SAXException;
 import shared_classes.User;
+import shared_classes.XMLParse;
 
 import javax.swing.*;
 import java.awt.*;
@@ -133,6 +134,8 @@ public class UserManagement_GUI extends JFrame{
 
     public void populateList() {
 //        Server.getRegisteredUsers();
+
+        Server.updateUsersList();
 
 
 //            list1.setListData(Server.registeredUsersList.toArray(new User[0]));
