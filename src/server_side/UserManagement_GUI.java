@@ -15,12 +15,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class UserManagement_GUI extends JFrame{
-    User user;
-    JList<User> list;
-    DefaultTableModel model;
-    JScrollPane userScroll = new JScrollPane();
-    JTable table;
-    int port;
+    private User user;
+    private JList<User> list;
+    private DefaultTableModel model;
+    private JScrollPane userScroll = new JScrollPane();
+    private JTable table;
+    private int port;
+    private XMLParse xmlParse;
 
     public UserManagement_GUI(/*User user*/) { this.user = user; }
 
@@ -45,7 +46,6 @@ public class UserManagement_GUI extends JFrame{
         startServer.setForeground(Color.black);
         startServer.setBackground(Color.decode("#149639"));
 
-        JPanel panel = new JPanel();
         AtomicBoolean serverStatus = new AtomicBoolean(false); // false offline
                               // true online
 
@@ -82,6 +82,22 @@ public class UserManagement_GUI extends JFrame{
         deleteUser.setForeground(Color.black);
         deleteUser.setBackground(Color.WHITE);
 
+        deleteUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object [] options = {"Yes", "No"};
+                String selectedUser = (String) table.getValueAt(table.getSelectedRow(), 0);
+                System.out.println(selectedUser);
+
+                int c = JOptionPane.showOptionDialog(null, "Are you sure you want to remove " + selectedUser + "?", "User Deletion",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+
+                if (c == 0) {
+                    //TODO: DELETE USER ON XML FILE
+                }
+            }
+        });
+
         JButton banUser = new JButton("Ban User");
         banUser.setBounds(570, 190, 150, 45);
         banUser.setBorder(BorderFactory.createEtchedBorder(000000));
@@ -107,8 +123,6 @@ public class UserManagement_GUI extends JFrame{
                 populateList();
                 userScroll = new JScrollPane(table);
                 userScroll.setBounds(35, 30, 500, 400);
-
-
                 frameUM.add(userScroll);
 
             }
@@ -126,7 +140,6 @@ public class UserManagement_GUI extends JFrame{
         populateList();
         userScroll = new JScrollPane(table);
         userScroll.setBounds(35, 30, 500, 400);
-
 
         frameUM.add(userScroll);
 
@@ -195,11 +208,3 @@ public class UserManagement_GUI extends JFrame{
     }
 }
 
-class MyTableCellRenderer extends DefaultTableCellRenderer   {
-    @Override
-    public Color getBackground() {
-        return super.getBackground();
-    }
-
-
-}

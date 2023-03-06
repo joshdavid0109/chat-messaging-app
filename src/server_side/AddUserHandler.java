@@ -3,6 +3,7 @@ package server_side;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import shared_classes.User;
 import shared_classes.XMLParse;
 
 import javax.swing.*;
@@ -69,7 +70,8 @@ public class AddUserHandler extends JDialog implements Runnable{
                                 conPassAuth.setText("Password does not match.");
                         } else {
                             UUID randomID = UUID.randomUUID();
-                            parse.addUser(randomID.toString(), name, age, username, password);
+                            parse.addUser(new User(randomID.toString(), name, age, username, password, "offline", ""));
+                            System.out.println("user " +name + " added");
                         }
 
                 } catch (Exception ex) {

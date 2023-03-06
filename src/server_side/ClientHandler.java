@@ -108,19 +108,17 @@ public class ClientHandler implements Runnable {
                         }
                     }
                 } // TODO: 04/03/2023 RECEIVE XML FILE FROM CLIENT THEN PARSE TO CURRENT XML FILE (PAG MAGKAIBANG MACHINE GAMIT) 
-                /*else if (obj instanceof File f) {
+                else if (obj instanceof File f) {
                     System.out.println("File ito");
                     
                     try {
-                        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder db = dbf.newDocumentBuilder();
-                        Document d = db.parse(f);
+
                         
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                }*/
+                }
             }
         } catch (IOException e) {
             System.err.println("Error handling client: " + e);

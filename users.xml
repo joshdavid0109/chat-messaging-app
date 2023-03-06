@@ -18,4 +18,10 @@
         <Username>asd</Username>
         <Password>Asdasdasd#123</Password>
     </User>
+    <User id="ad50c0ca-d3b6-49f2-a783-a8c598aef434">
+        <name>sample</name>
+        <Age>19</Age>
+        <Username>sample</Username>
+        <Password>sampletest</Password>
+    </User>
 </Users>
