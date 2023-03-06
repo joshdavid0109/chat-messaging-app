@@ -28,6 +28,7 @@ public class Server {
     private HashMap<String, List<ClientHandler>> groupsMap;
     static Socket clientSocket;
     public static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
+    static XMLParse xmlParse = new XMLParse("res/messages.xml");
     public static List<User> registeredUsersList = new ArrayList<>();
     public static List<String> userNames = new ArrayList<>();
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
@@ -38,7 +39,6 @@ public class Server {
     private List<ClientHandler> clientsList;
     private List<Group> groups = new ArrayList<>();
     public Set<String> groupNames;
-    XMLParse xmlParse = new XMLParse("res/messages.xml");
 
     ObjectInputStream input;
     ObjectOutputStream output;
@@ -136,8 +136,11 @@ public class Server {
                     try {
                         clientSocket = serverSocket.accept();
                         // Create an instance of ObjectOutputStream to write the message object to the client
+                        getRegisteredUsers();
+                        System.out.println("a client has connected to the server [ "+clientSocket.getLocalAddress()+" ]");
                         ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
                         ClientHandler clientHandler = new ClientHandler(this, clientSocket, outToClient);
+                        //outToClient.writeObject(new File("res/users.xml"));
                         executorService.execute(clientHandler);
                         clientsList.add(clientHandler);
                     }catch (IOException e) {
@@ -304,7 +307,8 @@ public class Server {
         }
         return users;
     }
-
+    public static void updateUsersList() {
+    }
     public static void getRegisteredUsers() {
         String id, name, age, username, password, status, banStatus;
         try {
