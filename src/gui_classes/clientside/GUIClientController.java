@@ -137,9 +137,6 @@ public class GUIClientController extends JFrame implements ActionListener{
 
         boolean loggedIn = false;
         while (!loggedIn) {
-
-
-
             // Prompt the user to enter their username and password
             LoginGUIForm log = new LoginGUIForm(this);
 
@@ -328,7 +325,7 @@ public class GUIClientController extends JFrame implements ActionListener{
                 //message object parin gagawin, pero yung recipient is hindi "toall"
 
                 case "pm":
-                    String recipient = words[2];
+                    String recipient = words[2].toLowerCase(Locale.ROOT);
                     if(Server.getRegisteredUserNames().contains(recipient)){
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
                         System.out.println("pm xx " + messageContent);
@@ -347,7 +344,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                     msg = new Message("NOTHING");
                     messagePane.setText(messagePane.getText()+"\n"+"[ERROR] error in parsing message -> command not recognized???");
                     break;
-
             }
         }
         else{

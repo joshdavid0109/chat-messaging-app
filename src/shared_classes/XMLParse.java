@@ -246,6 +246,30 @@ public class XMLParse {
             child = nextChild;
         }
     }
+    public void setLoginStatus(String name, String status) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(file);
+            Element root = document.getDocumentElement();
+            NodeList users = root.getElementsByTagName("User");
+            int userListLength = users.getLength();
+            for(int i = 0; i<userListLength;i++){
+                Element u = (Element) users.item(i);
+                String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
+                if(nameNode.equals(name)){
+                    u.getElementsByTagName("status").item(0).setTextContent(status);
+                    Server.updateXML(users, document);
+                    System.out.println(file+" has been updated!, status of "+name+" has been set to '"+status+"'.");
+                    break;
+                }
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     public void addMessage(String sender, String message, String recipient, LocalDateTime timeSent) {
 
