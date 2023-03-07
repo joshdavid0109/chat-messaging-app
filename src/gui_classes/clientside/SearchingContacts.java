@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import shared_classes.XMLParse;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,11 +14,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 public class SearchingContacts extends JFrame{
     private final JTextField searchField;
     private final JTextArea resultArea;
+
+    private ArrayList<String> similarNames;
 
     public SearchingContacts(){
         super("Search");
@@ -34,17 +38,34 @@ public class SearchingContacts extends JFrame{
         searchPanel.add(searchField,BorderLayout.CENTER);
 
         JButton searchButton = new JButton("Search");
+
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String contactName = searchField.getText().trim();
 
-                //Search for the name in XML file
-                String info = searchXML(contactName);
+                //Search for the exact name in XML file
+                String info = XMLParse.searchXML(contactName);
 
-                if(info.isEmpty()){
-                    resultArea.setText(contactName + "  not found.");
-                }else{
+                if (info.isEmpty()) {
+                    // Search for similar names if exact match not found
+                    similarNames = findSimilarNames(contactName);
+                    if (similarNames.isEmpty()) {
+                        resultArea.setText(contactName + " not found.");
+                    } else if (similarNames.size() == 1) {
+                        // If only one similar name found, show its info
+                        info = XMLParse.searchXML(similarNames.get(0));
+                        resultArea.setText(info);
+                    } else {
+                        // If multiple similar names found, show a list of suggestions
+                        String suggestion = "Did you mean:";
+                        for (String name : similarNames) {
+                            suggestion += " " + name + ",";
+                        }
+                        suggestion = suggestion.substring(0, suggestion.length() - 1); // Remove last comma
+                        resultArea.setText(suggestion);
+                    }
+                } else {
                     resultArea.setText(info);
                 }
             }
@@ -64,49 +85,31 @@ public class SearchingContacts extends JFrame{
         setVisible(true);
     }
 
-    public String searchXML(String name){
-        try{
-            DocumentBuilderFactory documentBuilderFactory =
-                    DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder =
-                    documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse("res/users.xml");
-
-            document.getDocumentElement().normalize();
-            NodeList nodeList = document.getElementsByTagName("User");
-
-            for(int i = 0; i < nodeList.getLength(); i++){
-                Node nNode = nodeList.item(i);
-
-                if(nNode.getNodeType() == Node.ELEMENT_NODE){
-                    Element element = (Element) nNode;
-
-                    String userName = element
-                            .getElementsByTagName("name")
-                            .item(0)
-                            .getTextContent();
-
-                    if(userName.equalsIgnoreCase(name)){
-                        String info = "Name: " + userName + "\n";
-                        info += "User name: " +element.getElementsByTagName("Username")
-                                .item(0)
-                                .getTextContent() +"\n";
-
-                        info += "Status: " +element.getElementsByTagName("status")
-                                .item(0)
-                                .getTextContent() +"\n";
-
-                        return info;
-                    }
-
+    private ArrayList<String> findSimilarNames(String input) {
+        similarNames = new ArrayList<>();
+        //this one kinopya lang po namin sa internet sir,
+        // i dont even know how this works
+        for (String name : XMLParse.getAllContactNames()) {
+            int[][] dp = new int[input.length() + 1][name.length() + 1];
+            for (int i = 0; i <= input.length(); i++) {
+                dp[i][0] = i;
+            }
+            for (int j = 0; j <= name.length(); j++) {
+                dp[0][j] = j;
+            }
+            for (int i = 1; i <= input.length(); i++) {
+                for (int j = 1; j <= name.length(); j++) {
+                    int cost = (input.charAt(i - 1) == name.charAt(j - 1)) ? 0 : 1;
+                    dp[i][j] = Math.min(dp[i - 1][j] + 1, Math.min(dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost));
                 }
             }
-        }catch (Exception e){
-            e.printStackTrace();
+            int distance = dp[input.length()][name.length()];
+            if (distance <= 2) { // Set the maximum allowed edit distance to 2
+                similarNames.add(name);
+            }
         }
-        return "";
+        return similarNames;
     }
-
     public static void main(String[] args){
         new SearchingContacts();
     }

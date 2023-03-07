@@ -34,6 +34,76 @@ public class XMLParse {
     public XMLParse(){}
 
 
+    public void addUser(String id, String name, String age, String username, String password) {
+        String status = "offline";
+        String banStatus = " ";
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document;
+            File f = new File(file);
+            NodeList users = null;
+            Node element = null;
+
+            //check nu adda ti file f idjay compooter
+            if (f.exists()) {
+                document = documentBuilder.parse(file);
+                users = document.getElementsByTagName("Users");
+                element = users.item(users.getLength() - 1);
+            }
+            //if awan ti file f, create new document
+            else {
+                document = documentBuilder.newDocument();
+                element = document.createElement("Users");
+                document.appendChild(element);
+            }
+
+            //random id exampol <User id="3f99fe2e-a7cb-452f-9bd0-d74ace5eeb7d">
+
+
+            //create element user
+            Element elementUser = document.createElement("User");
+            element.appendChild(elementUser);
+
+            //set id for user
+            elementUser.setAttribute("id", String.valueOf(id));
+
+            Element nameElement = document.createElement("name");
+            nameElement.appendChild(document.createTextNode(name));
+            elementUser.appendChild(nameElement);
+
+            Element ageElement = document.createElement("Age");
+            ageElement.appendChild(document.createTextNode(age));
+            elementUser.appendChild(ageElement);
+
+            Element usernameElement = document.createElement("Username");
+            usernameElement.appendChild(document.createTextNode(username));
+            elementUser.appendChild(usernameElement);
+
+            Element passwordElement = document.createElement("Password");
+            passwordElement.appendChild(document.createTextNode(password));
+            elementUser.appendChild(passwordElement);
+
+            /*Server.registeredUsersList.add(new User(id, name, age, username, password,status, banStatus));*/
+
+            trimWhiteSpace(element);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            DOMSource domSource = new DOMSource(document);
+            StreamResult streamResult = new StreamResult(new File(file));
+            transformer.transform(domSource, streamResult);
+        } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static void getUsersDoc() {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -51,7 +121,6 @@ public class XMLParse {
             throw new RuntimeException(e);
         }
     }
-
     public User getUser(String userName) {
         User user = new User();
         try {
@@ -75,7 +144,6 @@ public class XMLParse {
         }
         return user;
     }
-
     public static void setOnline(User user) {
         try {
             getUsersDoc();
@@ -93,7 +161,20 @@ public class XMLParse {
             e.printStackTrace();
         }
     }
+    public static List<String> getAllContactNames() {
+        getUsersDoc();
+        usersDoc.getDocumentElement().normalize();
+        NodeList nodeList = usersDoc.getElementsByTagName("User");
+        List<String> contactNames = new ArrayList<>();
+        Element element;
 
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            element = (Element) nodeList.item(i);
+            contactNames.add(element.getElementsByTagName("name").item(0).getTextContent());
+        }
+
+        return contactNames;
+    }
     public static List<User> getUserList() {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();
@@ -113,9 +194,10 @@ public class XMLParse {
             userList.add(temp);
         }
 
+        System.out.println(userList);
+
         return userList;
     }
-
     public void addUser(User newUser) {
         try {
             List<User> userList = getUserList();
@@ -165,42 +247,6 @@ public class XMLParse {
             e.printStackTrace();
         }
     }
-
-    public void deleteUser(String username) {
-        try {
-            getUsersDoc();
-            usersDoc.getDocumentElement().normalize();
-            NodeList nodeList = usersDoc.getElementsByTagName("User");
-            Element element = null;
-
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                element = (Element) nodeList.item(i);
-                if (element.getElementsByTagName("Username").item(0).getTextContent().equals(username)) {
-                    Element parent = (Element) element.getParentNode();
-                    parent.removeChild(element);
-                    break;
-                }
-            }
-
-            Element pangTrim = (Element) nodeList.item(0);
-            trimWhiteSpace(pangTrim);
-            
-            DOMSource source = new DOMSource(usersDoc);
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-            StreamResult streamResult = new StreamResult(new File("res/users.xml"));
-            transformer.transform(source, streamResult);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void clearXML(Document xml) {
         Element root = xml.getDocumentElement();
         Node child = root.getFirstChild();
@@ -210,7 +256,6 @@ public class XMLParse {
             child = nextChild;
         }
     }
-
     public void setLoginStatus(String name, String status) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -235,7 +280,45 @@ public class XMLParse {
         }
     }
 
+    public static String searchXML(String name){
+        try{
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse("res/users.xml");
+            document.getDocumentElement().normalize();
+            NodeList nodeList = document.getElementsByTagName("User");
 
+            for(int i = 0; i < nodeList.getLength(); i++){
+                Node nNode = nodeList.item(i);
+
+                if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                    Element element = (Element) nNode;
+
+                    String userName = element
+                            .getElementsByTagName("name")
+                            .item(0)
+                            .getTextContent();
+
+                    if(userName.equalsIgnoreCase(name)){
+                        String info = "Name: " + userName + "\n";
+                        info += "User name: " +element.getElementsByTagName("Username")
+                                .item(0)
+                                .getTextContent() +"\n";
+
+                        info += "Status: " +element.getElementsByTagName("status")
+                                .item(0)
+                                .getTextContent() +"\n";
+
+                        return info;
+                    }
+
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
     public void addMessage(String sender, String message, String recipient, LocalDateTime timeSent) {
 
         try {
@@ -318,6 +401,39 @@ public class XMLParse {
             }
         } catch (NullPointerException nullPointerException) {
             throw new NullPointerException("Socket closed");
+        }
+    }
+
+    public void deleteUser(String nameToDelete) {
+        try {
+            getUsersDoc();
+            usersDoc.getDocumentElement().normalize();
+            NodeList nodeList = usersDoc.getElementsByTagName("User");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Element user = (Element)nodeList.item(i);
+                String name = user.getElementsByTagName("Username").item(0).getTextContent();
+                if (name.equals(nameToDelete)) {
+                    user.getParentNode().removeChild(user);
+                    System.out.println("user: "+nameToDelete+" has been yeeted..");
+                }
+            }
+
+            DOMSource source = new DOMSource(usersDoc);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            StreamResult streamResult = new StreamResult(new File("res/users.xml"));
+            transformer.transform(source, streamResult);
+            trimWhiteSpace(usersDoc);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

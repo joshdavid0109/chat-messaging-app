@@ -119,14 +119,12 @@ public class UserManagement_GUI extends JFrame{
                 System.out.println(table.getSelectedRow());
                 String selectedUser = (String) table.getValueAt(table.getSelectedRow(), 0);
 
-
-
                 int c = JOptionPane.showOptionDialog(null, "Are you sure you want to remove " + selectedUser + "?", "User Deletion",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
                 if (c == 0) {
-                    String username = (String) table.getValueAt(table.getSelectedRow(), 1);
-                    xmlParse.deleteUser(username);
+                    String nameToDelete = (String) table.getValueAt(table.getSelectedRow(), 1);
+                    xmlParse.deleteUser(nameToDelete);
                 }
             }
         });
