@@ -117,6 +117,11 @@ public class UserManagement_GUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 Object [] options = {"Yes", "No"};
                 System.out.println(table.getSelectedRow());
+                if (table.getSelectedRow() ==1){
+                    JOptionPane.showMessageDialog(null, "Select a row at the table to delete.", "User Deletion", JOptionPane.ERROR_MESSAGE, null);
+                    return;
+                }
+
                 String selectedUser = (String) table.getValueAt(table.getSelectedRow(), 0);
 
                 int c = JOptionPane.showOptionDialog(null, "Are you sure you want to remove " + selectedUser + "?", "User Deletion",

@@ -152,14 +152,12 @@ public class GUIClientController extends JFrame implements ActionListener{
                 if (obj instanceof User) {
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: "+user.getName());
-                    System.out.println(user.getGroups().toString());
+                    user.printGroups();
                     loggedIn = true;
                     output.writeObject(f);
                 } else if (obj instanceof Message) {
                     //login error message ipriprint ng server sa client
                     Message message = (Message) obj;
-                    System.out.println(message.getContent());
-                    loggedIn = false;
                 } /*else if (obj instanceof File f) {
                  *//**
                  * parse to existing users.xml
@@ -339,7 +337,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                     String recipient = words[2].toLowerCase(Locale.ROOT);
                     if(Server.getRegisteredUserNames().contains(recipient)){
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
-                        System.out.println("pm xx " + messageContent);
                         msg = new Message(user.getName(), recipient, messageContent);
                         break;
                     }
@@ -349,8 +346,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                         break;
                     }
                 case "quit":
-                    XMLParse xmlParse = new XMLParse("res/users.xml");
-                    xmlParse.setLoginStatus(user.getName(), "offline");
                     System.exit(0);
                 default:
                     msg = new Message("NOTHING");
@@ -475,7 +470,6 @@ public class GUIClientController extends JFrame implements ActionListener{
 
         @Override
         public void run() {
-            System.out.println("HELO");
             try {
                 /*                input = new ObjectInputStream(server.getInputStream());*/
                 // Continuously listen for messages from the server
@@ -497,7 +491,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                     }
                     else if(obj instanceof List<?>){
                         List<?> list = (List<?>) obj;
-                        System.out.println("ASDASDASDASDASDASD");
                         if (!list.isEmpty() && list.get(0) instanceof OfflineMessage) {
                             List<OfflineMessage> offlineMessages = (List<OfflineMessage>) list;
                             for (OfflineMessage offlineMessage : offlineMessages) {
