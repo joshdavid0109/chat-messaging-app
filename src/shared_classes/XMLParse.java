@@ -144,7 +144,7 @@ public class XMLParse {
         }
         return user;
     }
-    public static void setOnline(User user) {
+    public void setOnline(User user) {
         try {
             getUsersDoc();
             usersDoc.getDocumentElement().normalize();
@@ -157,6 +157,60 @@ public class XMLParse {
                     element.getElementsByTagName("status").item(0).setTextContent("online");
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void setBanStatus(String username, String status){
+        try {
+            getUsersDoc();
+            usersDoc.getDocumentElement().normalize();
+            NodeList nodeList = usersDoc.getElementsByTagName("User");
+            Element element = null;
+
+            if(status.equals("BANNED")){
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    element = (Element) nodeList.item(i);
+                    if (element.getElementsByTagName("Username").item(0).getTextContent().equals(username)) {
+                        if(element.getElementsByTagName("BanStatus").item(0).getTextContent().equals("BANNED")){
+                            System.out.println(username+ " is already banned");
+                        }
+                        else{
+                            element.getElementsByTagName("BanStatus").item(0).setTextContent("BANNED");
+                            System.out.println(username+"'s status has been set to "+status);
+                            trimWhiteSpace(element);
+                        }
+                    }
+                }
+            }
+            else if (status.equals("unban")) {
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    element = (Element) nodeList.item(i);
+                    if (element.getElementsByTagName("Username").item(0).getTextContent().equals(username)) {
+                        if (element.getElementsByTagName("BanStatus").item(0).getTextContent().equals("")) {
+                            System.out.println(username + " is not banned");
+                        } else {
+                            element.getElementsByTagName("BanStatus").item(0).setTextContent("");
+                            System.out.println(username+"'s status has been set to "+status);
+                            trimWhiteSpace(element);
+                        }
+                    }
+                }
+            }
+
+
+
+            DOMSource source = new DOMSource(usersDoc);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            StreamResult streamResult = new StreamResult(new File("res/users.xml"));
+            transformer.transform(source, streamResult);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -193,9 +247,6 @@ public class XMLParse {
             temp.setBanStatus(element.getElementsByTagName("BanStatus").item(0).getTextContent());
             userList.add(temp);
         }
-
-        System.out.println(userList);
-
         return userList;
     }
     public void addUser(User newUser) {
@@ -254,29 +305,6 @@ public class XMLParse {
             Node nextChild = child.getNextSibling();
             root.removeChild(child);
             child = nextChild;
-        }
-    }
-    public void setLoginStatus(String name, String status) {
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(file);
-            Element root = document.getDocumentElement();
-            NodeList users = root.getElementsByTagName("User");
-            int userListLength = users.getLength();
-            for(int i = 0; i<userListLength;i++){
-                Element u = (Element) users.item(i);
-                String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
-                if(nameNode.equals(name)){
-                    u.getElementsByTagName("status").item(0).setTextContent(status);
-                    Server.updateXML(users, document);
-                    System.out.println(file+" has been updated!, status of "+name+" has been set to '"+status+"'.");
-                    break;
-                }
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
         }
     }
 
