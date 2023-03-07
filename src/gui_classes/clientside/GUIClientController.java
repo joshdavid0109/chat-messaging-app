@@ -160,11 +160,11 @@ public class GUIClientController extends JFrame implements ActionListener{
                     Message message = (Message) obj;
                     System.out.println(message.getContent());
                     loggedIn = false;
-                } else if (obj instanceof File f) {
-                    /**
+                } /*else if (obj instanceof File f) {
+                    *//**
                      * parse to existing users.xml
-                     */
-                } else {
+                     *//*
+                }*/ else {
                     JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
                 }
             }

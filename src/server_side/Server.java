@@ -39,8 +39,8 @@ public class Server extends Thread{
     private List<ClientHandler> clientsList;
     private List<Group> groups = new ArrayList<>();
     public Set<String> groupNames;
-    XMLParse xmlParse = new XMLParse("res/messages.xml");
-    public static List<User> registeredUsersList = new ArrayList<>(xmlParse.getUserList());
+    static XMLParse xmlParse = new XMLParse("res/messages.xml");
+    public static List<User> registeredUsersList = new ArrayList<>(XMLParse.getUserList());
     JFrame frame;
 
 
@@ -143,7 +143,7 @@ public class Server extends Thread{
                     getRegisteredUsers();
                     ObjectOutputStream outToClient = new ObjectOutputStream(clientSocket.getOutputStream());
                     ClientHandler clientHandler = new ClientHandler(this, clientSocket, outToClient);
-                    outToClient.writeObject(new File("res/users.xml"));
+                    //outToClient.writeObject(new File("res/users.xml"));
                     executorService.execute(clientHandler);
                     clientsList.add(clientHandler);
                 }catch (IOException e) {

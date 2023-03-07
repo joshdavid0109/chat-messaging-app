@@ -27,6 +27,10 @@ public class User implements Serializable {
     private String banStatus;
     private List<Group> listOfGroups;
 
+    public User(){
+
+    }
+
     public User(String id, String name,String age, String username, String password, String status, String banStatus) throws IOException, ParserConfigurationException, SAXException {
         this.id = id;
         this.name = name;

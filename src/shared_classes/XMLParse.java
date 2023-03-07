@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import server_side.Server;
 
 import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
@@ -246,6 +247,7 @@ public class XMLParse {
             child = nextChild;
         }
     }
+
     public void setLoginStatus(String name, String status) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -269,7 +271,6 @@ public class XMLParse {
             e.printStackTrace();
         }
     }
-
 
     public void addMessage(String sender, String message, String recipient, LocalDateTime timeSent) {
 
