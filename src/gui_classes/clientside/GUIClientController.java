@@ -148,14 +148,12 @@ public class GUIClientController extends JFrame implements ActionListener{
 //            output.writeObject(f);
 
             if(input != null){
-                //System.out.println("HELLOasdASDD");
-                // Wait for response from server
                 Object obj = input.readObject();
 
                 if (obj instanceof User) {
-                    // login successful yeahhh
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: "+user.getName());
+                    System.out.println(user.getGroups().toString());
                     loggedIn = true;
                 } else if (obj instanceof Message) {
                     //login error message ipriprint ng server sa client
@@ -175,6 +173,10 @@ public class GUIClientController extends JFrame implements ActionListener{
 
 
                 } */
+                     *//*
+                }*/ else {
+                    JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
+                }
             }
         }
         headerName.setText(user.getUsername());
@@ -333,7 +335,7 @@ public class GUIClientController extends JFrame implements ActionListener{
                 //message object parin gagawin, pero yung recipient is hindi "toall"
 
                 case "pm":
-                    String recipient = words[2];
+                    String recipient = words[2].toLowerCase(Locale.ROOT);
                     if(Server.getRegisteredUserNames().contains(recipient)){
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
                         msg = new Message(user.getName(), recipient, messageContent);
@@ -345,13 +347,13 @@ public class GUIClientController extends JFrame implements ActionListener{
                         break;
                     }
                 case "quit":
-                    setLoginStatus(user.getName(), user.getStatus());
-                    break;
+                    XMLParse xmlParse = new XMLParse("res/users.xml");
+                    xmlParse.setLoginStatus(user.getName(), "offline");
+                    System.exit(0);
                 default:
                     msg = new Message("NOTHING");
                     messagePane.setText(messagePane.getText()+"\n"+"[ERROR] error in parsing message -> command not recognized???");
                     break;
-
             }
         }
         else{

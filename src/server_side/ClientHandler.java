@@ -43,10 +43,18 @@ public class ClientHandler implements Runnable {
     static File usersFile = new File("res/users.xml");
     XMLParse xmlParse = new XMLParse("res/messages.xml");
 
-    //private List<User> clients;
+    private List<String> groups = new ArrayList<>();
     private Server server;
     private User user;
     public ObjectOutputStream outToClient = null;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public ObjectOutputStream getOutToClient() {
         return outToClient;
@@ -86,30 +94,70 @@ public class ClientHandler implements Runnable {
                     else if(message.getRecipient().equals("TOALL")){
                         server.broadcastMessage(message);
                     }
+                    else if(message.getRecipient().startsWith("@")){
+                        System.out.println("IM HERE GROUP");
+                        String[] words = message.getRecipient().split("@");
+                        String groupName = words[1];
+                        System.out.println(groupName);
+                        Group group = server.getGroupByName(groupName);
+                        System.out.println("THISSSSS: "+group.getName()+" WITH MEMBERS "+group.getMembers());
+                        if (group != null) {
+                            server.groupMessage(message, group.getName());
+                            System.out.println("IT WORKYYYYYY");
+                        }
+                        else {
+                            server.privateMessage(message.getSender(), new Message("GROUP DOESN'T EXIST FOO"));
+                        }
+                    }
                     else{
                         server.privateMessage(message.getRecipient(), message);
                     }
                     //outToClient.writeObject(message);
-                } else if (obj instanceof LoginCredentials) {
-                    LoginCredentials loginCredentials = (LoginCredentials) obj;
+                } else if (obj instanceof LoginCredentials loginCredentials) {
+
+                    DocumentBuilderFactory documentBuilderFactory = null;
+                    DocumentBuilder documentBuilder = null;
+                    Document document = null;
+                    NodeList nodelist = null;
 
 
+                    try {
+                        documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                        documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                        document = documentBuilder.parse("res/users.xml");
+                        nodelist = document.getElementsByTagName("User");
+
+                    Element element;
 //                    getRegisteredUsers();
 
                     for (User user: registeredUsersList) {
                         if (user.getUsername().equals(loginCredentials.getUsername())) {
                             if (user.getPassword().equals(loginCredentials.getPassword())) {
+                                for(int i =0; i < nodelist.getLength();i++) {
+                                    element = (Element) nodelist.item(i);
+                                    String uname = element.getElementsByTagName("Username").item(0).getTextContent();
+                                    String pass = element.getElementsByTagName("Password").item(0).getTextContent();
+                                    if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
+                                        element.getElementsByTagName("status").item(0).setTextContent("online");
+                                        Server.updateXML(nodelist, document);
+                                        break;
+                                    }
+                                }
                                 outToClient.writeObject(user);
                                 outToClient.flush();
                                 server.clients.add(user);
                                 loginHandlerArraylist.add(this);
                                 loggedInUserHashMap.put(this, user);
-
+                                setUser(user);
                                 //send offline messages to user
                                 List<OfflineMessage> offlineMessages  = getOfflineMessages(user);
                                 server.offlineMessage(user.getName(), offlineMessages);
+                                System.out.println("GRUP "+user.getGroups());
                             }
                         }
+                    }
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                     }
                 } // TODO: 04/03/2023 RECEIVE XML FILE FROM CLIENT THEN PARSE TO CURRENT XML FILE (PAG MAGKAIBANG MACHINE GAMIT)
                 /*else if (obj instanceof File f) {
@@ -203,6 +251,8 @@ public class ClientHandler implements Runnable {
         }
         return offlineMessages;
     }
+
+
 
 
 
