@@ -173,8 +173,7 @@ public class GUIClientController extends JFrame implements ActionListener{
 
 
                 } */
-                     *//*
-                }*/ else {
+                else {
                     JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
                 }
             }

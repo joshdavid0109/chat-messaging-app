@@ -177,7 +177,6 @@ public class UserManagement_GUI extends JFrame{
 
     public void populateList() {
 //        Server.getRegisteredUsers();
-        table.removeAll();
         Server.updateUsersList();
 
 

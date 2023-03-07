@@ -60,7 +60,7 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groups>
             <Group id="Member">people</Group>
