@@ -338,8 +338,9 @@ public class GUIClientController extends JFrame implements ActionListener{
                         break;
                     }
                 case "quit":
-                    setLoginStatus(user.getName(), user.getStatus());
-                    break;
+                    XMLParse xmlParse = new XMLParse("res/users.xml");
+                    xmlParse.setLoginStatus(user.getName(), "offline");
+                    System.exit(0);
                 default:
                     msg = new Message("NOTHING");
                     messagePane.setText(messagePane.getText()+"\n"+"[ERROR] error in parsing message -> command not recognized???");
