@@ -83,13 +83,11 @@ public class Server extends Thread{
             try{
                 port = Integer.parseInt(JOptionPane.showInputDialog(frame, "Input port"));
                 serverSocket = new ServerSocket(port);
-                serverSocket = new ServerSocket(port, 0, serverSocket.getInetAddress());
                 validPort = true;
             }
             catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(frame, "Input a valid port");
                 System.out.println(e.getMessage());
-
             }
             catch(RuntimeException e){
                 System.out.println(e.getMessage());

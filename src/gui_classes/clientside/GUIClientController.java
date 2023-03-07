@@ -1,6 +1,5 @@
 package gui_classes.clientside;
 
-import client_side.Client;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -138,8 +137,6 @@ public class GUIClientController extends JFrame implements ActionListener{
         boolean loggedIn = false;
         while (!loggedIn) {
 
-
-
             // Prompt the user to enter their username and password
             LoginGUIForm log = new LoginGUIForm(this);
 
@@ -154,16 +151,15 @@ public class GUIClientController extends JFrame implements ActionListener{
                 //System.out.println("HELLOasdASDD");
                 // Wait for response from server
                 Object obj = input.readObject();
+
                 if (obj instanceof User) {
                     // login successful yeahhh
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: "+user.getName());
                     loggedIn = true;
-                    output.writeObject(f);
                 } else if (obj instanceof Message) {
                     //login error message ipriprint ng server sa client
                     Message message = (Message) obj;
-                    System.out.println(message.getContent());
                     loggedIn = false;
                 } /*else if (obj instanceof File newFile) {
                     *//**
@@ -178,9 +174,7 @@ public class GUIClientController extends JFrame implements ActionListener{
                     }
 
 
-                } */else {
-                    JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
-                }
+                } */
             }
         }
         headerName.setText(user.getUsername());
@@ -342,7 +336,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                     String recipient = words[2];
                     if(Server.getRegisteredUserNames().contains(recipient)){
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
-                        System.out.println("pm xx " + messageContent);
                         msg = new Message(user.getName(), recipient, messageContent);
                         break;
                     }
@@ -478,7 +471,6 @@ public class GUIClientController extends JFrame implements ActionListener{
 
         @Override
         public void run() {
-            System.out.println("HELO");
             try {
                 /*                input = new ObjectInputStream(server.getInputStream());*/
                 // Continuously listen for messages from the server
@@ -500,7 +492,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                     }
                     else if(obj instanceof List<?>){
                         List<?> list = (List<?>) obj;
-                        System.out.println("ASDASDASDASDASDASD");
                         if (!list.isEmpty() && list.get(0) instanceof OfflineMessage) {
                             List<OfflineMessage> offlineMessages = (List<OfflineMessage>) list;
                             for (OfflineMessage offlineMessage : offlineMessages) {

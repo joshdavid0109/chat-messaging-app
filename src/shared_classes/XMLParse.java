@@ -112,8 +112,6 @@ public class XMLParse {
             userList.add(temp);
         }
 
-        System.out.println(userList);
-
         return userList;
     }
 
@@ -151,6 +149,41 @@ public class XMLParse {
                 usersTag.appendChild(nUser);
             }
 
+            DOMSource source = new DOMSource(usersDoc);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            StreamResult streamResult = new StreamResult(new File("res/users.xml"));
+            transformer.transform(source, streamResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(String username) {
+        try {
+            getUsersDoc();
+            usersDoc.getDocumentElement().normalize();
+            NodeList nodeList = usersDoc.getElementsByTagName("User");
+            Element element = null;
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                element = (Element) nodeList.item(i);
+                if (element.getElementsByTagName("Username").item(0).getTextContent().equals(username)) {
+                    Element parent = (Element) element.getParentNode();
+                    parent.removeChild(element);
+                    break;
+                }
+            }
+
+            Element pangTrim = (Element) nodeList.item(0);
+            trimWhiteSpace(pangTrim);
+            
             DOMSource source = new DOMSource(usersDoc);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();

@@ -37,8 +37,6 @@ public class AddUserHandler extends JDialog implements Runnable{
         XMLParse parse = new XMLParse("users.xml");
 
 
-
-
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,11 +48,13 @@ public class AddUserHandler extends JDialog implements Runnable{
                 confirmPassword = confirmPasswordPF.getText();
 
                 try {
-                        if (username.equals("") || name.equals("") || isDuplicate(username) || isNumeric(age) || (password.length() > 16 || password.length() < 8) ||
-                                password.equals(confirmPassword)) {
+                    boolean loginstat = false;
+                    while (!loginstat){
+                        if (username.equals("") || name.equals("") || isDuplicate(username) || !isNumeric(age) || (password.length() > 16 || password.length() < 8) ||
+                                !password.equals(confirmPassword)) {
                             if (username.equals(""))
                                 usernameAuth.setText("Username field is empty.");
-                            else if (isDuplicate(username) )
+                            else if (isDuplicate(username))
                                 usernameAuth.setText("Username is already taken");
                             if (age.equals(""))
                                 ageAuth.setText("Age field is empty");
@@ -71,8 +71,11 @@ public class AddUserHandler extends JDialog implements Runnable{
                         } else {
                             UUID randomID = UUID.randomUUID();
                             parse.addUser(new User(randomID.toString(), name, age, username, password, "offline", ""));
-                            System.out.println("user " +name + " added");
+                            System.out.println("user " + name + " added");
+                            loginstat = true;
+                            dispose();
                         }
+                    }
 
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);

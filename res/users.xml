@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Users>
-    <User id="4984ee07-c335-472a-8c58-a0857ae09f31">
+    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
         <name>Darren</name>
         <Age>18</Age>
         <Username>franz1</Username>
@@ -8,15 +7,15 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="4984ee07-c335-472a-8c58-a0857ae09f31">
+    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
         <name>Joshua</name>
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="4984ee07-c335-472a-8c58-a0857ae09f31">
+    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
         <name>Kiko</name>
         <Age>20</Age>
         <Username>kikoxcore</Username>
@@ -24,7 +23,7 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="4984ee07-c335-472a-8c58-a0857ae09f31">
+    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
         <name>TEST</name>
         <Age>20</Age>
         <Username>x</Username>
@@ -32,7 +31,7 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="4984ee07-c335-472a-8c58-a0857ae09f31">
+    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
         <name>Maervin</name>
         <Age>20</Age>
         <Username>maervinV</Username>
@@ -40,7 +39,7 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="4984ee07-c335-472a-8c58-a0857ae09f31">
+    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
         <name>Ariel</name>
         <Age>20</Age>
         <Username>ariel</Username>
@@ -48,7 +47,7 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="4984ee07-c335-472a-8c58-a0857ae09f31">
+    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
         <name>Rey</name>
         <Age>20</Age>
         <Username>reybans</Username>
@@ -56,7 +55,7 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="4984ee07-c335-472a-8c58-a0857ae09f31">
+    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
         <name>reydan</name>
         <Age>20</Age>
         <Username>lemao</Username>
@@ -64,11 +63,11 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="4984ee07-c335-472a-8c58-a0857ae09f31">
-        <name>sample</name>
+    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
+        <name>smaple</name>
         <Age>19</Age>
-        <Username>sampletest</Username>
-        <Password>sampletest</Password>
+        <Username>sample</Username>
+        <Password>sampltest</Password>
         <status>offline</status>
         <BanStatus/>
     </User>
