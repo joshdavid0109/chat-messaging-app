@@ -30,6 +30,7 @@ public class GUIClientController extends JFrame implements ActionListener{
     public final JLabel bookmarkedContactsLabel;
     private JTextField messageInput;
     private JButton sendButton;
+    private JButton searchButton;
     private JTextPane messagePane;
     public static JButton bookmarkButton;
     public static JTextField pmTextField;
@@ -136,7 +137,6 @@ public class GUIClientController extends JFrame implements ActionListener{
 
         boolean loggedIn = false;
         while (!loggedIn) {
-
             // Prompt the user to enter their username and password
             LoginGUIForm log = new LoginGUIForm(this);
 
@@ -149,31 +149,20 @@ public class GUIClientController extends JFrame implements ActionListener{
 
             if(input != null){
                 Object obj = input.readObject();
-
                 if (obj instanceof User) {
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: "+user.getName());
-                    System.out.println(user.getGroups().toString());
+                    user.printGroups();
                     loggedIn = true;
+                    output.writeObject(f);
                 } else if (obj instanceof Message) {
                     //login error message ipriprint ng server sa client
                     Message message = (Message) obj;
-                    loggedIn = false;
-                } /*else if (obj instanceof File newFile) {
-                    *//**
-                     * parse to existing users.xml
-                     *//*
-
-                    File file = new File("res/users.xml");
-                    if (file.exists()) {
-                        file.delete();
-                        newFile.toPath();
-
-                    }
-
-
-                } */
-                else {
+                } /*else if (obj instanceof File f) {
+                 *//**
+                 * parse to existing users.xml
+                 *//*
+                }*/ else {
                     JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
                 }
             }
@@ -249,7 +238,6 @@ public class GUIClientController extends JFrame implements ActionListener{
         this.add(header);
         header.add(headerName);
         header.add(headerStatus);
-
         this.add(verticalHeader);
         this.add(broadCastPanel);
         this.add(privateMessagePanel);
@@ -271,21 +259,33 @@ public class GUIClientController extends JFrame implements ActionListener{
             public void actionPerformed(ActionEvent e) {
                 try {
                     sendMessage();
-                } catch (ParserConfigurationException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (SAXException ex) {
+                } catch (ParserConfigurationException | IOException | SAXException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
+
+        searchButton = new JButton("Search");
+        searchButton.setVisible(true);
+        searchButton.setForeground(Color.BLACK);
+        searchButton.setBackground(Color.WHITE);
+        searchButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        searchButton.setFocusable(false);
+        searchButton.setBounds(260, 600, 75, 20);
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SearchingContacts();
+            }
+        });
+
 
         privateMessagePanel.add(currentUserName);
         privateMessagePanel.add(currentUserStatus);
         privateMessagePanel.add(messagePane);
         privateMessagePanel.add(messageInput);
         privateMessagePanel.add(sendButton);
+        privateMessagePanel.add(searchButton);
 
         broadCastPanel.add(broadCast);
         broadCastPanel.add(broadcastArea);
@@ -346,8 +346,6 @@ public class GUIClientController extends JFrame implements ActionListener{
                         break;
                     }
                 case "quit":
-                    XMLParse xmlParse = new XMLParse("res/users.xml");
-                    xmlParse.setLoginStatus(user.getName(), "offline");
                     System.exit(0);
                 default:
                     msg = new Message("NOTHING");
@@ -437,10 +435,10 @@ public class GUIClientController extends JFrame implements ActionListener{
         boolean validPort = false;
         portAuth:
         while (!validPort) {
-                    port = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
+            port = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
 
-                    hostName = JOptionPane.showInputDialog(new JFrame(),"Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);
-                    validPort =true;
+            hostName = JOptionPane.showInputDialog(new JFrame(),"Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);
+            validPort =true;
         }
 
         if (port != 0) {

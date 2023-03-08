@@ -117,16 +117,19 @@ public class UserManagement_GUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 Object [] options = {"Yes", "No"};
                 System.out.println(table.getSelectedRow());
+                if (table.getSelectedRow() ==1){
+                    JOptionPane.showMessageDialog(null, "Select a row at the table to delete.", "User Deletion", JOptionPane.ERROR_MESSAGE, null);
+                    return;
+                }
+
                 String selectedUser = (String) table.getValueAt(table.getSelectedRow(), 0);
-
-
 
                 int c = JOptionPane.showOptionDialog(null, "Are you sure you want to remove " + selectedUser + "?", "User Deletion",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
                 if (c == 0) {
-                    String username = (String) table.getValueAt(table.getSelectedRow(), 1);
-                    xmlParse.deleteUser(username);
+                    String nameToDelete = (String) table.getValueAt(table.getSelectedRow(), 1);
+                    xmlParse.deleteUser(nameToDelete);
                 }
             }
         });
@@ -137,11 +140,42 @@ public class UserManagement_GUI extends JFrame{
         banUser.setForeground(Color.black);
         banUser.setBackground(Color.decode("#cc4949"));
 
+        banUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(table.getSelectedRow());
+                if (table.getSelectedRow() ==1){
+                    JOptionPane.showMessageDialog(null, "Select a row at the table to ban.", "User ban", JOptionPane.ERROR_MESSAGE, null);
+                }
+                else{
+                    //username of user
+                    String selectedUser = (String) table.getValueAt(table.getSelectedRow(), 1);
+                    System.out.println(selectedUser);
+                    xmlParse.setBanStatus(selectedUser, "BANNED");
+                }
+            }
+        });
+
         JButton unbanUser = new JButton("Unban User");
         unbanUser.setBounds(570, 245, 150, 45);
         unbanUser.setBorder(BorderFactory.createEtchedBorder(000000));
         unbanUser.setForeground(Color.black);
         unbanUser.setBackground(Color.decode("#c2b225"));
+        unbanUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(table.getSelectedRow());
+                if (table.getSelectedRow() ==1){
+                    JOptionPane.showMessageDialog(null, "Select a row at the table to unban.", "User unban", JOptionPane.ERROR_MESSAGE, null);
+                }
+                else{
+                    //username of user
+                    String selectedUser = (String) table.getValueAt(table.getSelectedRow(), 1);
+                    System.out.println(selectedUser);
+                    xmlParse.setBanStatus(selectedUser, "unban");
+                }
+            }
+        });
 
         JButton refresh = new JButton("Refresh");
         refresh.setBounds(570, 400, 150, 45);
@@ -225,9 +259,7 @@ public class UserManagement_GUI extends JFrame{
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 Document document = documentBuilder.parse("res/users.xml");
-
                 NodeList users = document.getElementsByTagName("User");
-
                 for (int i = 0; i < users.getLength(); i++) {
                     Element element = (Element) users.item(i);
 

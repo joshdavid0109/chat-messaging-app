@@ -79,6 +79,12 @@ public class User implements Serializable {
     public List<Group> getGroups() {
         return listOfGroups;
     }
+    public void printGroups(){
+        System.out.println(this.getName()+"'s groups: ");;
+        for(int i = 0; i<listOfGroups.size();i++){
+            System.out.println(listOfGroups.get(i).getName());
+        }
+    }
 
     public Boolean isMember(String groupName){
         for(int i = 0; i<listOfGroups.size();i++){
