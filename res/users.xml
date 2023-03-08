@@ -1,53 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Users>
-    <User id="0c1311ae-50c0-41d1-b817-73540f04a87f">
+    <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Darren</name>
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">REAL</Group>
-            <Group id="Member">people</Group>
-        </Groups>
     </User>
-    <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
+    <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Joshua</name>
         <Age>20</Age>
         <Username>joshdavid0109</Username>
         <Password>joshdavid</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">REAL</Group>
-            <Group id="Member">people</Group>
-        </Groups>
     </User>
-    <User id="ed49f946-fae7-47ba-9027-d158123b906a">
+    <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Kiko</name>
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">REAL</Group>
-            <Group id="Member">people</Group>
-        </Groups>
     </User>
-    <User id="3e1a9a81-f1c1-48fc-b190-bd82656cae0a">
+    <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>TEST</name>
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">REAL</Group>
-            <Group id="Member">people</Group>
-        </Groups>
     </User>
-    <User id="4f2668f6-b75d-4f4e-8f36-bb27028974cd">
+    <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Maervin</name>
         <Age>20</Age>
         <Username>maervinV</Username>
@@ -55,18 +40,15 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="c88571a6-d57c-4e9e-9e0b-8545046f0069">
+    <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Ariel</name>
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">people</Group>
-        </Groups>
     </User>
-    <User id="9b5ec170-ddc0-4a12-a152-24082c895785">
+    <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Rey</name>
         <Age>20</Age>
         <Username>reybans</Username>
@@ -74,7 +56,7 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="f1477d6d-3611-439b-801c-372316669a5c">
+    <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>reydan</name>
         <Age>20</Age>
         <Username>lemao</Username>
@@ -82,15 +64,12 @@
         <status>offline</status>
         <BanStatus/>
     </User>
-    <User id="3457c5e0-1ec7-48c4-ab73-8ab3911c5727">
-        <name>smaple</name>
+    <User id="165923f2-fc93-4234-8404-59bf225ec703">
+        <name>asdcsa</name>
         <Age>19</Age>
-        <Username>sample</Username>
-        <Password>sampltest</Password>
+        <Username>asdsa</Username>
+        <Password>sampletest</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">REAL</Group>
-        </Groups>
     </User>
 </Users>

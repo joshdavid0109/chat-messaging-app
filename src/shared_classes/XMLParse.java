@@ -33,77 +33,6 @@ public class XMLParse {
     }
     public XMLParse(){}
 
-
-    public void addUser(String id, String name, String age, String username, String password) {
-        String status = "offline";
-        String banStatus = " ";
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document;
-            File f = new File(file);
-            NodeList users = null;
-            Node element = null;
-
-            //check nu adda ti file f idjay compooter
-            if (f.exists()) {
-                document = documentBuilder.parse(file);
-                users = document.getElementsByTagName("Users");
-                element = users.item(users.getLength() - 1);
-            }
-            //if awan ti file f, create new document
-            else {
-                document = documentBuilder.newDocument();
-                element = document.createElement("Users");
-                document.appendChild(element);
-            }
-
-            //random id exampol <User id="3f99fe2e-a7cb-452f-9bd0-d74ace5eeb7d">
-
-
-            //create element user
-            Element elementUser = document.createElement("User");
-            element.appendChild(elementUser);
-
-            //set id for user
-            elementUser.setAttribute("id", String.valueOf(id));
-
-            Element nameElement = document.createElement("name");
-            nameElement.appendChild(document.createTextNode(name));
-            elementUser.appendChild(nameElement);
-
-            Element ageElement = document.createElement("Age");
-            ageElement.appendChild(document.createTextNode(age));
-            elementUser.appendChild(ageElement);
-
-            Element usernameElement = document.createElement("Username");
-            usernameElement.appendChild(document.createTextNode(username));
-            elementUser.appendChild(usernameElement);
-
-            Element passwordElement = document.createElement("Password");
-            passwordElement.appendChild(document.createTextNode(password));
-            elementUser.appendChild(passwordElement);
-
-            /*Server.registeredUsersList.add(new User(id, name, age, username, password,status, banStatus));*/
-
-            trimWhiteSpace(element);
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-            DOMSource domSource = new DOMSource(document);
-            StreamResult streamResult = new StreamResult(new File(file));
-            transformer.transform(domSource, streamResult);
-        } catch (ParserConfigurationException | TransformerException | SAXException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private static void getUsersDoc() {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -178,12 +107,12 @@ public class XMLParse {
                         else{
                             element.getElementsByTagName("BanStatus").item(0).setTextContent("BANNED");
                             System.out.println(username+"'s status has been set to "+status);
-                            trimWhiteSpace(element);
                         }
                     }
                 }
+
             }
-            else if (status.equals("unban")) {
+            else if (status.equals("")) {
                 for (int i = 0; i < nodeList.getLength(); i++) {
                     element = (Element) nodeList.item(i);
                     if (element.getElementsByTagName("Username").item(0).getTextContent().equals(username)) {
@@ -192,13 +121,12 @@ public class XMLParse {
                         } else {
                             element.getElementsByTagName("BanStatus").item(0).setTextContent("");
                             System.out.println(username+"'s status has been set to "+status);
-                            trimWhiteSpace(element);
                         }
                     }
                 }
             }
-
-
+            nodeList = usersDoc.getElementsByTagName("Users");
+            trimWhiteSpace((Element) nodeList.item(0));
 
             DOMSource source = new DOMSource(usersDoc);
 
@@ -442,10 +370,13 @@ public class XMLParse {
                 Element user = (Element)nodeList.item(i);
                 String name = user.getElementsByTagName("Username").item(0).getTextContent();
                 if (name.equals(nameToDelete)) {
-                    user.getParentNode().removeChild(user);
-                    System.out.println("user: "+nameToDelete+" has been yeeted..");
+                    Element parent = (Element) user.getParentNode();
+                    parent.removeChild(user);
                 }
             }
+
+            nodeList = usersDoc.getElementsByTagName("Users");
+            trimWhiteSpace((Element) nodeList.item(0));
 
             DOMSource source = new DOMSource(usersDoc);
 
@@ -458,7 +389,7 @@ public class XMLParse {
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             StreamResult streamResult = new StreamResult(new File("res/users.xml"));
             transformer.transform(source, streamResult);
-            trimWhiteSpace(usersDoc);
+
 
         } catch (Exception e) {
             e.printStackTrace();

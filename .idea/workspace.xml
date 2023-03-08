@@ -6,10 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/AddUserHandler.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/AddUserHandler.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/GroupChatUsersSample.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParserGC.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +54,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="server_side" />
@@ -144,8 +154,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.GUIClientController" />
         <item itemvalue="Application.AddUserHandler" />
+        <item itemvalue="Application.GUIClientController" />
         <item itemvalue="Application.LoginGUIForm" />
         <item itemvalue="Application.UserManagement_GUI (2)" />
         <item itemvalue="Application.UserManagement_GUI (1)" />
@@ -173,6 +183,7 @@
       <workItem from="1678101447649" duration="1616000" />
       <workItem from="1678110295825" duration="1458000" />
       <workItem from="1678183560711" duration="7530000" />
+      <workItem from="1678281437128" duration="341000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -300,8 +311,8 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
-          <line>241</line>
-          <properties class="server_side.UserManagement_GUI" method="changeTable">
+          <line>261</line>
+          <properties class="server_side.UserManagement_GUI">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -309,8 +320,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/shared_classes/XMLParse.java</url>
-          <line>249</line>
-          <properties class="shared_classes.XMLParse" method="clearXML">
+          <line>177</line>
+          <properties class="shared_classes.XMLParse">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -318,21 +329,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
-          <line>151</line>
-          <properties method="actionPerformed">
+          <line>157</line>
+          <properties>
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
-          <line>175</line>
-          <properties class="server_side.UserManagement_GUI" method="populateList">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java</url>

@@ -58,6 +58,7 @@ public class UserManagement_GUI extends JFrame{
                 System.exit(0);
             }
         });
+
         frameUM.setLayout(null);
         frameUM.setVisible(true);
         frameUM.setResizable(false);
@@ -90,7 +91,6 @@ public class UserManagement_GUI extends JFrame{
                 }
             }
         });
-
 
 
         JButton addUser = new JButton("Add User");
@@ -130,6 +130,12 @@ public class UserManagement_GUI extends JFrame{
                 if (c == 0) {
                     String nameToDelete = (String) table.getValueAt(table.getSelectedRow(), 1);
                     xmlParse.deleteUser(nameToDelete);
+                    frameUM.remove(userScroll);
+                    populateList();
+                    userScroll = new JScrollPane(table);
+                    userScroll.setBounds(35, 30, 500, 400);
+
+                    frameUM.add(userScroll);
                 }
             }
         });
@@ -150,8 +156,13 @@ public class UserManagement_GUI extends JFrame{
                 else{
                     //username of user
                     String selectedUser = (String) table.getValueAt(table.getSelectedRow(), 1);
-                    System.out.println(selectedUser);
                     xmlParse.setBanStatus(selectedUser, "BANNED");
+                    frameUM.remove(userScroll);
+                    populateList();
+                    userScroll = new JScrollPane(table);
+                    userScroll.setBounds(35, 30, 500, 400);
+
+                    frameUM.add(userScroll);
                 }
             }
         });
@@ -164,15 +175,19 @@ public class UserManagement_GUI extends JFrame{
         unbanUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(table.getSelectedRow());
                 if (table.getSelectedRow() ==1){
                     JOptionPane.showMessageDialog(null, "Select a row at the table to unban.", "User unban", JOptionPane.ERROR_MESSAGE, null);
                 }
                 else{
                     //username of user
                     String selectedUser = (String) table.getValueAt(table.getSelectedRow(), 1);
-                    System.out.println(selectedUser);
-                    xmlParse.setBanStatus(selectedUser, "unban");
+                    xmlParse.setBanStatus(selectedUser, "");
+                    frameUM.remove(userScroll);
+                    populateList();
+                    userScroll = new JScrollPane(table);
+                    userScroll.setBounds(35, 30, 500, 400);
+
+                    frameUM.add(userScroll);
                 }
             }
         });
@@ -186,9 +201,12 @@ public class UserManagement_GUI extends JFrame{
         refresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                table.removeAll();
+                frameUM.remove(userScroll);
                 populateList();
-                frameUM.add(table);
+                userScroll = new JScrollPane(table);
+                userScroll.setBounds(35, 30, 500, 400);
+
+                frameUM.add(userScroll);
             }
         });
 
@@ -211,6 +229,7 @@ public class UserManagement_GUI extends JFrame{
 
     public void populateList() {
 //        Server.getRegisteredUsers();
+
         Server.updateUsersList();
 
 
@@ -233,6 +252,7 @@ public class UserManagement_GUI extends JFrame{
                     case 1 -> userData[i][j] = username;
                     case 2 -> userData[i][j] = status;
                     case 3 -> userData[i][j] = banStatus;
+
                     default -> {
                     }
                 }

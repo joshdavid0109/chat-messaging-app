@@ -11,7 +11,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.Objects;
 import java.util.UUID;
@@ -31,10 +32,32 @@ public class AddUserHandler extends JDialog implements Runnable{
     private JLabel conPassAuth;
     private JTextField nameTF;
     private JLabel nameAuth;
+    private JCheckBox showPassCB1;
+    private JCheckBox showPassCB2;
 
     public AddUserHandler(JFrame parent) {
         super(parent, "Login", true);
         XMLParse parse = new XMLParse("users.xml");
+
+      /*  showPassCB1.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED)
+                    passwordPF.setEchoChar('\u0000');
+                else
+                    passwordPF.setEchoChar((Character) UIManager.get("PasswordField.echoChar"));
+            }
+        });
+
+        showPassCB2.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED)
+                    confirmPasswordPF.setEchoChar('\u0000');
+                else
+                    confirmPasswordPF.setEchoChar((Character) UIManager.get("PasswordField.echoChar"));
+            }
+        });*/
 
 
         confirmButton.addActionListener(new ActionListener() {
@@ -48,34 +71,44 @@ public class AddUserHandler extends JDialog implements Runnable{
                 confirmPassword = confirmPasswordPF.getText();
 
                 try {
-                    boolean loginstat = false;
-                    while (!loginstat){
+
                         if (username.equals("") || name.equals("") || isDuplicate(username) || !isNumeric(age) || (password.length() > 16 || password.length() < 8) ||
                                 !password.equals(confirmPassword)) {
                             if (username.equals(""))
                                 usernameAuth.setText("Username field is empty.");
                             else if (isDuplicate(username))
                                 usernameAuth.setText("Username is already taken");
+                            else
+                                usernameAuth.setText("");
                             if (age.equals(""))
                                 ageAuth.setText("Age field is empty");
                             else if (!isNumeric(age))
                                 ageAuth.setText("Invalid age");
+                            else
+                                ageAuth.setText("");
                             if (name.equals(""))
                                 nameAuth.setText("Name field is empty.");
+                            else
+                                nameAuth.setText("");
                             if (password.equals(""))
                                 passAuth.setText("Password field is empty.");
                             else if (password.length() > 16 || password.length() < 8)
                                 passAuth.setText("Password must contain 8-16 characters");
+                            else
+                                passAuth.setText("");
                             if (!password.equals(confirmPassword))
                                 conPassAuth.setText("Password does not match.");
-                        } else {
+                            else
+                                conPassAuth.setText("");
+                        }else {
                             UUID randomID = UUID.randomUUID();
                             parse.addUser(new User(randomID.toString(), name, age, username, password, "offline", ""));
                             System.out.println("user " + name + " added");
-                            loginstat = true;
+
                             dispose();
                         }
-                    }
+
+
 
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -83,8 +116,6 @@ public class AddUserHandler extends JDialog implements Runnable{
 
             }
         });
-
-
 
         getContentPane().add(addUserPanel);
         setSize(500, 600);

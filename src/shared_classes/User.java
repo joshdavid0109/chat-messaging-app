@@ -81,14 +81,14 @@ public class User implements Serializable {
     }
     public void printGroups(){
         System.out.println(this.getName()+"'s groups: ");;
-        for(int i = 0; i<listOfGroups.size();i++){
-            System.out.println(listOfGroups.get(i).getName());
+        for (Group listOfGroup : listOfGroups) {
+            System.out.println(listOfGroup.getName());
         }
     }
 
     public Boolean isMember(String groupName){
-        for(int i = 0; i<listOfGroups.size();i++){
-            if(listOfGroups.get(i).getName().equals(groupName)){
+        for (Group listOfGroup : listOfGroups) {
+            if (listOfGroup.getName().equals(groupName)) {
                 return true;
             }
         }
