@@ -7,14 +7,7 @@
     <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/AddUserHandler.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/AddUserHandler.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/GroupChatUsersSample.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParserGC.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +176,7 @@
       <workItem from="1678101447649" duration="1616000" />
       <workItem from="1678110295825" duration="1458000" />
       <workItem from="1678183560711" duration="7530000" />
-      <workItem from="1678281437128" duration="341000" />
+      <workItem from="1678281437128" duration="2045000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -269,7 +262,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678192783206</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="updates on user management">
+      <created>1678281885412</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1678281885412</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -300,7 +300,8 @@
     <MESSAGE value="refresh update" />
     <MESSAGE value="client to server on different pcs trial" />
     <MESSAGE value="ppp" />
-    <option name="LAST_COMMIT_MESSAGE" value="ppp" />
+    <MESSAGE value="updates on user management" />
+    <option name="LAST_COMMIT_MESSAGE" value="updates on user management" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -311,7 +312,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
-          <line>261</line>
+          <line>265</line>
           <properties class="server_side.UserManagement_GUI">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -329,7 +330,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
-          <line>157</line>
+          <line>160</line>
           <properties>
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />

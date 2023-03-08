@@ -71,8 +71,9 @@ public class UserManagement_GUI extends JFrame{
         int y = (int) ((dimension.getHeight() - frameUM.getHeight()) / 2);
         frameUM.setLocation(x, y);
 
+
         JButton startServer = new JButton("Start Server");
-        startServer.setBounds(570, 25, 150, 45);
+        startServer.setBounds(570, 30, 150, 45);
         startServer.setBorder(BorderFactory.createEtchedBorder(000000));
         startServer.setForeground(Color.black);
         startServer.setBackground(Color.decode("#149639"));
@@ -84,11 +85,13 @@ public class UserManagement_GUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent event) {
                 if (!serverStatus.get()) {
+                    serverStatus.set(true);
                     new Thread(() -> {
                         Server server = new Server(port, frameUM);
-                        serverStatus.set(true);
                     }).start();
-                }
+                } else
+                    JOptionPane.showMessageDialog(null, "Server is already running at port " + Server.port,
+                            "Server Status", JOptionPane.ERROR_MESSAGE, null);
             }
         });
 
@@ -107,7 +110,7 @@ public class UserManagement_GUI extends JFrame{
         });
 
         JButton deleteUser = new JButton("Delete User");
-        deleteUser.setBounds(570, 135, 150, 45);
+        deleteUser.setBounds(570, 130, 150, 45);
         deleteUser.setBorder(BorderFactory.createEtchedBorder(000000));
         deleteUser.setForeground(Color.black);
         deleteUser.setBackground(Color.WHITE);
@@ -141,7 +144,7 @@ public class UserManagement_GUI extends JFrame{
         });
 
         JButton banUser = new JButton("Ban User");
-        banUser.setBounds(570, 190, 150, 45);
+        banUser.setBounds(570, 180, 150, 45);
         banUser.setBorder(BorderFactory.createEtchedBorder(000000));
         banUser.setForeground(Color.black);
         banUser.setBackground(Color.decode("#cc4949"));
@@ -168,7 +171,7 @@ public class UserManagement_GUI extends JFrame{
         });
 
         JButton unbanUser = new JButton("Unban User");
-        unbanUser.setBounds(570, 245, 150, 45);
+        unbanUser.setBounds(570, 230, 150, 45);
         unbanUser.setBorder(BorderFactory.createEtchedBorder(000000));
         unbanUser.setForeground(Color.black);
         unbanUser.setBackground(Color.decode("#c2b225"));
@@ -209,6 +212,7 @@ public class UserManagement_GUI extends JFrame{
                 frameUM.add(userScroll);
             }
         });
+
 
 
         frameUM.add(startServer);
