@@ -6,10 +6,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -149,6 +146,15 @@ public class GUIClientFrame extends JFrame {
         scrollPaneListMembers.setVisible(true);
         scrollPaneListMembers.setBorder(BorderFactory.createEmptyBorder());
         scrollPaneListMembers.setBounds(40, 70, 200, 200);
+        contactList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList<String> list = (JList<String>) evt.getSource();
+                String selectedValue = list.getSelectedValue();
+                String[] x = selectedValue.split(" : ");
+                messageInput.setText("/pm "+ x[0]);
+
+            }
+        });
 
         messagePane.setVisible(true);
         messagePane.setBorder(BorderFactory.createEmptyBorder());

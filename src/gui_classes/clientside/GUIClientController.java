@@ -232,12 +232,18 @@ public class GUIClientController implements ActionListener {
                         if(msg.getRecipient() == null){
                             continue;
                         }
+
+                        //broadcast msg
                         else if(msg.getRecipient().equals("TOALL")){
                             frame.appendMessage("[BROADCAST] "+msg.getSender()+": "+msg.getContent());
                         }
+
+                        //group msg
                         else if(msg.getRecipient().startsWith("@")){
-                            frame.appendMessage("[GROUP] "+msg.getSender()+": "+msg.getContent());
+                            frame.appendMessage("[GROUP "+msg.getRecipient()+" ] "+msg.getSender()+": "+msg.getContent());
                         }
+
+                        //private msg
                         else{
                             frame.appendMessage("[PRIVATE] "+msg.getSender()+": "+msg.getContent());
                         }
