@@ -90,21 +90,8 @@ public class ClientHandler implements Runnable {
                     if (message.getRecipient().equals("TOALL")) {
                         System.out.println("issa broadcast");
                         server.broadcastMessage(message);
-                    } else if (message.getRecipient().startsWith("@")) {
-                        System.out.println("IM HERE GROUP");
-                        String[] words = message.getRecipient().split("@");
-                        String groupName = words[1];
-                        System.out.println(groupName);
-                        Group group = server.getGroupByName(groupName);
-                        System.out.println("THISSSSS: " + group.getName() + " WITH MEMBERS " + group.getMembers());
-                        if (group != null) {
-                            server.groupMessage(message, group.getName());
-                            System.out.println("IT WORKYYYYYY");
-                        } else {
-                            server.privateMessage(message.getSender(), new Message("GROUP DOESN'T EXIST FOO"));
-                        }
-                    } else {
-                        System.out.println("pm work");
+                    }
+                    else {
                         server.privateMessage(message.getRecipient(), message);
                     }
                     //outToClient.writeObject(message);
@@ -218,7 +205,7 @@ public class ClientHandler implements Runnable {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     String messageRecipient = eElement.getElementsByTagName("Recipient").item(0).getTextContent();
-                    if (messageRecipient.equals(user.getName())) {
+                    if (messageRecipient.equalsIgnoreCase(user.getName())) {
                         String sender = eElement.getElementsByTagName("Sender").item(0).getTextContent();
                         String messageText = eElement.getElementsByTagName("Text").item(0).getTextContent();
                         String timestamp = eElement.getElementsByTagName("Time").item(0).getTextContent();
