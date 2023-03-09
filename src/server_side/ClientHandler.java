@@ -1,34 +1,21 @@
 package server_side;
 
-import gui_classes.clientside.GUIClientController;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import shared_classes.*;
-
-import javax.print.Doc;
-import javax.swing.event.DocumentEvent;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 import static server_side.Server.*;
 
 public class ClientHandler implements Runnable {
@@ -105,6 +92,8 @@ public class ClientHandler implements Runnable {
                     }
                     //outToClient.writeObject(message);
                 } else if (obj instanceof LoginCredentials loginCredentials) {
+
+                    //TODO lipat ito sa XMLParse class
                     DocumentBuilderFactory documentBuilderFactory = null;
                     DocumentBuilder documentBuilder = null;
                     Document document = null;
@@ -118,7 +107,6 @@ public class ClientHandler implements Runnable {
                         nodelist = document.getElementsByTagName("User");
 
                         Element element;
-//                    getRegisteredUsers();
 
                         for (User user : registeredUsersList) {
                             if (user.getUsername().equals(loginCredentials.getUsername())) {
@@ -170,20 +158,8 @@ public class ClientHandler implements Runnable {
             try {
                 userInput.close();
                 clientSocket.close();
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                Document document = documentBuilder.parse("res/users.xml");
-
-                NodeList users = document.getElementsByTagName("User");
-
-                for (int i = 0; i < users.getLength(); i++) {
-                    Element element = (Element) users.item(i);
-
-                    element.getElementsByTagName("status").item(0).setTextContent("offline");
-
-                    Server.updateXML(users, document);
-                }
-            } catch (IOException | ParserConfigurationException | SAXException e) {
+                //XMLParse.setEveryoneOffline();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

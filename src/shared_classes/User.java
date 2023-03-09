@@ -1,24 +1,13 @@
 package shared_classes;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class User implements Serializable {
     private String id;
-    private transient ObjectOutputStream streamOut;
-    private transient ObjectInputStream streamIn;
     private String name;
     private String username;
     private String password;
@@ -31,7 +20,7 @@ public class User implements Serializable {
 
     }
 
-    public User(String id, String name,String age, String username, String password, String status, String banStatus) throws IOException, ParserConfigurationException, SAXException {
+    public User(String id, String name,String age, String username, String password, String status, String banStatus) throws IOException, ParserConfigurationException {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -42,8 +31,12 @@ public class User implements Serializable {
         populateGroups(this);
     }
 
-    public static void populateGroups(User user) throws ParserConfigurationException, SAXException, IOException, ParserConfigurationException, SAXException {
-        user.setGroups(XMLParse.getGroupsOfUser(user));
+    public static void populateGroups(User user){
+        try {
+            user.setGroups(XMLParse.getGroupsOfUser(user));
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setGroups(List<Group> groups) {
@@ -66,14 +59,6 @@ public class User implements Serializable {
             }
         }
         return false;
-    }
-
-    public ObjectOutputStream getOutStream() {
-        return this.streamOut;
-    }
-
-    public ObjectInputStream getInputStream() {
-        return this.streamIn;
     }
 
     public String getName() {

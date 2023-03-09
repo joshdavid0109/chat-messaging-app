@@ -59,7 +59,6 @@ public class AddUserHandler extends JDialog implements Runnable{
             }
         });*/
 
-
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -126,10 +125,6 @@ public class AddUserHandler extends JDialog implements Runnable{
 
     @Override
     public void run() {
-        new AddUserHandler(null);
-    }
-
-    public static void main(String[] args) {
         new AddUserHandler(null);
     }
 

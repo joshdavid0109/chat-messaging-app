@@ -1,20 +1,13 @@
 package gui_classes.clientside;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.Server;
 import shared_classes.*;
 
 import javax.swing.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -77,6 +70,7 @@ public class GUIClientController implements ActionListener {
             frame = new GUIClientFrame(this, user);
             frame.setIconImage(icon.getImage());
             frame.appendMessage("CONNECTED TO SERVER "+server.getLocalAddress()+" PORT "+server.getPort());
+            frame.appendMessage("WELCOME TO THE CHATROOM, "+user.getName());
 
             // Start a listener thread to receive messages from the server
             ServerMessageListener listener = new ServerMessageListener();
@@ -86,33 +80,6 @@ public class GUIClientController implements ActionListener {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    private void SetOnline(LoginCredentials loginMessage) {
-
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = null;
-        Document document = null;
-        NodeList nodelist = null;
-        try {
-            documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            document = documentBuilder.parse("res/users.xml");
-            nodelist = document.getElementsByTagName("User");
-        } catch (ParserConfigurationException | IOException | SAXException ex) {
-            throw new RuntimeException(ex);
-        }
-
-        Element element;
-            for(int i =0; i < nodelist.getLength();i++) {
-                element = (Element) nodelist.item(i);
-                String uname = element.getElementsByTagName("Username").item(0).getTextContent();
-                String pass = element.getElementsByTagName("Password").item(0).getTextContent();
-                if (uname.equals(loginMessage.getUsername()) && pass.equals(loginMessage.getPassword())) {
-                    element.getElementsByTagName("status").item(0).setTextContent("online");
-                    Server.updateXML(nodelist, document);
-                    break;
-                }
-            }
     }
 
     public void sendMessage() throws ParserConfigurationException, IOException, SAXException {
@@ -126,12 +93,11 @@ public class GUIClientController implements ActionListener {
 
             switch (command){
 
-                //yung pm syntax -> /pm ARIEL Hello ariel! hehe
-                //message object parin gagawin, pero yung recipient is hindi "toall"
 
                 case "pm":
-                    String recipient = words[2].toLowerCase(Locale.ROOT);
+                    // syntax -> /pm <recipient name> <message content>
 
+                    String recipient = words[2].toLowerCase(Locale.ROOT);
                     if(Server.getRegisteredUserNames().contains(recipient)){
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
                         msg = new Message(user.getName(), recipient, messageContent);
@@ -144,6 +110,8 @@ public class GUIClientController implements ActionListener {
                         break;
                     }
                 case "gm":
+                    //  syntax -> /gm <group name> <message content>
+
                     String group = words[2].toLowerCase(Locale.ROOT);
 
                     if(Server.getGroups().contains(group)){
@@ -159,11 +127,6 @@ public class GUIClientController implements ActionListener {
 
                 case "quit":
                     System.exit(0);
-
-                default:
-                    msg = new Message("NOTHING");
-                    frame.appendMessage("[ERROR] command '"+command+"' not recognized");
-                    break;
             }
         }
         else{

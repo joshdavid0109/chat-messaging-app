@@ -1,18 +1,15 @@
 package gui_classes.clientside;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,7 +17,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.Server;
-import server_side.UserManagement_GUI;
 import shared_classes.*;
 
 public class GUIClientFrame extends JFrame {
@@ -302,28 +298,11 @@ public class GUIClientFrame extends JFrame {
         broadCastPanel.add(broadCast);
         broadCastPanel.add(broadcastArea);
         //after log in is successful, makikita nayung main GUI
-        this.setVisible(true);
-        //messagePane.setText("CONNECTED TO: "+server.getLocalAddress()+" PORT: "+server.getPort());
-        this.addWindowListener(new WindowAdapter() {
+        setVisible(true);
+        addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
-                try {
-                    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                    Document document = documentBuilder.parse("res/users.xml");
-
-                    NodeList users = document.getElementsByTagName("User");
-
-                    for (int i = 0; i < users.getLength(); i++) {
-                        Element element = (Element) users.item(i);
-
-                        element.getElementsByTagName("status").item(0).setTextContent("offline");
-
-                        Server.updateXML(users, document);
-                    }
-                } catch (IOException | ParserConfigurationException | SAXException e) {
-                    e.printStackTrace();
-                }
+                XMLParse.setStatusOfUser(user.getUsername(), "offline");
             }
         });
     }

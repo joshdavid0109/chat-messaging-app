@@ -11,10 +11,6 @@ public class OfflineMessage extends Message implements Serializable {
         this.timestamp = LocalDateTime.now();
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
     @Override
     public String toString() {
         return super.toString() + " [" + timestamp.toString() + "]";

@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import server_side.Server;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -49,7 +50,6 @@ public class XMLParse {
             throw new RuntimeException(e);
         }
     }
-
     public static List<Group> getGroupsOfUser(User user) throws ParserConfigurationException, IOException, SAXException {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();
@@ -102,7 +102,6 @@ public class XMLParse {
         }
         return groups;
     }
-
     public static ArrayList<String> getAllGroups() throws ParserConfigurationException, SAXException, IOException {
         ArrayList<String> groups = new ArrayList<>();
 
@@ -133,6 +132,54 @@ public class XMLParse {
         return groups;
     }
 
+    public static void setStatusOfUser(String username, String status) {
+        DocumentBuilderFactory documentBuilderFactory = null;
+        DocumentBuilder documentBuilder = null;
+        Document document = null;
+        NodeList nodelist = null;
+
+        try {
+            documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            document = documentBuilder.parse("res/users.xml");
+            nodelist = document.getElementsByTagName("User");
+
+            Element element;
+            for (int i = 0; i < nodelist.getLength(); i++) {
+                element = (Element) nodelist.item(i);
+                String uname = element.getElementsByTagName("Username").item(0).getTextContent();
+                System.out.println(uname);
+                if (uname.equals(username)) {
+                    element.getElementsByTagName("status").item(0).setTextContent(status);
+
+                    System.out.println("ASDASDASDASD it shoudl worki" );
+
+                    Server.updateXML(nodelist, document);
+                    break;
+                }
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static void setEveryoneOffline() {
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse("res/users.xml");
+            NodeList users = document.getElementsByTagName("User");
+            for (int i = 0; i < users.getLength(); i++) {
+                Element element = (Element) users.item(i);
+
+                element.getElementsByTagName("status").item(0).setTextContent("offline");
+
+                Server.updateXML(users, document);
+            }
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            e.printStackTrace();
+        }
+    }
 
     public User getUser(String userName) {
         User user = new User();
@@ -227,7 +274,6 @@ public class XMLParse {
             e.printStackTrace();
         }
     }
-
     public static List<String> getAllContactNames() {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();
@@ -241,8 +287,6 @@ public class XMLParse {
         }
         return contactNames;
     }
-
-
     public static List<User> getUserList() {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();
@@ -321,7 +365,6 @@ public class XMLParse {
             child = nextChild;
         }
     }
-
     public static String searchXML(String name){
         try{
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

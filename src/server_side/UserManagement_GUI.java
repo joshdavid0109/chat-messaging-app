@@ -1,9 +1,5 @@
 package server_side;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import shared_classes.User;
 import shared_classes.XMLParse;
 
@@ -17,17 +13,11 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import static java.awt.Color.*;
 
 public class UserManagement_GUI extends JFrame{
     private User user;
-    private JList<User> list;
-    private DefaultTableModel model;
     private JScrollPane userScroll = new JScrollPane();
     private JTable table;
     private int port;
@@ -36,29 +26,13 @@ public class UserManagement_GUI extends JFrame{
 
     public UserManagement_GUI(/*User user*/) { this.user = user; }
 
-    public void run() throws IOException, SAXException, ParserConfigurationException {
+    public void run(){
         xmlParse = new XMLParse();
         JFrame frameUM = new JFrame();
         frameUM.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                try {
-                    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                    Document document = documentBuilder.parse("res/users.xml");
-
-                    NodeList users = document.getElementsByTagName("User");
-
-                    for (int i = 0; i < users.getLength(); i++) {
-                        Element element = (Element) users.item(i);
-
-                        element.getElementsByTagName("status").item(0).setTextContent("offline");
-
-                        Server.updateXML(users, document);
-                    }
-                } catch (IOException | ParserConfigurationException | SAXException exception) {
-                    exception.printStackTrace();
-                }
+                XMLParse.setEveryoneOffline();
                 System.exit(0);
             }
         });
@@ -312,29 +286,15 @@ public class UserManagement_GUI extends JFrame{
     }
 
 
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+    public static void main(String[] args){
         try {
             UserManagement_GUI test = new UserManagement_GUI();
             test.run();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                Document document = documentBuilder.parse("res/users.xml");
-                NodeList users = document.getElementsByTagName("User");
-                for (int i = 0; i < users.getLength(); i++) {
-                    Element element = (Element) users.item(i);
-
-                    element.getElementsByTagName("status").item(0).setTextContent("offline");
-
-                    Server.updateXML(users, document);
-                }
-            } catch (IOException | ParserConfigurationException | SAXException e) {
-                e.printStackTrace();
-            }
-        }
+        } /*finally {
+            XMLParse.setEveryoneOffline();
+        }*/
     }
 
     public void changeTable(JTable table, int column_index) {
