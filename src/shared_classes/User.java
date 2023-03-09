@@ -46,7 +46,6 @@ public class User implements Serializable {
         return listOfGroups;
     }
     public void printGroups(){
-        System.out.println(this.getName()+"'s groups: ");;
         for (Group listOfGroup : listOfGroups) {
             System.out.println(listOfGroup.getName());
         }

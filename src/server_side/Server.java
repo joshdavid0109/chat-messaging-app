@@ -54,6 +54,11 @@ public class Server extends Thread{
         this.clients = new ArrayList<>();
         this.run();
     }
+    /**
+     * It takes a list of users, and returns a list of their names
+     *
+     * @return A list of all the registered users' names.
+     */
     public static List<String> getRegisteredUserNames() {
         userNames = new ArrayList<>();
         for (User user : registeredUsersList) {
@@ -62,6 +67,11 @@ public class Server extends Thread{
         return userNames;
     }
 
+    /**
+     * It returns a list of all the groups in the XML file
+     *
+     * @return A list of all the groups in the XML file.
+     */
     public static List<String> getGroups() {
         try {
             return XMLParse.getAllGroups();
@@ -71,11 +81,13 @@ public class Server extends Thread{
         }
     }
 
-
-    public static List<User> getRegisteredUsersList() {
-        return registeredUsersList;
-    }
-
+    /**
+     * This function takes a user object and returns a list of strings that represent the groups that the user is a member
+     * of
+     *
+     * @param user The user object that you want to get the groups of.
+     * @return A list of strings.
+     */
     public static List<String> getGroupsOfUser(User user) {
         try {
             return XMLParse.getGroupsOfUserString(user);
@@ -167,6 +179,14 @@ public class Server extends Thread{
             groupsMap.put(groupName, members);
         }
     }*/
+
+
+    /**
+     * This function sends a message to all the clients that are members of a group
+     *
+     * @param groupName The name of the group to send the message to.
+     * @param message The message to be sent to the group
+     */
     public void groupMessage(String groupName, Message message) {
         ObjectOutputStream outToRecipient;
         HashMap<ClientHandler, Boolean> sentToClientMap = new HashMap<>();
@@ -186,6 +206,11 @@ public class Server extends Thread{
         }
     }
 
+    /**
+     * For each client in the list of clients, send the message to the client.
+     *
+     * @param message The message to be sent to all clients.
+     */
     public void broadcastMessage(Message message) {
         for (ClientHandler client : clientsList) {
             try {
@@ -196,6 +221,13 @@ public class Server extends Thread{
             }
         }
     }
+    /**
+     * It checks if the recipient is online, if yes, it sends the message to the recipient, if not, it writes the message
+     * to an XML file
+     *
+     * @param recipient the recipient of the message
+     * @param message the message to be sent
+     */
     public void privateMessage(String recipient, Message message) {
         ObjectOutputStream outToRecipient;
         for (ClientHandler client : loginHandlerArraylist) {
@@ -219,6 +251,12 @@ public class Server extends Thread{
             System.err.println("User: " + recipient +" is offline.... message will be written sa xml file :)");
         }
     }
+    /**
+     * It takes a recipient and a list of offline messages, and sends the list of offline messages to the recipient
+     *
+     * @param recipient The recipient of the offline message
+     * @param offlineMessages A list of OfflineMessage objects.
+     */
     public void offlineMessage(String recipient, List<OfflineMessage> offlineMessages) {
         ObjectOutputStream outToRecipient;
         for (ClientHandler client : loginHandlerArraylist) {
@@ -280,12 +318,23 @@ public class Server extends Thread{
         registeredUsersList = new ArrayList<>(XMLParse.getUserList());
     }
 
+    /**
+     * This function takes a group name as a parameter and returns an ArrayList of users that are in that group
+     *
+     * @param groupName The name of the group you want to get the users from.
+     * @return An ArrayList of User objects.
+     */
     public static ArrayList<User> getUsersByGroupName(String groupName) {
         ArrayList<User> users = new ArrayList<>();
         users = XMLParse.getUsersWithGroup(groupName);
         return users;
     }
 
+    /**
+     * It gets the registered users from the XML file and adds it to an ArrayList
+     *
+     * @return The method returns a Document object.
+     */
     public static Document getRegisteredUsers() {
         NodeList users;
         Document document;

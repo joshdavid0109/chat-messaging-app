@@ -16,6 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * The GUIClientController class is the controller class for the GUI client. It handles the login process and the sending
+ * and receiving of messages
+ */
 public class GUIClientController implements ActionListener {
 
     private GUIClientFrame frame;
@@ -30,6 +34,11 @@ public class GUIClientController implements ActionListener {
         this.run();
     }
 
+    /**
+     * It creates a login form, sends the login credentials to the server, and waits for the server to respond with a User
+     * object. If the server responds with a User object, then the client is logged in. If the server responds with a
+     * Message object, then the client is not logged in and the message is displayed to the user
+     */
     public void run() {
         try {
             output = new ObjectOutputStream(server.getOutputStream());
@@ -54,8 +63,6 @@ public class GUIClientController implements ActionListener {
                 if (obj instanceof User) {
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: " + user.getName());
-
-                    user.printGroups();
                     loggedIn = true;
                 } else if (obj instanceof Message) {
                     //login error message from server
@@ -82,6 +89,10 @@ public class GUIClientController implements ActionListener {
         }
     }
 
+    /**
+     * If the message starts with a command, the client will check if the command is valid and if it is, it will send the
+     * message to the server
+     */
     public void sendMessage() throws ParserConfigurationException, IOException, SAXException {
         // Get the message from the input field
         Message msg = null;
@@ -155,6 +166,9 @@ public class GUIClientController implements ActionListener {
 
     }
 
+    /**
+     * It listens for incoming messages from the server and displays them in the chat window
+     */
     public class ServerMessageListener extends Thread {
         @Override
         public void run() {

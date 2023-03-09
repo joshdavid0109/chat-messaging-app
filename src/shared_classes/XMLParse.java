@@ -28,6 +28,7 @@ public class XMLParse {
 
     private static Document usersDoc;
     private String file;
+
     public XMLParse(String file) {
         this.file = file;
     }
@@ -102,18 +103,26 @@ public class XMLParse {
         }
         return groups;
     }
+
+    /**
+     * "Get all the groups from the users.xml file and return them in an ArrayList."
+     *
+     * The first thing we do is create an ArrayList to hold the groups. We then call the getUsersDoc() function to get the
+     * users.xml file. We then get the root element of the document and normalize it. We then get all the User nodes in the
+     * document. We then loop through all the User nodes. For each User node, we get all the Group nodes. We then loop
+     * through all the Group nodes. For each Group node, we get the text content of the node and convert it to lower case.
+     * We then check to see if the group is already in the ArrayList. If it isn't, we add it to the ArrayList
+     *
+     * @return A list of all the groups in the users.xml file.
+     */
     public static ArrayList<String> getAllGroups() throws ParserConfigurationException, SAXException, IOException {
         ArrayList<String> groups = new ArrayList<>();
 
-        String fileName = "res/users.xml";
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(new File(fileName));
-        doc.getDocumentElement().normalize();
-
-        NodeList userList = doc.getElementsByTagName("User");
-        for (int i = 0; i < userList.getLength(); i++) {
-            Node userNode = userList.item(i);
+        getUsersDoc();
+        usersDoc.getDocumentElement().normalize();
+        NodeList nodeList = usersDoc.getElementsByTagName("User");
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node userNode = nodeList.item(i);
             if (userNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element userElement = (Element) userNode;
                 NodeList groupNodes = userElement.getElementsByTagName("Group");
@@ -148,12 +157,8 @@ public class XMLParse {
             for (int i = 0; i < nodelist.getLength(); i++) {
                 element = (Element) nodelist.item(i);
                 String uname = element.getElementsByTagName("Username").item(0).getTextContent();
-                System.out.println(uname);
                 if (uname.equals(username)) {
                     element.getElementsByTagName("status").item(0).setTextContent(status);
-
-                    System.out.println("ASDASDASDASD it shoudl worki" );
-
                     Server.updateXML(nodelist, document);
                     break;
                 }
@@ -203,23 +208,6 @@ public class XMLParse {
             e.printStackTrace();
         }
         return user;
-    }
-    public void setOnline(User user) {
-        try {
-            getUsersDoc();
-            usersDoc.getDocumentElement().normalize();
-            NodeList nodeList = usersDoc.getElementsByTagName("User");
-            Element element;
-
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                element = (Element) nodeList.item(i);
-                if (element.getElementsByTagName("Username").item(0).getTextContent().equals(user.getUsername())) {
-                    element.getElementsByTagName("status").item(0).setTextContent("online");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
     public void setBanStatus(String username, String status){
         try {

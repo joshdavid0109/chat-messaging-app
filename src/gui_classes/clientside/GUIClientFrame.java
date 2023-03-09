@@ -22,7 +22,7 @@ import shared_classes.*;
 public class GUIClientFrame extends JFrame {
 
     private GUIClientController controller;
-    public JList<String> contactList;
+    JList<String> contactList;
     public JList<String> groupsList;
     public ArrayList<String> bookmarkedContacts = new ArrayList<>();
     public  JLabel bookmarkedContactsLabel = new JLabel();
@@ -37,6 +37,11 @@ public class GUIClientFrame extends JFrame {
     private JButton searchButton;
     private int fontSize = 12;
     User user;
+
+
+    public void setContactList(JList<String> contactList) {
+        this.contactList = contactList;
+    }
 
     public GUIClientFrame(GUIClientController controller, User u) {
         this.user = u;
@@ -55,7 +60,6 @@ public class GUIClientFrame extends JFrame {
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         List<String> x = Server.getGroupsOfUser(user);
-        System.out.println("asdasdasd"+ x.toString());
 
         String[] groupsArray = x.toArray(new String[x.size()]);
 
@@ -116,7 +120,6 @@ public class GUIClientFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String selectedContact = "";
                 if (contactList.getSelectedValue() != null) {
-                    System.out.println(contactList.getSelectedValue());
                     selectedContact = contactList.getSelectedValue();
                     int index = contactList.getSelectedIndex();
                     bookmark(e, selectedContact, index);
@@ -156,6 +159,13 @@ public class GUIClientFrame extends JFrame {
         contactList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 JList<String> list = (JList<String>) evt.getSource();
+
+                //REFRESH, MAG UUPDATE KUNG SINO ONLINE AND NOT, kahirap neto gawin animal
+                setContactList(new JList<>(getAllContacts()));
+                scrollPaneListMembers.setViewportView(contactList);
+                scrollPaneListMembers.revalidate();
+                scrollPaneListMembers.repaint();
+
                 String selectedValue = list.getSelectedValue();
                 String[] x = selectedValue.split(" : ");
                 messageInput.setText("/pm "+ x[0]+" ");
@@ -299,6 +309,8 @@ public class GUIClientFrame extends JFrame {
         broadCastPanel.add(broadcastArea);
         //after log in is successful, makikita nayung main GUI
         setVisible(true);
+
+        //if nag close ng window ung user, gawin siya offline, works flawlessly idk why amazing
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
@@ -340,7 +352,6 @@ public class GUIClientFrame extends JFrame {
 
     public String[] getAllContacts() {
         String[] contacts = new String[Server.registeredUsersList.size()];
-
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -433,15 +444,8 @@ public class GUIClientFrame extends JFrame {
         }
     }
 
-    public void setFontSize(int fontSize) {
-        this.fontSize = fontSize;
-    }
-
-    private class LogoutButtonListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            //controller.logout();
-        }
+    private void refresh(){
+        contactList = new JList<>(getAllContacts());
     }
 
 }

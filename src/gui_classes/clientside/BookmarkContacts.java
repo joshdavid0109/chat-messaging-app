@@ -15,15 +15,6 @@ public class BookmarkContacts extends JPanel implements Runnable{
     private JList<String> contactList;
     private JLabel bookmarkedContactsLabel;
 
-    public static void main(String[] args) {
-        BookmarkContacts bookmarks = new gui_classes.clientside.BookmarkContacts();
-        JFrame frame = new JFrame("Contacts");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
-        frame.add(bookmarks);
-        frame.setVisible(true);
-    }
-
     public void run() {
         bookmarkedContacts = new ArrayList<>();
         contactList = new JList<>();

@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import static server_side.Server.*;
 
+/**
+ * It handles the client's messages and sends it to the server
+ */
 public class ClientHandler implements Runnable {
 
     public Socket clientSocket;
@@ -55,10 +58,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    //listen to messages from client
+
+    /**
+     * It handles the messages sent by the client
+     */
     public void run() {
         try {
-//            outToClient.writeObject(usersFile);
             while (userInput != null) {
                 Object obj = new Object();
                 try {
@@ -190,10 +195,11 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * Gets offline messages.
+     * It reads the XML file, finds all the messages that are addressed to the user, creates a list of OfflineMessage
+     * objects from them, and then deletes the messages from the XML file
      *
-     * @param user the user
-     * @return the offline messages
+     * @param user The user object of the user who is logging in.
+     * @return A list of offline messages
      */
     public List<OfflineMessage> getOfflineMessages(User user) {
         List<OfflineMessage> offlineMessages = new ArrayList<>();
