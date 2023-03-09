@@ -16,32 +16,34 @@ public class ClientMain {
         server = null;
         hostName = "localhost";
 
-        boolean validPort = false;
-        while (!validPort) {
-            port = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
-            hostName = JOptionPane.showInputDialog(new JFrame(),"Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);
-            validPort = true;
-        }
-
-        if (port != 0) {
+        while (true) {
             try {
-                server = new Socket(hostName, port);
-                System.out.println("Connected to port: " + port);
-            } catch (Exception e) {
+                boolean validPort = false;
+                while (!validPort) {
+                    port = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
+                    hostName = JOptionPane.showInputDialog(new JFrame(), "Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);
+                    validPort = true;
+                }
+
+                if (port != 0) {
+                    server = new Socket(hostName, port);
+                    System.out.println("Connected to port: " + port);
+
+                    GUIClientController controller = new GUIClientController(server);
+
+                    controller.showFrame();
+                    break;
+                } else {
+                    System.exit(0);
+                }
+            } catch (NumberFormatException e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(new JFrame(), "Not mabalin nga port number. Please enter a valid integer.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException e) {
+                System.out.println("Could not connect to server");
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(new JFrame(), "Could not connect idjay server. Please check the pldt or if u input tamang port/host and try manen.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-            // Create a new instance of the controller
-            GUIClientController controller = null;
-            controller = new GUIClientController(server);
-            /*GUIClientController.ServerMessageListener listener = controller.new ServerMessageListener();
-            listener.start();*/
-
-            // Show the frame
-            controller.showFrame();
-        } else {
-            System.exit(0);
         }
     }
 }

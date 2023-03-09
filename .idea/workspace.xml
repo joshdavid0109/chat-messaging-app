@@ -4,17 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
+    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="di na nag eerror">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Admin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/AddUserHandler.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/AddUserHandler.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/GroupChatUsersSample.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/BookmarkContacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/BookmarkContacts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/ServerMessage.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParserGC.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/errorMessage.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,24 +56,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="server_side" />
       <recent name="gui_classes.clientside" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.UserManagement_GUI">
+  <component name="RunManager" selected="Application.ClientMain">
     <configuration name="AddUserHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.AddUserHandler" />
       <module name="console" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="server_side.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClientMain" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.ClientMain" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -98,19 +111,6 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="gui_classes.clientside.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UserManagement_GUI (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
-      <module name="console" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="server_side.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -149,16 +149,16 @@
       <item itemvalue="Application.LoginGUIForm" />
       <item itemvalue="Application.AddUserHandler" />
       <item itemvalue="Application.GUIClientController" />
-      <item itemvalue="Application.UserManagement_GUI (1)" />
       <item itemvalue="Application.UserManagement_GUI (2)" />
+      <item itemvalue="Application.ClientMain" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ClientMain" />
         <item itemvalue="Application.AddUserHandler" />
         <item itemvalue="Application.GUIClientController" />
         <item itemvalue="Application.LoginGUIForm" />
         <item itemvalue="Application.UserManagement_GUI (2)" />
-        <item itemvalue="Application.UserManagement_GUI (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -184,6 +184,8 @@
       <workItem from="1678110295825" duration="1458000" />
       <workItem from="1678183560711" duration="7530000" />
       <workItem from="1678281437128" duration="341000" />
+      <workItem from="1678335309884" duration="9180000" />
+      <workItem from="1678351330692" duration="3700000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -269,7 +271,21 @@
       <option name="project" value="LOCAL" />
       <updated>1678192783206</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="complete client gui overhaul, separated na guiframe + gui controller, somehow nag eerror ayusin ko after ko eat">
+      <created>1678342952450</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1678342952450</updated>
+    </task>
+    <task id="LOCAL-00014" summary="di na nag eerror">
+      <created>1678344277608</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1678344277608</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -300,7 +316,9 @@
     <MESSAGE value="refresh update" />
     <MESSAGE value="client to server on different pcs trial" />
     <MESSAGE value="ppp" />
-    <option name="LAST_COMMIT_MESSAGE" value="ppp" />
+    <MESSAGE value="complete client gui overhaul, separated na guiframe + gui controller, somehow nag eerror ayusin ko after ko eat" />
+    <MESSAGE value="di na nag eerror" />
+    <option name="LAST_COMMIT_MESSAGE" value="di na nag eerror" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -317,15 +335,6 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/shared_classes/XMLParse.java</url>
-          <line>177</line>
-          <properties class="shared_classes.XMLParse">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>

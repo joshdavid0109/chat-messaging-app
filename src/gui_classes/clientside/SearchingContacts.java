@@ -110,8 +110,5 @@ public class SearchingContacts extends JFrame{
         }
         return similarNames;
     }
-    public static void main(String[] args){
-        new SearchingContacts();
-    }
 
 }

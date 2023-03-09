@@ -31,9 +31,6 @@ import java.util.Objects;
 
 import static server_side.Server.*;
 
-/**
- * The type Client handler.
- */
 public class ClientHandler implements Runnable {
 
     public Socket clientSocket;
@@ -84,12 +81,14 @@ public class ClientHandler implements Runnable {
                 }
 
 
-                if (obj.getClass().equals(Message.class)) {//ganito muna, kasi if (obj instanceof message) yung nakalagay, pati subclasses nun (like OfflineMessage) ay kasama
+                if (obj.getClass().equals(Message.class)) {
                     Message message = (Message) obj;
+
+                    //debug statement
                     System.out.println("SENDER: " + message.getSender() + " MESSAGE: " + message.getContent() + " RECIPIENT: " + message.getRecipient());
-                    if (message.getRecipient() == null) {
-                        server.broadcastMessage(message);
-                    } else if (message.getRecipient().equals("TOALL")) {
+
+                    if (message.getRecipient().equals("TOALL")) {
+                        System.out.println("issa broadcast");
                         server.broadcastMessage(message);
                     } else if (message.getRecipient().startsWith("@")) {
                         System.out.println("IM HERE GROUP");
@@ -105,6 +104,7 @@ public class ClientHandler implements Runnable {
                             server.privateMessage(message.getSender(), new Message("GROUP DOESN'T EXIST FOO"));
                         }
                     } else {
+                        System.out.println("pm work");
                         server.privateMessage(message.getRecipient(), message);
                     }
                     //outToClient.writeObject(message);

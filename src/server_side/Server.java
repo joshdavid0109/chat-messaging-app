@@ -69,7 +69,7 @@ public class Server extends Thread{
     public static List<String> getRegisteredUserNames() {
         userNames = new ArrayList<>();
         for (User user : registeredUsersList) {
-            userNames.add(user.getName());
+            userNames.add(user.getName().toLowerCase(Locale.ROOT));
         }
         return userNames;
     }
@@ -199,8 +199,14 @@ public class Server extends Thread{
         }
     }
     public void privateMessage(String recipient, Message message) {
+        System.out.println("issa privet messaj");
         ObjectOutputStream outToRecipient;
         for (ClientHandler client : loginHandlerArraylist) {
+
+            System.out.println("D "+loggedInUserHashMap.get(client).getName());
+            System.out.println("E "+recipient);
+            System.out.println("F "+loggedInUserHashMap.get(client).getName().equalsIgnoreCase(recipient));
+
             if (loggedInUserHashMap.get(client).getName().equalsIgnoreCase(recipient)) {
                 outToRecipient = client.outToClient;
                 try {

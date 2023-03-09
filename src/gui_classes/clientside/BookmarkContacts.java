@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.Server;
+import shared_classes.XMLParse;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +28,7 @@ public class BookmarkContacts extends JPanel {
 
     public BookmarkContacts() {
         bookmarkedContacts = new ArrayList<>();
-        contactList = new JList<>(getAllContacts());
+        contactList = new JList<>();
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JButton bookmarkButton = new JButton("Bookmark");
@@ -51,7 +52,7 @@ public class BookmarkContacts extends JPanel {
                         bookmarkButton.setText("Unbookmark");
                     }
                     updateBookmarkedContactsLabel();
-                    updateContactList(getAllContacts());
+                    updateContactList(XMLParse.getAllContactNames().toArray(new String[0]));
                 }
             }
         });
@@ -74,35 +75,6 @@ public class BookmarkContacts extends JPanel {
         add(bookmarkButton);
         add(bookmarkedContactsLabel);
     }
-
-    private String[] getAllContacts() {
-        String[] contacts = new String[Server.registeredUsersList.size()];
-
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse("res/users.xml");
-            NodeList userNodes = document.getElementsByTagName("User");
-
-            contacts = new String[userNodes.getLength()];
-
-            for (int i = 0; i < userNodes.getLength(); i++) {
-                Node userNode = userNodes.item(i);
-                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element userElement = (Element) userNode;
-                    String name = userElement.getElementsByTagName("name").item(0).getTextContent();
-                    String status = userElement.getElementsByTagName("status").item(0).getTextContent();
-                    contacts[i] = name + " : " + status;
-                }
-            }
-            // Sort contacts alphabetically
-            Arrays.sort(contacts);
-        } catch (SAXException | IOException | ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        }
-        return contacts;
-    }
-
 
     private void updateContactList(String[] allContacts) {
         ArrayList<String> contactsList = new ArrayList<>();
@@ -129,14 +101,5 @@ public class BookmarkContacts extends JPanel {
         bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts.toString());
     }
 
-    // TEST
-    public static void main(String[] args) {
-        gui_classes.clientside.BookmarkContacts bookmarks = new gui_classes.clientside.BookmarkContacts();
-        JFrame frame = new JFrame("Contacts");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
-        frame.add(bookmarks);
-        frame.setVisible(true);
-    }
 }
 

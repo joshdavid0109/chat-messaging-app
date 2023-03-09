@@ -17,7 +17,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class GUIClientController implements ActionListener, Runnable {
+public class GUIClientController implements ActionListener {
 
     private GUIClientFrame frame;
     private final Socket server;
@@ -25,9 +25,13 @@ public class GUIClientController implements ActionListener, Runnable {
     private ObjectOutputStream output;
     User user;
 
+    public GUIClientController(Socket server) {
+        this.server = server;
+        this.run();
+    }
+
     public void run() {
         try {
-            // Create streams to communicate with the server
             output = new ObjectOutputStream(server.getOutputStream());
             input = new ObjectInputStream(server.getInputStream());
 
@@ -58,21 +62,16 @@ public class GUIClientController implements ActionListener, Runnable {
 
             // Create the GUI frame
             frame = new GUIClientFrame(this, user);
+            frame.appendMessage("CONNECTED TO SERVER "+server.getLocalAddress()+" PORT "+server.getPort());
 
             // Start a listener thread to receive messages from the server
             ServerMessageListener listener = new ServerMessageListener();
             listener.start();
-
-            // Show the frame
             frame.setVisible(true);
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public GUIClientController(Socket server) {
-        this.server = server;
-        this.run();
     }
 
     public void sendMessage() throws ParserConfigurationException, IOException, SAXException {
@@ -91,6 +90,11 @@ public class GUIClientController implements ActionListener, Runnable {
 
                 case "pm":
                     String recipient = words[2].toLowerCase(Locale.ROOT);
+
+                    System.out.println("A  "+Server.getRegisteredUserNames().toString());
+                    System.out.println("B  "+recipient);
+                    System.out.println("C  "+Server.getRegisteredUserNames().contains(recipient));
+
                     if(Server.getRegisteredUserNames().contains(recipient)){
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
                         msg = new Message(user.getName(), recipient, messageContent);
@@ -98,7 +102,6 @@ public class GUIClientController implements ActionListener, Runnable {
                     }
                     else{
                         msg = new Message(user.getName(), recipient, message);
-                        //messagePane.setText(messagePane.getText()+"\n"+"[ERROR] user "+ recipient+" does not exist.");
                         frame.appendMessage("[ERROR] user "+ recipient+" does not exist.");
                         break;
                     }
@@ -146,7 +149,6 @@ public class GUIClientController implements ActionListener, Runnable {
         public void run() {
             try {
                 while (input != null) {
-
                     Object obj = input.readObject();
                     if (obj instanceof Message) {
                         // Handle incoming message
@@ -155,10 +157,10 @@ public class GUIClientController implements ActionListener, Runnable {
                             continue;
                         }
                         else if(msg.getRecipient().equals("TOALL")){
-                            frame.addMessage("[BROADCAST] "+msg.getSender()+": "+msg.getContent());
+                            frame.appendMessage("[BROADCAST] "+msg.getSender()+": "+msg.getContent());
                         }
                         else{
-                            frame.addMessage("[PRIVATE] "+msg.getSender()+": "+msg.getContent());
+                            frame.appendMessage("[PRIVATE] "+msg.getSender()+": "+msg.getContent());
                         }
                         System.out.println(msg.getSender()+": " + msg.getContent());
                     }

@@ -37,12 +37,12 @@ public class GUIClientFrame extends JFrame {
     private JTextField messageInput;
     public static JButton bookmarkButton;
     private JButton searchButton;
+    private int fontSize = 12;
     User user;
 
     public GUIClientFrame(GUIClientController controller, User user) {
-        super("Chat Client");
         String fontfamily = "Arial, sans-serif";
-        Font font = new Font(fontfamily, Font.PLAIN, 11);
+        Font font = new Font(fontfamily, Font.PLAIN, fontSize);
         setTitle("Chat Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
@@ -70,7 +70,7 @@ public class GUIClientFrame extends JFrame {
         headerName.setFont(new Font("Arial", Font.BOLD, 12));
         headerName.setBounds(920, -15, 200, 75);
 
-        JLabel headerStatus = new JLabel("Status");
+        JLabel headerStatus = new JLabel(user.getStatus());
         headerStatus.setForeground(Color.GREEN);
         headerStatus.setFont(new Font("Arial", Font.BOLD, 10));
         headerStatus.setBounds(920, 0, 200, 75);
@@ -85,7 +85,7 @@ public class GUIClientFrame extends JFrame {
         currentUserName.setFont(new Font("Arial", Font.BOLD, 18));
         currentUserName.setBounds(30, 0, 200, 75);
 
-        JLabel currentUserStatus = new JLabel("Status");
+        JLabel currentUserStatus = new JLabel(user.getStatus());
         currentUserStatus.setForeground(Color.GREEN);
         currentUserStatus.setFont(new Font("Arial", Font.PLAIN, 18));
         currentUserStatus.setBounds(270, 0, 200, 75);
@@ -102,7 +102,7 @@ public class GUIClientFrame extends JFrame {
         bookmarkButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         bookmarkButton.setFocusable(false);
         bookmarkButton.setBounds(40, 300, 100, 20);
-        /*bookmarkButton.addActionListener(new ActionListener() {
+        bookmarkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedContact = "";
@@ -118,7 +118,7 @@ public class GUIClientFrame extends JFrame {
                     updateContactList(getAllContacts());
                 }
             }
-        });*/
+        });
 
         messageInput = new JTextField();
         messageInput.setVisible(true);
@@ -132,39 +132,6 @@ public class GUIClientFrame extends JFrame {
 
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        /*boolean loggedIn = false;
-        while (!loggedIn) {
-            // Prompt the user to enter their username and password
-            LoginGUIForm log = new LoginGUIForm(this);
-
-            UserManagement_GUI userManagementGui = new UserManagement_GUI();
-            userManagementGui.populateList();
-            // Create a login message and send it to the server
-            LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
-            output.writeObject(loginMessage);
-//            output.writeObject(f);
-
-            if(input != null){
-                Object obj = input.readObject();
-                if (obj instanceof User) {
-                    user = (User) obj;
-                    System.out.println("YOU HAVE LOGGED IN AS: "+user.getName());
-                    user.printGroups();
-                    loggedIn = true;
-                    output.writeObject(f);
-                } else if (obj instanceof Message) {
-                    //login error message ipriprint ng server sa client
-                    Message message = (Message) obj;
-                } *//*else if (obj instanceof File f) {
-                 *//**//**
-                 * parse to existing users.xml
-                 *//**//*
-                }*//* else {
-                    JOptionPane.showMessageDialog(this, "Incorrect username or password. Please try again.");
-                }
-            }
-        }*/
         headerName.setText(user.getUsername());
         currentUserName.setText(user.getName());
 
@@ -227,12 +194,10 @@ public class GUIClientFrame extends JFrame {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setResizable(false);
-        //this.pack();
         this.setBounds(500, 250, 930, 540);
         this.setTitle("Budget Discord");
         this.setSize(1050, 750);
         this.getContentPane().setBackground(Color.WHITE);
-
         this.add(header);
         header.add(headerName);
         header.add(headerStatus);
@@ -290,8 +255,8 @@ public class GUIClientFrame extends JFrame {
         //after log in is successful, makikita nayung main GUI
         this.setVisible(true);
         //messagePane.setText("CONNECTED TO: "+server.getLocalAddress()+" PORT: "+server.getPort());
-
     }
+
     private void updateContactList(String[] allContacts) {
         ArrayList<String> contactsList = new ArrayList<>();
 
@@ -356,16 +321,8 @@ public class GUIClientFrame extends JFrame {
     }
 
     public void updateUsernameLabel(String username) {
-        usernameLabel.setText("Logged in as: " + username);
+        usernameLabel.setText(username);
     }
-
-    public void addMessage(String mensahe) {
-        messagePane.setText(messagePane.getText()+"\n"+mensahe);
-    }
-
-    /*public String getSelectedUser() {
-        return (String) userDropdown.getSelectedItem();
-    }*/
 
     public String getMessageText() {
         return messageInput.getText();
@@ -374,10 +331,6 @@ public class GUIClientFrame extends JFrame {
     public void clearMessageText() {
         messageInput.setText("");
     }
-
-/*    public void setUsers(String[] users) {
-        userDropdown.setModel(new DefaultComboBoxModel<>(users));
-    }*/
 
     private class InputListener implements ActionListener {
         @Override
@@ -401,6 +354,10 @@ public class GUIClientFrame extends JFrame {
             }
             inputField.setText("");
         }
+    }
+
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
     }
 
     private class LogoutButtonListener implements ActionListener {
