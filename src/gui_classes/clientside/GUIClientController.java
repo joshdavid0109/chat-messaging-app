@@ -1,13 +1,15 @@
 package gui_classes.clientside;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import server_side.Server;
-import shared_classes.LoginCredentials;
-import shared_classes.Message;
-import shared_classes.OfflineMessage;
-import shared_classes.User;
+import shared_classes.*;
 
 import javax.swing.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,11 +43,13 @@ public class GUIClientController implements ActionListener {
             boolean loggedIn = false;
             while (!loggedIn) {
                 // Prompt the user to enter their username and password
+                System.out.println("login ka na");
                 LoginGUIForm log = new LoginGUIForm(frame);
 
                 // Create a login message and send it to the server
                 LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
                 output.writeObject(loginMessage);
+                SetOnline(loginMessage);
 
                 // Wait for the server to respond with a User object
                 Object obj = input.readObject();
@@ -76,7 +80,52 @@ public class GUIClientController implements ActionListener {
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document document = documentBuilder.parse("res/users.xml");
+
+                NodeList users = document.getElementsByTagName("User");
+
+                for (int i = 0; i < users.getLength(); i++) {
+                    Element element = (Element) users.item(i);
+
+                    element.getElementsByTagName("status").item(0).setTextContent("offline");
+
+                    Server.updateXML(users, document);
+                }
+            } catch (IOException | ParserConfigurationException | SAXException e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void SetOnline(LoginCredentials loginMessage) {
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = null;
+        Document document = null;
+        NodeList nodelist = null;
+        try {
+            documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            document = documentBuilder.parse("res/users.xml");
+            nodelist = document.getElementsByTagName("User");
+        } catch (ParserConfigurationException | IOException | SAXException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        Element element;
+            for(int i =0; i < nodelist.getLength();i++) {
+                element = (Element) nodelist.item(i);
+                String uname = element.getElementsByTagName("Username").item(0).getTextContent();
+                String pass = element.getElementsByTagName("Password").item(0).getTextContent();
+                if (uname.equals(loginMessage.getUsername()) && pass.equals(loginMessage.getPassword())) {
+                    element.getElementsByTagName("status").item(0).setTextContent("online");
+                    Server.updateXML(nodelist, document);
+                    break;
+                }
+            }
     }
 
     public void sendMessage() throws ParserConfigurationException, IOException, SAXException {

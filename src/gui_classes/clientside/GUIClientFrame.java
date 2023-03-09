@@ -8,6 +8,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class GUIClientFrame extends JFrame {
         setSize(400, 300);
         contactList = new JList<>(getAllContacts());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
         //contactList.addListSelectionListener(GUIClientController);
 
         // Initialize the components
@@ -110,19 +113,18 @@ public class GUIClientFrame extends JFrame {
                 String selectedContact = "";
                 if (contactList.getSelectedValue() != null) {
                     System.out.println(contactList.getSelectedValue());
-
-
-
-                    if (bookmarkedContacts.contains(selectedContact)) {
+                    selectedContact = contactList.getSelectedValue();
+                    int index = contactList.getSelectedIndex();
+                    bookmark(e, selectedContact, index);
+                    /*if (bookmarkedContacts.contains(selectedContact)) {
                         bookmarkedContacts.remove(selectedContact);
                         bookmarkButton.setText("Bookmark");
                     } else {
                         bookmarkedContacts.add(selectedContact);
                         bookmarkButton.setText("Unbookmark");
                     }
-                    updateBookmarkedContactsLabel();
-                    updateContactList(getAllContacts());
-                    new ListRenderer();
+                    updateBookmarkedContactsLabel();*/
+//                    updateContactList(getAllContacts());
                 }
             }
         });
@@ -263,6 +265,35 @@ public class GUIClientFrame extends JFrame {
         //after log in is successful, makikita nayung main GUI
         this.setVisible(true);
         //messagePane.setText("CONNECTED TO: "+server.getLocalAddress()+" PORT: "+server.getPort());
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                try {
+                    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                    Document document = documentBuilder.parse("res/users.xml");
+
+                    NodeList users = document.getElementsByTagName("User");
+
+                    for (int i = 0; i < users.getLength(); i++) {
+                        Element element = (Element) users.item(i);
+
+                        element.getElementsByTagName("status").item(0).setTextContent("offline");
+
+                        Server.updateXML(users, document);
+                    }
+                } catch (IOException | ParserConfigurationException | SAXException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void bookmark(java.awt.event.ActionEvent evt, String selectedContact, int index) {
+        DefaultListModel model = (DefaultListModel) contactList.getModel();
+        model.remove(index);
+        model.add(index-1, selectedContact);
+        contactList.setSelectedIndex(index-1);
     }
 
     private void updateContactList(String[] allContacts) {
@@ -328,18 +359,23 @@ public class GUIClientFrame extends JFrame {
         }
     }
 
-    private static class ListRenderer extends DefaultListCellRenderer {
-        public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-            String val = (String) list.getSelectedValue();
-             if (val.contains("online"))  {
-                c.setBackground( Color.decode("#5DBB63") );
+    public void ListRenderer(JList list, int rowIndex) {
+        list.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+                final Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+                String val = list.getSelectedValue().toString();
+                System.out.println(val);
+                if (val.contains("online"))  {
+                    c.setBackground( Color.decode("#5DBB63") );
+                }
+                else {
+                    c.setBackground( Color.white);
+                }
+                return c;
             }
-            else {
-                c.setBackground( Color.white);
-            }
-            return c;
-        }
+        });
+
     }
 
     public void updateUsernameLabel(String username) {

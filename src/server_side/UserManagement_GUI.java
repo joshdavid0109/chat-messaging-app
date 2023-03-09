@@ -98,14 +98,16 @@ public class UserManagement_GUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!serverStatus.get()) {
-                    serverStatus.set(true);
+
                     serverSwitch.getRightComponent().setEnabled(true);
                     serverSwitch.getRightComponent().setBackground(decode("#BC544B"));
                     new Thread(() -> {
                         server.set(new Server(port, frameUM));
 
                     }).start();
-
+                    if (Server.serverSocket!=null) {
+                        serverStatus.set(true);
+                    }
                 } else
                     JOptionPane.showMessageDialog(null, "Server is already running at port " + Server.port,
                             "Server Status", JOptionPane.ERROR_MESSAGE, null);
@@ -122,6 +124,10 @@ public class UserManagement_GUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                     Server.serverSocket.close();
+                    for (ClientHandler c: Server.loginHandlerArraylist
+                         ) {
+                        c.clientSocket.close();
+                    }
                     serverStatus.set(false);
                     serverSwitch.getRightComponent().setEnabled(false);
                     rightComponent.setBackground(gray);

@@ -79,22 +79,6 @@ public class LoginGUIForm extends JDialog implements Runnable{
                             if (user.getStatus().equals("online")) {
                                 JOptionPane.showMessageDialog(panel, "User is currently logged in on another device.");
                                 break;
-                            } else {
-                                for(int i =0; i < nodelist.getLength();i++) {
-                                    element = (Element) nodelist.item(i);
-                                    String uname = element.getElementsByTagName("Username").item(0).getTextContent();
-                                    String pass = element.getElementsByTagName("Password").item(0).getTextContent();
-                                    if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
-                                        element.getElementsByTagName("status").item(0).setTextContent("online");
-                                        Server.updateXML(nodelist, document);
-                                        break;
-                                    }
-                                }
-//                                XMLParse.setOnline(user);
-                                u = user;
-                                result = OK;
-                                dispose();
-                                break;
                             }
                         } else {
                             //user exists pero mali password
