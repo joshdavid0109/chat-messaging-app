@@ -4,6 +4,7 @@ import org.xml.sax.SAXException;
 import server_side.Server;
 import shared_classes.LoginCredentials;
 import shared_classes.Message;
+import shared_classes.OfflineMessage;
 import shared_classes.User;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class GUIClientController implements ActionListener {
@@ -24,6 +26,7 @@ public class GUIClientController implements ActionListener {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     User user;
+    ImageIcon icon = new ImageIcon("res/appLogo.png");
 
     public GUIClientController(Socket server) {
         this.server = server;
@@ -49,6 +52,7 @@ public class GUIClientController implements ActionListener {
                 if (obj instanceof User) {
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: " + user.getName());
+
                     user.printGroups();
                     loggedIn = true;
                 } else if (obj instanceof Message) {
@@ -62,6 +66,7 @@ public class GUIClientController implements ActionListener {
 
             // Create the GUI frame
             frame = new GUIClientFrame(this, user);
+            frame.setIconImage(icon.getImage());
             frame.appendMessage("CONNECTED TO SERVER "+server.getLocalAddress()+" PORT "+server.getPort());
 
             // Start a listener thread to receive messages from the server
@@ -140,9 +145,10 @@ public class GUIClientController implements ActionListener {
         frame.setVisible(true);
     }
 
-    /*public String getUsername() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-    }*/
+    }
 
     public class ServerMessageListener extends Thread {
         @Override
@@ -164,51 +170,22 @@ public class GUIClientController implements ActionListener {
                         }
                         System.out.println(msg.getSender()+": " + msg.getContent());
                     }
-                    /*else if(obj instanceof List<?>){
+                    else if(obj instanceof List<?>){
                         List<?> list = (List<?>) obj;
                         if (!list.isEmpty() && list.get(0) instanceof OfflineMessage) {
                             List<OfflineMessage> offlineMessages = (List<OfflineMessage>) list;
                             for (OfflineMessage offlineMessage : offlineMessages) {
                                 String sender = offlineMessage.getSender();
                                 String content = offlineMessage.getContent();
-                                frame.addMessage("[PRIVATE] " + sender + ": " + content);
+                                frame.appendMessage("[UNREAD MSG] " + sender + ": " + content);
                             }
                         }
-                    }*/
+                    }
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
-        if (command.equals("send")) {
-            //String recipient = frame.getSelectedUser();
-            String recipient = "ariel";
-            String content = frame.getMessageText();
-            if (recipient.equals("")) {
-                JOptionPane.showMessageDialog(frame, "Please select a recipient", "Error", JOptionPane.ERROR_MESSAGE);
-            } else if (content.equals("")) {
-                JOptionPane.showMessageDialog(frame, "Message cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                try {
-                    sendMessage();
-                } catch (ParserConfigurationException | IOException | SAXException ex) {
-                    ex.printStackTrace();
-                }
-                frame.clearMessageText();
-            }
-        } /*else if (command.equals("set-username")) {
-            String userName = frame.getUserName();
-            if (userName.equals("")) {
-                JOptionPane.showMessageDialog(frame, "Username cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                setUserName(userName);
-            }
-        }*/
     }
 }

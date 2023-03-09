@@ -230,17 +230,14 @@ public class Server extends Thread{
     public void offlineMessage(String recipient, List<OfflineMessage> offlineMessages) {
         ObjectOutputStream outToRecipient;
         for (ClientHandler client : loginHandlerArraylist) {
-            if (loggedInUserHashMap.get(client).getName().equals(recipient)) {
+            if (loggedInUserHashMap.get(client).getName().equalsIgnoreCase(recipient)) {
                 outToRecipient = client.outToClient;
 
-                for(int i = 0; i<offlineMessages.size();i++){
-                    try {
-                        outToRecipient.writeObject(offlineMessages);
-                        outToRecipient.flush();
-                    } catch (IOException e) {
-                        System.err.println("Error sending message to client: " + e);
-                    }
-                    return;
+                try {
+                    outToRecipient.writeObject(offlineMessages);
+                    outToRecipient.flush();
+                } catch (IOException e) {
+                    System.err.println("Error sending message to client: " + e);
                 }
             }
         }
@@ -293,32 +290,7 @@ public class Server extends Thread{
 
     public static ArrayList<User> getUsersByGroupName(String groupName) {
         ArrayList<User> users = new ArrayList<>();
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse("res/users.xml");
-            doc.getDocumentElement().normalize();
-            NodeList nodeList = doc.getElementsByTagName("User");
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Element element = (Element) nodeList.item(i);
-                NodeList groupList = element.getElementsByTagName("Groupname");
-                for (int j = 0; j < groupList.getLength(); j++) {
-                    Element group = (Element) groupList.item(j);
-                    if (group.getTextContent().equals(groupName)) {
-                        String id = element.getAttribute("id");
-                        String name = element.getElementsByTagName("name").item(0).getTextContent();
-                        String age = element.getElementsByTagName("Age").item(0).getTextContent();
-                        String username = element.getElementsByTagName("Username").item(0).getTextContent();
-                        String password = element.getElementsByTagName("Password").item(0).getTextContent();
-                        String status = element.getElementsByTagName("status").item(0).getTextContent();
-                        //User user = new User(id, name, age, username, password, status, "x");
-                        //users.add(user);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        users = XMLParse.getUsersWithGroup(groupName);
         return users;
     }
 

@@ -151,5 +151,11 @@ public class User implements Serializable {
         this.banStatus = banStatus;
     }
 
-
+    @Override
+    public String toString() {
+        return "USER " + id + "\n" +
+                "USERNAME: " + username + "\n" +
+                "NAME: " + name + "\n" +
+                "AGE: " + age + "\n\n";
+    }
 }
