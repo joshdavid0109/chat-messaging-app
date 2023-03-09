@@ -12,7 +12,6 @@ public class ClientMain {
     public static void main(String[] args) {
         int port = 0;
         String hostName;
-        String userName;
         server = null;
         hostName = "localhost";
 
@@ -22,6 +21,8 @@ public class ClientMain {
                 while (!validPort) {
                     port = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
                     hostName = JOptionPane.showInputDialog(new JFrame(), "Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);
+/*                    port = 1234;
+                    hostName = "localhost";*/
                     validPort = true;
                 }
 

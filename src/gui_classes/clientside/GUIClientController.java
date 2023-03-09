@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -131,13 +132,10 @@ public class GUIClientController implements ActionListener {
                 case "pm":
                     String recipient = words[2].toLowerCase(Locale.ROOT);
 
-                    System.out.println("A  "+Server.getRegisteredUserNames().toString());
-                    System.out.println("B  "+recipient);
-                    System.out.println("C  "+Server.getRegisteredUserNames().contains(recipient));
-
                     if(Server.getRegisteredUserNames().contains(recipient)){
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
                         msg = new Message(user.getName(), recipient, messageContent);
+                        frame.appendMessage("[PRIVATE @"+recipient+" ] YOU: "+messageContent);
                         break;
                     }
                     else{
@@ -148,14 +146,7 @@ public class GUIClientController implements ActionListener {
                 case "gm":
                     String group = words[2].toLowerCase(Locale.ROOT);
 
-                    System.out.println("G  "+Server.getGroups());
-                    System.out.println("H  "+group);
-                    System.out.println("I  "+Server.getGroups().contains(group));
-
                     if(Server.getGroups().contains(group)){
-
-                        //gm REAL hello guys
-
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
                         msg = new Message(user.getName(),"@"+group, messageContent);
                         break;
@@ -165,13 +156,13 @@ public class GUIClientController implements ActionListener {
                         frame.appendMessage("[ERROR] group "+ group+" does not exist.");
                         break;
                     }
+
                 case "quit":
                     System.exit(0);
 
                 default:
                     msg = new Message("NOTHING");
-                    //messagePane.setText(messagePane.getText()+"\n"+"[ERROR] error in parsing message -> command not recognized???");
-                    //frame.appendMessage("[ERROR] user "+ recipient+" does not exist.");
+                    frame.appendMessage("[ERROR] command '"+command+"' not recognized");
                     break;
             }
         }
@@ -192,11 +183,6 @@ public class GUIClientController implements ActionListener {
         frame.clearMessageText();
     }
 
-    /*public void setUserName(String userName) {
-        this.userName = userName;
-        frame.setTitle(userName);
-    }*/
-
     public void showFrame() {
         frame.setVisible(true);
     }
@@ -213,8 +199,10 @@ public class GUIClientController implements ActionListener {
                 while (input != null) {
                     Object obj = input.readObject();
                     if (obj instanceof Message) {
+
                         // Handle incoming message
                         Message msg = (Message) obj;
+
                         if(msg.getRecipient() == null){
                             continue;
                         }
@@ -233,8 +221,12 @@ public class GUIClientController implements ActionListener {
                         else{
                             frame.appendMessage("[PRIVATE] "+msg.getSender()+": "+msg.getContent());
                         }
+
+                        //debug statement
                         System.out.println(msg.getSender()+": " + msg.getContent());
                     }
+
+                    //load offline/unread messages sent to the user
                     else if(obj instanceof List<?>){
                         List<?> list = (List<?>) obj;
                         if (!list.isEmpty() && list.get(0) instanceof OfflineMessage) {

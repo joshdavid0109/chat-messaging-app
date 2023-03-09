@@ -61,7 +61,7 @@ public class User implements Serializable {
 
     public Boolean isMember(String groupName){
         for (Group listOfGroup : listOfGroups) {
-            if (listOfGroup.getName().equals(groupName)) {
+            if (listOfGroup.getName().equalsIgnoreCase(groupName)) {
                 return true;
             }
         }

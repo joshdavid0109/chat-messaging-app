@@ -27,6 +27,7 @@ public class GUIClientFrame extends JFrame {
 
     private GUIClientController controller;
     public JList<String> contactList;
+    public JList<String> groupsList;
     public ArrayList<String> bookmarkedContacts = new ArrayList<>();
     public  JLabel bookmarkedContactsLabel = new JLabel();
     private JTextArea messagePane;
@@ -41,24 +42,29 @@ public class GUIClientFrame extends JFrame {
     private int fontSize = 12;
     User user;
 
-    public GUIClientFrame(GUIClientController controller, User user) {
+    public GUIClientFrame(GUIClientController controller, User u) {
+        this.user = u;
         String fontfamily = "Arial, sans-serif";
         Font font = new Font(fontfamily, Font.PLAIN, fontSize);
         setTitle("Chat Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
-        //contactList = new JList<String>(getAllContacts());
-        //contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         this.controller = controller;
 
-        setTitle("Chat Application");
+        setTitle("Chat Application - "+user.getName());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         contactList = new JList<>(getAllContacts());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        //contactList.addListSelectionListener(GUIClientController);
+        List<String> x = Server.getGroupsOfUser(user);
+        System.out.println("asdasdasd"+ x.toString());
+
+        String[] groupsArray = x.toArray(new String[x.size()]);
+
+        groupsList = new JList<>(groupsArray);
+        groupsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         // Initialize the components
         messagePane = new JTextArea();
@@ -96,6 +102,11 @@ public class GUIClientFrame extends JFrame {
         listOfMembersName.setForeground(Color.WHITE);
         listOfMembersName.setFont(new Font("Arial", Font.BOLD, 18));
         listOfMembersName.setBounds(90, 0, 200, 75);
+
+        JLabel listOfUserGroup = new JLabel("YOUR GROUPS");
+        listOfUserGroup.setForeground(Color.WHITE);
+        listOfUserGroup.setFont(new Font("Arial", Font.BOLD, 18));
+        listOfUserGroup.setBounds(90, 20, 200, 75);
 
         bookmarkButton = new JButton("Bookmark");
         bookmarkButton.setVisible(true);
@@ -151,8 +162,20 @@ public class GUIClientFrame extends JFrame {
                 JList<String> list = (JList<String>) evt.getSource();
                 String selectedValue = list.getSelectedValue();
                 String[] x = selectedValue.split(" : ");
-                messageInput.setText("/pm "+ x[0]);
+                messageInput.setText("/pm "+ x[0]+" ");
 
+            }
+        });
+
+        JScrollPane scrollPanelGroups = new JScrollPane(groupsList);
+        scrollPanelGroups.setVisible(true);
+        scrollPanelGroups.setBorder(BorderFactory.createEmptyBorder());
+        scrollPanelGroups.setBounds(40, 70, 200, 200);
+        groupsList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList<String> list = (JList<String>) evt.getSource();
+                String selectedValue = list.getSelectedValue();
+                messageInput.setText("/gm "+selectedValue+" ");
             }
         });
 
@@ -191,6 +214,11 @@ public class GUIClientFrame extends JFrame {
         listOfMembers.setBounds(750,50,400, 750);
         listOfMembers.setLayout(null);
 
+        JPanel listGroup = new JPanel();
+        listGroup.setBackground(new Color(0X23272A));
+        listGroup.setBounds(750,350,400, 750);
+        listGroup.setLayout(null);
+
         JLabel bookmarkedContactsLabel = new JLabel("Bookmarked Contacts:");
         bookmarkedContactsLabel.setVisible(true);
         bookmarkedContactsLabel.setForeground(Color.WHITE);
@@ -220,6 +248,11 @@ public class GUIClientFrame extends JFrame {
         this.add(verticalHeader);
         this.add(broadCastPanel);
         this.add(privateMessagePanel);
+
+        this.add(listGroup);
+        listGroup.add(listOfUserGroup);
+        listGroup.add(scrollPanelGroups);
+
         this.add(listOfMembers);
         listOfMembers.add(listOfMembersName);
         listOfMembers.add(scrollPaneListMembers);
@@ -324,6 +357,7 @@ public class GUIClientFrame extends JFrame {
     private void updateBookmarkedContactsLabel() {
         bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts.toString());
     }
+
 
     public String[] getAllContacts() {
         String[] contacts = new String[Server.registeredUsersList.size()];

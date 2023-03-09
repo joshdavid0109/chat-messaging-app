@@ -85,13 +85,12 @@ public class ClientHandler implements Runnable {
                 if (obj.getClass().equals(Message.class)) {
                     Message message = (Message) obj;
 
-                    //debug statement
-                    System.out.println("SENDER: " + message.getSender() + " MESSAGE: " + message.getContent() + " RECIPIENT: " + message.getRecipient());
-
+                    if(message.getRecipient() == null){
+                        return;
+                    }
 
                     //broadcast msg
-                    if (message.getRecipient().equals("TOALL")) {
-                        System.out.println("issa broadcast");
+                    else if (message.getRecipient().equals("TOALL")) {
                         server.broadcastMessage(message);
                     }
 
@@ -143,7 +142,6 @@ public class ClientHandler implements Runnable {
                                     //send offline messages to user
                                     List<OfflineMessage> offlineMessages = getOfflineMessages(user);
                                     server.offlineMessage(user.getName(), offlineMessages);
-                                    System.out.println("GRUP " + user.getGroups());
                                 }
                             }
                         }

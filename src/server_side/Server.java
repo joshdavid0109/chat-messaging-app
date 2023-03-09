@@ -54,14 +54,6 @@ public class Server extends Thread{
         this.clients = new ArrayList<>();
         this.run();
     }
-    public Server(){
-    }
-
-    public void addUser(User user){
-        clients.add(user);
-        //debug statment
-        System.out.println(user+ " has been added to ze list of ze users");
-    }
     public static List<String> getRegisteredUserNames() {
         userNames = new ArrayList<>();
         for (User user : registeredUsersList) {
@@ -84,6 +76,15 @@ public class Server extends Thread{
         return registeredUsersList;
     }
 
+    public static List<String> getGroupsOfUser(User user) {
+        try {
+            return XMLParse.getGroupsOfUserString(user);
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      This method creates a server socket and listens to incoming connections.
      It prompts the user to input a valid port number, and creates a new ServerSocket on that port.
@@ -92,8 +93,7 @@ public class Server extends Thread{
     @Override
     public void run() {
         try {
-            this.groups = XMLParse.getAllGroups();
-            System.out.println("GROU    " + groups);
+            groups = XMLParse.getAllGroups();
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
@@ -168,7 +168,6 @@ public class Server extends Thread{
         }
     }*/
     public void groupMessage(String groupName, Message message) {
-        System.out.println("GROUP MESSAGE " +groupName);
         ObjectOutputStream outToRecipient;
         for (ClientHandler client : loginHandlerArraylist) {
             if (loggedInUserHashMap.get(client).isMember(groupName)) {
@@ -193,14 +192,8 @@ public class Server extends Thread{
         }
     }
     public void privateMessage(String recipient, Message message) {
-        System.out.println("issa privet messaj");
         ObjectOutputStream outToRecipient;
         for (ClientHandler client : loginHandlerArraylist) {
-
-            System.out.println("D "+loggedInUserHashMap.get(client).getName());
-            System.out.println("E "+recipient);
-            System.out.println("F "+loggedInUserHashMap.get(client).getName().equalsIgnoreCase(recipient));
-
             if (loggedInUserHashMap.get(client).getName().equalsIgnoreCase(recipient)) {
                 outToRecipient = client.outToClient;
                 try {
