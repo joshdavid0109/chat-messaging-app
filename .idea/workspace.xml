@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="error handling sa pagcoconnect to server, atbp">
-      <change afterPath="$PROJECT_DIR$/res/appLogo.png" afterDir="false" />
+    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="offlineMessage working ulit,">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/gcUsers.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared_classes/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
     </list>
@@ -65,7 +62,7 @@
       <recent name="C:\Users\ADMIN\IdeaProjects\2022aaaa\res" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientMain">
+  <component name="RunManager" selected="Application.UserManagement_GUI">
     <configuration name="AddUserHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.AddUserHandler" />
       <module name="console" />
@@ -185,7 +182,7 @@
       <workItem from="1678183560711" duration="7530000" />
       <workItem from="1678281437128" duration="341000" />
       <workItem from="1678335309884" duration="9180000" />
-      <workItem from="1678351330692" duration="6297000" />
+      <workItem from="1678351330692" duration="8609000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -292,7 +289,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678355129419</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="offlineMessage working ulit,">
+      <created>1678357921844</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1678357921844</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,7 +330,8 @@
     <MESSAGE value="complete client gui overhaul, separated na guiframe + gui controller, somehow nag eerror ayusin ko after ko eat" />
     <MESSAGE value="di na nag eerror" />
     <MESSAGE value="error handling sa pagcoconnect to server, atbp" />
-    <option name="LAST_COMMIT_MESSAGE" value="error handling sa pagcoconnect to server, atbp" />
+    <MESSAGE value="offlineMessage working ulit," />
+    <option name="LAST_COMMIT_MESSAGE" value="offlineMessage working ulit," />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

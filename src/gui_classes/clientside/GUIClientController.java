@@ -110,8 +110,26 @@ public class GUIClientController implements ActionListener {
                         frame.appendMessage("[ERROR] user "+ recipient+" does not exist.");
                         break;
                     }
+                case "gm":
+                    /*String group = words[2].toLowerCase(Locale.ROOT);
+
+                    *//*System.out.println("A  "+Server.getRegisteredUserNames().toString());
+                    System.out.println("B  "+group);
+                    System.out.println("C  "+Server.getRegisteredUserNames().contains(group));*//*
+
+                    if(Server.getRegisteredUserNames().contains(group)){
+                        String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
+                        msg = new Message(user.getName(), group, messageContent);
+                        break;
+                    }
+                    else{
+                        msg = new Message(user.getName(), group, message);
+                        frame.appendMessage("[ERROR] user "+ group+" does not exist.");
+                        break;
+                    }*/
                 case "quit":
                     System.exit(0);
+
                 default:
                     msg = new Message("NOTHING");
                     //messagePane.setText(messagePane.getText()+"\n"+"[ERROR] error in parsing message -> command not recognized???");
