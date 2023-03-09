@@ -16,12 +16,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
 import java.io.*;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,7 +35,7 @@ public class Server extends Thread{
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     public static int port;
     static Scanner scanner = new Scanner(System.in);
-    static ServerSocket serverSocket;
+    public static ServerSocket serverSocket;
     private static ArrayList<String> userNames;
     public List<User> clients;
     private List<ClientHandler> clientsList;
@@ -115,13 +117,10 @@ public class Server extends Thread{
         auth:
         while(!validPort){
             try{
-                port = Integer.parseInt(JOptionPane.showInputDialog(frame, "Input port"));
+                port = Integer.parseInt(JOptionPane.showInputDialog(frame, "Input port", 0));
                 serverSocket = new ServerSocket(port);
                 validPort = true;
-            }
-            catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(frame, "Input a valid port");
-                System.out.println(e.getMessage());
+                UserManagement_GUI.portNumber.setText("Port: " + port);
             }
             catch(RuntimeException e){
                 System.out.println(e.getMessage());
@@ -156,6 +155,7 @@ public class Server extends Thread{
                 e.printStackTrace();
             }
         }//end run method
+
     private void populateGroupsMap() {
         groupsMap = new HashMap<>();
         for (Group group : groups) {
