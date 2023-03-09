@@ -6,6 +6,9 @@
         <Password>franz</Password>
         <status>offline</status>
         <BanStatus/>
+        <Groups>
+            <Group id="Member">REAL</Group>
+        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Joshua</name>
@@ -22,6 +25,9 @@
         <Password>kikoxcore</Password>
         <status>offline</status>
         <BanStatus/>
+        <Groups>
+            <Group id="Member">x</Group>
+        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>TEST</name>
@@ -30,6 +36,11 @@
         <Password>x</Password>
         <status>offline</status>
         <BanStatus/>
+        <Groups>
+            <Group id="Member">REAL</Group>
+            <Group id="Member">a</Group>
+            <Group id="Member">x</Group>
+        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Maervin</name>

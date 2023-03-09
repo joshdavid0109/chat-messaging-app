@@ -43,34 +43,7 @@ public class User implements Serializable {
     }
 
     public static void populateGroups(User user) throws ParserConfigurationException, SAXException, IOException, ParserConfigurationException, SAXException {
-        String fileName = "res/users.xml";
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(new File(fileName));
-        doc.getDocumentElement().normalize();
-
-        NodeList userList = doc.getElementsByTagName("User");
-
-        for (int i = 0; i < userList.getLength(); i++) {
-            Node userNode = userList.item(i);
-            if (userNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element userElement = (Element) userNode;
-                String name = userElement.getElementsByTagName("name").item(0).getTextContent();
-                if (name.equals(user.getName())) {
-                    NodeList groupNodes = userElement.getElementsByTagName("Group");
-                    List<Group> groups = new ArrayList<>();
-                    for (int j = 0; j < groupNodes.getLength(); j++) {
-                        Node groupNode = groupNodes.item(j);
-                        if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
-                            String group = groupNode.getTextContent();
-                            groups.add(new Group(group));
-                        }
-                    }
-                    user.setGroups(groups);
-                    break;
-                }
-            }
-        }
+        user.setGroups(XMLParse.getGroupsOfUser(user));
     }
 
     public void setGroups(List<Group> groups) {

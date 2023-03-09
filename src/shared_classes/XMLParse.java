@@ -49,6 +49,32 @@ public class XMLParse {
         }
     }
 
+    public static List<Group> getGroupsOfUser(User user) throws ParserConfigurationException, IOException, SAXException {
+        getUsersDoc();
+        usersDoc.getDocumentElement().normalize();
+        NodeList nodeList = usersDoc.getElementsByTagName("User");
+        List<Group> groups = new ArrayList<>();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node userNode = nodeList.item(i);
+            if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element userElement = (Element) userNode;
+                String name = userElement.getElementsByTagName("name").item(0).getTextContent();
+                if (name.equals(user.getName())) {
+                    NodeList groupNodes = userElement.getElementsByTagName("Group");
+                    groups = new ArrayList<>();
+                    for (int j = 0; j < groupNodes.getLength(); j++) {
+                        Node groupNode = groupNodes.item(j);
+                        if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
+                            String group = groupNode.getTextContent();
+                            groups.add(new Group(group));
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return groups;
+    }
 
 
     public User getUser(String userName) {
