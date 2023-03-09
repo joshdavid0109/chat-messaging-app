@@ -111,22 +111,25 @@ public class GUIClientController implements ActionListener {
                         break;
                     }
                 case "gm":
-                    /*String group = words[2].toLowerCase(Locale.ROOT);
+                    String group = words[2].toLowerCase(Locale.ROOT);
 
-                    *//*System.out.println("A  "+Server.getRegisteredUserNames().toString());
-                    System.out.println("B  "+group);
-                    System.out.println("C  "+Server.getRegisteredUserNames().contains(group));*//*
+                    System.out.println("G  "+Server.getGroups());
+                    System.out.println("H  "+group);
+                    System.out.println("I  "+Server.getGroups().contains(group));
 
-                    if(Server.getRegisteredUserNames().contains(group)){
+                    if(Server.getGroups().contains(group)){
+
+                        //gm REAL hello guys
+
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
-                        msg = new Message(user.getName(), group, messageContent);
+                        msg = new Message(user.getName(),"@"+group, messageContent);
                         break;
                     }
                     else{
-                        msg = new Message(user.getName(), group, message);
-                        frame.appendMessage("[ERROR] user "+ group+" does not exist.");
+                        msg = new Message(user.getName(),"@"+ group, message);
+                        frame.appendMessage("[ERROR] group "+ group+" does not exist.");
                         break;
-                    }*/
+                    }
                 case "quit":
                     System.exit(0);
 
@@ -182,6 +185,9 @@ public class GUIClientController implements ActionListener {
                         }
                         else if(msg.getRecipient().equals("TOALL")){
                             frame.appendMessage("[BROADCAST] "+msg.getSender()+": "+msg.getContent());
+                        }
+                        else if(msg.getRecipient().startsWith("@")){
+                            frame.appendMessage("[GROUP] "+msg.getSender()+": "+msg.getContent());
                         }
                         else{
                             frame.appendMessage("[PRIVATE] "+msg.getSender()+": "+msg.getContent());

@@ -80,7 +80,6 @@ public class UserManagement_GUI extends JFrame{
         portNumber.setForeground(white);
         portNumber.setBounds(610, 30, 175, 45);
 
-
         AtomicBoolean serverStatus = new AtomicBoolean(false); // false offline
                               // true online
 
@@ -253,8 +252,7 @@ public class UserManagement_GUI extends JFrame{
             }
         });
 
-
-        frameUM.add(portNumber);
+/*        frameUM.add(portNumber);*/
         frameUM.add(serverSwitch);
         frameUM.add(addUser);
         frameUM.add(deleteUser);

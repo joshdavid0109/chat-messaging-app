@@ -87,10 +87,19 @@ public class ClientHandler implements Runnable {
                     //debug statement
                     System.out.println("SENDER: " + message.getSender() + " MESSAGE: " + message.getContent() + " RECIPIENT: " + message.getRecipient());
 
+
+                    //broadcast msg
                     if (message.getRecipient().equals("TOALL")) {
                         System.out.println("issa broadcast");
                         server.broadcastMessage(message);
                     }
+
+                    //group msg
+                    else if(message.getRecipient().startsWith("@")){
+                        server.groupMessage(message.getRecipient().replace("@",""), message);
+                    }
+
+                    //private msg
                     else {
                         server.privateMessage(message.getRecipient(), message);
                     }

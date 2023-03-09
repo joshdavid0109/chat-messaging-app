@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 
@@ -73,6 +74,35 @@ public class XMLParse {
                 }
             }
         }
+        return groups;
+    }
+    public static ArrayList<String> getAllGroups() throws ParserConfigurationException, SAXException, IOException {
+        ArrayList<String> groups = new ArrayList<>();
+
+        String fileName = "res/users.xml";
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(new File(fileName));
+        doc.getDocumentElement().normalize();
+
+        NodeList userList = doc.getElementsByTagName("User");
+        for (int i = 0; i < userList.getLength(); i++) {
+            Node userNode = userList.item(i);
+            if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element userElement = (Element) userNode;
+                NodeList groupNodes = userElement.getElementsByTagName("Group");
+                for (int j = 0; j < groupNodes.getLength(); j++) {
+                    Node groupNode = groupNodes.item(j);
+                    if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
+                        String group = groupNode.getTextContent().toLowerCase(Locale.ROOT);
+                        if (!groups.contains(group)) {
+                            groups.add(group);
+                        }
+                    }
+                }
+            }
+        }
+
         return groups;
     }
 
