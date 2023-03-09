@@ -34,7 +34,7 @@
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groups>
             <Group id="Member">REAL</Group>
