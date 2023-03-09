@@ -342,7 +342,7 @@ public class GUIClientFrame extends JFrame {
             // Sort contacts alphabetically
             Arrays.sort(contacts);
         } catch (SAXException | IOException | ParserConfigurationException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
         return contacts;
     }

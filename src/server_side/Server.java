@@ -39,7 +39,7 @@ public class Server extends Thread{
     private static ArrayList<String> userNames;
     public List<User> clients;
     private List<ClientHandler> clientsList;
-    private List<Group> groups = new ArrayList<>();
+    public static ArrayList<String> groups;
     public Set<String> groupNames;
     static XMLParse xmlParse = new XMLParse("res/messages.xml");
     public static List<User> registeredUsersList = new ArrayList<>(XMLParse.getUserList());
@@ -53,12 +53,6 @@ public class Server extends Thread{
         //arraylist ng mgauser
         this.clients = new ArrayList<>();
         this.run();
-
-        try {
-            loadGroupsFromXml();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
     public Server(){
     }
@@ -76,26 +70,12 @@ public class Server extends Thread{
         return userNames;
     }
 
-    private void loadGroupsFromXml() throws Exception {
-        File file = new File("res/users.xml");
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(file);
-        doc.getDocumentElement().normalize();
-
-        NodeList nodeList = doc.getElementsByTagName("Group");
-        groupNames = new HashSet<>();
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element) node;
-                String groupName = element.getTextContent().trim();
-                groupNames.add(groupName);
-            }
-        }
-
-        for (String groupName : groupNames) {
-            groups.add(new Group(groupName));
+    public static List<String> getGroups() {
+        try {
+            return XMLParse.getAllGroups();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -111,6 +91,12 @@ public class Server extends Thread{
      */
     @Override
     public void run() {
+        try {
+            this.groups = XMLParse.getAllGroups();
+            System.out.println("GROU    " + groups);
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
         groupsMap = new HashMap<>();
         clientsList = new ArrayList<>();
         boolean validPort = false;
@@ -146,7 +132,6 @@ public class Server extends Thread{
         }
         JOptionPane.showMessageDialog(frame, "Server created at port: "+port);
         ExecutorService executorService = Executors.newFixedThreadPool(10);
-        populateGroupsMap();
         try {
             while (true) {
                 try {
@@ -168,7 +153,7 @@ public class Server extends Thread{
             }
         }//end run method
 
-    private void populateGroupsMap() {
+    /*private void populateGroupsMap() {
         groupsMap = new HashMap<>();
         for (Group group : groups) {
             String groupName = group.getName();
@@ -181,14 +166,11 @@ public class Server extends Thread{
             }
             groupsMap.put(groupName, members);
         }
-    }
-    public void groupMessage(Message message, String groupName) {
-        System.out.println("GROUP MESSAGE");
+    }*/
+    public void groupMessage(String groupName, Message message) {
+        System.out.println("GROUP MESSAGE " +groupName);
         ObjectOutputStream outToRecipient;
         for (ClientHandler client : loginHandlerArraylist) {
-            /*System.out.println("A "+loggedInUserHashMap.get(client).isMember(groupName));
-            System.out.println("B "+loggedInUserHashMap.get(client).getGroups());
-            System.out.println("C "+getGroupByName(groupName));*/
             if (loggedInUserHashMap.get(client).isMember(groupName)) {
                 outToRecipient = client.outToClient;
                 try {
@@ -197,7 +179,6 @@ public class Server extends Thread{
                 } catch (IOException e) {
                     System.err.println("Error sending message to client: " + e);
                 }
-                return;
             }
         }
     }
@@ -344,13 +325,12 @@ public class Server extends Thread{
         return document;
     }
 
-
-    public Group getGroupByName(String groupName) {
+    /*public Group getGroupByName(String groupName) {
         for (Group group : groups) {
             if (group.getName().equals(groupName)) {
                 return group;
             }
         }
         return null;
-    }
+    }*/
 }
