@@ -96,7 +96,6 @@ public class ClientHandler implements Runnable {
                     }
                     //outToClient.writeObject(message);
                 } else if (obj instanceof LoginCredentials loginCredentials) {
-
                     DocumentBuilderFactory documentBuilderFactory = null;
                     DocumentBuilder documentBuilder = null;
                     Document document = null;
@@ -142,17 +141,18 @@ public class ClientHandler implements Runnable {
                         exception.printStackTrace();
                     }
                 } // TODO: 04/03/2023 RECEIVE XML FILE FROM CLIENT THEN PARSE TO CURRENT XML FILE (PAG MAGKAIBANG MACHINE GAMIT)
-                /*else if (obj instanceof File f) {
+                else if (obj instanceof File f) {
                     System.out.println("File ito");
 
                     try {
-
+                        File file=new File("res/users.xml");
+                        replaceContent(f, file);
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                }*/
+                }
             }
         } catch (IOException e) {
             System.err.println("Error handling client: " + e);
@@ -179,6 +179,30 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void replaceContent(File f, File file) throws IOException {
+        FileInputStream in = new FileInputStream(f);
+        FileOutputStream out = new FileOutputStream(file);
+        try {
+
+
+            int c;
+
+            while ((c = in.read()) !=-1) {
+                out.write(c);
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (in!=null) {
+                in.close();
+            } if (out!=null) {
+                out.close();
+            }
+        }
+        System.out.println("file coopine");
     }
 
     /**

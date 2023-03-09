@@ -34,13 +34,15 @@ public class LoginGUIForm extends JDialog implements Runnable{
     private JLabel passwordLabel;
     private int result;
     private User u;
+    private File file;
 
     public static final int OK = 1;
     public static final int CANCEL = 1;
 
 
-    public LoginGUIForm(JFrame parent) {
+    public LoginGUIForm(JFrame parent, File file) {
         super(parent, "Login", true);
+        this.file = file;
 
         showPassword.addItemListener(new ItemListener() {
             @Override
@@ -63,7 +65,7 @@ public class LoginGUIForm extends JDialog implements Runnable{
                 NodeList nodelist = null;
                 try {
                     documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                    document = documentBuilder.parse("res/users.xml");
+                    document = documentBuilder.parse(file);
                    nodelist = document.getElementsByTagName("User");
                 } catch (ParserConfigurationException | IOException | SAXException ex) {
                     throw new RuntimeException(ex);
@@ -79,11 +81,22 @@ public class LoginGUIForm extends JDialog implements Runnable{
                             if (user.getStatus().equals("online")) {
                                 JOptionPane.showMessageDialog(panel, "User is currently logged in on another device.");
                                 break;
-                            }
+                            } else {
+                                for(int i =0; i < nodelist.getLength();i++) {
+                                    element = (Element) nodelist.item(i);
+                                    String uname = element.getElementsByTagName("Username").item(0).getTextContent();
+                                    String pass = element.getElementsByTagName("Password").item(0).getTextContent();
+                                    if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
+                                        element.getElementsByTagName("status").item(0).setTextContent("online");
+                                        Server.updateXML(nodelist, document);
+                                        break;
+                                    }
+                                }
                                 u = user;
                                 result = OK;
                                 dispose();
                                 break;
+                            }
                         } else {
                             //user exists pero mali password
                             JOptionPane.showMessageDialog(panel, "Incorrect password.");
@@ -107,6 +120,10 @@ public class LoginGUIForm extends JDialog implements Runnable{
         this.setVisible(true);
 
     }
+
+    public LoginGUIForm(Object parent) {
+    }
+
     public String getUsername() {
         return usernameField.getText();
     }

@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -42,17 +43,21 @@ public class GUIClientController implements ActionListener {
 
             boolean loggedIn = false;
             while (!loggedIn) {
+
+                Object obj = input.readObject();
                 // Prompt the user to enter their username and password
                 System.out.println("login ka na");
-                LoginGUIForm log = new LoginGUIForm(frame);
+                if (obj instanceof File f) {
+                    LoginGUIForm log = new LoginGUIForm(frame, f);
+
 
                 // Create a login message and send it to the server
                 LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
                 output.writeObject(loginMessage);
-                SetOnline(loginMessage);
-
+                output.writeObject(new File("res/users.xml"));
+            }
                 // Wait for the server to respond with a User object
-                Object obj = input.readObject();
+
                 if (obj instanceof User) {
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: " + user.getName());
