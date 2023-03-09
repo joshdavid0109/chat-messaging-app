@@ -5,9 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import server_side.Server;
 
-import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -143,6 +141,7 @@ public class XMLParse {
             e.printStackTrace();
         }
     }
+
     public static List<String> getAllContactNames() {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();
@@ -154,9 +153,10 @@ public class XMLParse {
             element = (Element) nodeList.item(i);
             contactNames.add(element.getElementsByTagName("name").item(0).getTextContent());
         }
-
         return contactNames;
     }
+
+
     public static List<User> getUserList() {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();
