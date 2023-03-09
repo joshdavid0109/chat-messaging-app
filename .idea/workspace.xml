@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="error handling sa pagcoconnect to server, atbp">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
-    </list>
+    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,7 +55,7 @@
       <recent name="C:\Users\ADMIN\IdeaProjects\2022aaaa\res" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.UserManagement_GUI">
+  <component name="RunManager" selected="Application.ClientMain">
     <configuration name="AddUserHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.AddUserHandler" />
       <module name="console" />
@@ -289,7 +281,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678355129419</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="trial for multiple machine connection">
+      <created>1678366673790</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1678366673790</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -335,7 +334,8 @@
     <MESSAGE value="complete client gui overhaul, separated na guiframe + gui controller, somehow nag eerror ayusin ko after ko eat" />
     <MESSAGE value="di na nag eerror" />
     <MESSAGE value="error handling sa pagcoconnect to server, atbp" />
-    <option name="LAST_COMMIT_MESSAGE" value="error handling sa pagcoconnect to server, atbp" />
+    <MESSAGE value="trial for multiple machine connection" />
+    <option name="LAST_COMMIT_MESSAGE" value="trial for multiple machine connection" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

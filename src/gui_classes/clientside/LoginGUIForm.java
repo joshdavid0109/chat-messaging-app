@@ -80,6 +80,10 @@ public class LoginGUIForm extends JDialog implements Runnable{
                                 JOptionPane.showMessageDialog(panel, "User is currently logged in on another device.");
                                 break;
                             }
+                                u = user;
+                                result = OK;
+                                dispose();
+                                break;
                         } else {
                             //user exists pero mali password
                             JOptionPane.showMessageDialog(panel, "Incorrect password.");
