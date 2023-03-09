@@ -7,16 +7,12 @@
     <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="di na nag eerror">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/BookmarkContacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/BookmarkContacts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/ServerMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/errorMessage.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +75,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BookmarkContacts" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.BookmarkContacts" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ClientMain" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.ClientMain" />
       <module name="console" />
@@ -118,19 +127,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserManagement_GUI (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
-      <module name="console" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="server_side.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="UserManagement_GUI" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
       <module name="console" />
@@ -146,19 +142,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.UserManagement_GUI" />
+      <item itemvalue="Application.BookmarkContacts" />
       <item itemvalue="Application.LoginGUIForm" />
       <item itemvalue="Application.AddUserHandler" />
       <item itemvalue="Application.GUIClientController" />
-      <item itemvalue="Application.UserManagement_GUI (2)" />
       <item itemvalue="Application.ClientMain" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ClientMain" />
+        <item itemvalue="Application.BookmarkContacts" />
         <item itemvalue="Application.AddUserHandler" />
         <item itemvalue="Application.GUIClientController" />
         <item itemvalue="Application.LoginGUIForm" />
-        <item itemvalue="Application.UserManagement_GUI (2)" />
       </list>
     </recent_temporary>
   </component>
@@ -296,7 +292,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -339,7 +347,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
           <line>157</line>
-          <properties>
+          <properties class="server_side.UserManagement_GUI">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>

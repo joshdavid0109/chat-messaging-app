@@ -116,10 +116,23 @@ public class Server extends Thread{
         boolean validPort = false;
         while(!validPort){
             try{
-                port = Integer.parseInt(JOptionPane.showInputDialog(frame, "Input port", 0));
-                serverSocket = new ServerSocket(port);
-                validPort = true;
-                UserManagement_GUI.portNumber.setText("Port: " + port);
+                    JTextField field = new JTextField();
+                    JFrame f = new JFrame();
+                port = JOptionPane.showOptionDialog(f, field,
+                        "Input port connection", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, new Object[] {"Yes", "Cancel"}, JOptionPane.YES_OPTION);
+
+                if (port== JOptionPane.YES_OPTION) {
+                    port = Integer.parseInt(field.getText());
+                    serverSocket = new ServerSocket(port);
+                    validPort = true;
+                    UserManagement_GUI.portNumber.setText("Port: " + port);
+                } else if (port == JOptionPane.NO_OPTION) {
+                    validPort=true;
+                } else if (port == JOptionPane.CLOSED_OPTION) {
+                    validPort=true;
+                }
+
             }
             catch(RuntimeException e){
                 System.out.println(e.getMessage());

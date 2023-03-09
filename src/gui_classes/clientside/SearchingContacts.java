@@ -83,6 +83,7 @@ public class SearchingContacts extends JFrame{
 
         pack();
         setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     private ArrayList<String> findSimilarNames(String input) {

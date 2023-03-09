@@ -1,6 +1,7 @@
 package gui_classes.clientside;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import org.w3c.dom.Document;
@@ -27,7 +29,7 @@ public class GUIClientFrame extends JFrame {
     private GUIClientController controller;
     public JList<String> contactList;
     public ArrayList<String> bookmarkedContacts = new ArrayList<>();
-    public  JLabel bookmarkedContactsLabel;
+    public  JLabel bookmarkedContactsLabel = new JLabel();
     private JTextArea messagePane;
     private JTextArea userPane;
     private JTextField inputField;
@@ -80,12 +82,12 @@ public class GUIClientFrame extends JFrame {
         broadCast.setFont(new Font("Arial", Font.BOLD, 18));
         broadCast.setBounds(100, 0, 200, 75);
 
-        JLabel currentUserName = new JLabel("mag log in ka muna");
+        JLabel currentUserName = new JLabel();
         currentUserName.setForeground(Color.WHITE);
         currentUserName.setFont(new Font("Arial", Font.BOLD, 18));
         currentUserName.setBounds(30, 0, 200, 75);
 
-        JLabel currentUserStatus = new JLabel(user.getStatus());
+        JLabel currentUserStatus = new JLabel();
         currentUserStatus.setForeground(Color.GREEN);
         currentUserStatus.setFont(new Font("Arial", Font.PLAIN, 18));
         currentUserStatus.setBounds(270, 0, 200, 75);
@@ -106,7 +108,11 @@ public class GUIClientFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedContact = "";
-                if (selectedContact.equals(contactList.getSelectedValue())) {
+                if (contactList.getSelectedValue() != null) {
+                    System.out.println(contactList.getSelectedValue());
+
+
+
                     if (bookmarkedContacts.contains(selectedContact)) {
                         bookmarkedContacts.remove(selectedContact);
                         bookmarkButton.setText("Bookmark");
@@ -116,6 +122,7 @@ public class GUIClientFrame extends JFrame {
                     }
                     updateBookmarkedContactsLabel();
                     updateContactList(getAllContacts());
+                    new ListRenderer();
                 }
             }
         });
@@ -134,6 +141,7 @@ public class GUIClientFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         headerName.setText(user.getUsername());
         currentUserName.setText(user.getName());
+        currentUserStatus.setText(user.getStatus());
 
         JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
         scrollPaneListMembers.setVisible(true);
@@ -317,6 +325,20 @@ public class GUIClientFrame extends JFrame {
         userPane.setText("");
         for (String user : users) {
             userPane.append(user + "\n");
+        }
+    }
+
+    private static class ListRenderer extends DefaultListCellRenderer {
+        public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+            String val = (String) list.getSelectedValue();
+             if (val.contains("online"))  {
+                c.setBackground( Color.decode("#5DBB63") );
+            }
+            else {
+                c.setBackground( Color.white);
+            }
+            return c;
         }
     }
 
