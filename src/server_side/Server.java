@@ -112,7 +112,6 @@ public class Server extends Thread{
         groupsMap = new HashMap<>();
         clientsList = new ArrayList<>();
         boolean validPort = false;
-        auth:
         while(!validPort){
             try{
                 port = Integer.parseInt(JOptionPane.showInputDialog(frame, "Input port"));

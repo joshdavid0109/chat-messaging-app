@@ -61,10 +61,10 @@ public class ClientHandler implements Runnable {
     }
 
     public ClientHandler(Server s, Socket clientSocket, ObjectOutputStream outToClient) {
-        this.server = s;
-        this.outToClient = outToClient;
-        this.clientSocket = clientSocket;
         try {
+            this.server = s;
+            this.outToClient = outToClient;
+            this.clientSocket = clientSocket;
             this.userInput = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();

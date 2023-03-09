@@ -144,10 +144,9 @@ public class GUIClientController implements ActionListener, Runnable {
     public class ServerMessageListener extends Thread {
         @Override
         public void run() {
-            System.out.println("server listener started!!");
             try {
                 while (input != null) {
-                    System.out.println(input.readObject());
+
                     Object obj = input.readObject();
                     if (obj instanceof Message) {
                         // Handle incoming message
@@ -176,6 +175,7 @@ public class GUIClientController implements ActionListener, Runnable {
                     }*/
                 }
             } catch (IOException | ClassNotFoundException e) {
+                System.out.println(e.getMessage());
                 e.printStackTrace();
             }
         }

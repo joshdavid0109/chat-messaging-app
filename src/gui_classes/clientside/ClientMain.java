@@ -35,8 +35,8 @@ public class ClientMain {
             // Create a new instance of the controller
             GUIClientController controller = null;
             controller = new GUIClientController(server);
-            GUIClientController.ServerMessageListener listener = controller.new ServerMessageListener();
-            listener.start();
+            /*GUIClientController.ServerMessageListener listener = controller.new ServerMessageListener();
+            listener.start();*/
 
             // Show the frame
             controller.showFrame();

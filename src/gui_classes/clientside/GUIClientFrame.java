@@ -38,13 +38,6 @@ public class GUIClientFrame extends JFrame {
     public static JButton bookmarkButton;
     private JButton searchButton;
     User user;
-    {
-        try {
-            user = new User("69", "APPTEST","69", "@APPTEST", "TESTPASS", "APPSTATUSTEST", "TEST");
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
-        }
-    }
 
     public GUIClientFrame(GUIClientController controller, User user) {
         super("Chat Client");
