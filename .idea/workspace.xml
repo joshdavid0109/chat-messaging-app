@@ -8,7 +8,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,9 +51,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="WebServerToolWindowFactoryState" value="false" />
-  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;
+  }
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="server_side" />
@@ -180,6 +185,8 @@
       <workItem from="1678281437128" duration="341000" />
       <workItem from="1678335309884" duration="9180000" />
       <workItem from="1678351330692" duration="6297000" />
+      <workItem from="1678369461206" duration="24000" />
+      <workItem from="1678369619905" duration="1353000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -300,7 +307,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678367041597</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="update xml file on server when logged in from another machine">
+      <created>1678369445420</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1678369445420</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -347,7 +361,8 @@
     <MESSAGE value="di na nag eerror" />
     <MESSAGE value="error handling sa pagcoconnect to server, atbp" />
     <MESSAGE value="trial for multiple machine connection" />
-    <option name="LAST_COMMIT_MESSAGE" value="trial for multiple machine connection" />
+    <MESSAGE value="update xml file on server when logged in from another machine" />
+    <option name="LAST_COMMIT_MESSAGE" value="update xml file on server when logged in from another machine" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -358,7 +373,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
-          <line>267</line>
+          <line>265</line>
           <properties class="server_side.UserManagement_GUI">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -367,7 +382,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
-          <line>163</line>
+          <line>162</line>
           <properties class="server_side.UserManagement_GUI">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -376,7 +391,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java</url>
-          <line>60</line>
+          <line>58</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

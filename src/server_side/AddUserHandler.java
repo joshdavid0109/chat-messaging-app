@@ -37,7 +37,7 @@ public class AddUserHandler extends JDialog implements Runnable{
 
     public AddUserHandler(JFrame parent) {
         super(parent, "Login", true);
-        XMLParse parse = new XMLParse("users.xml");
+        XMLParse parse = new XMLParse("res/users.xml");
 
       /*  showPassCB1.addItemListener(new ItemListener() {
             @Override

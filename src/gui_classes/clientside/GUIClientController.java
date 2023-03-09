@@ -44,20 +44,19 @@ public class GUIClientController implements ActionListener {
             boolean loggedIn = false;
             while (!loggedIn) {
 
-                Object obj = input.readObject();
+
                 // Prompt the user to enter their username and password
                 System.out.println("login ka na");
-                if (obj instanceof File f) {
-                    LoginGUIForm log = new LoginGUIForm(frame, f);
+                    LoginGUIForm log = new LoginGUIForm(frame);
 
 
                 // Create a login message and send it to the server
                 LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
                 output.writeObject(loginMessage);
-                output.writeObject(new File("res/users.xml"));
-            }
+                //ouput.writeObject(file);
                 // Wait for the server to respond with a User object
 
+                Object obj = input.readObject();
                 if (obj instanceof User) {
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: " + user.getName());
@@ -85,24 +84,6 @@ public class GUIClientController implements ActionListener {
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                Document document = documentBuilder.parse("res/users.xml");
-
-                NodeList users = document.getElementsByTagName("User");
-
-                for (int i = 0; i < users.getLength(); i++) {
-                    Element element = (Element) users.item(i);
-
-                    element.getElementsByTagName("status").item(0).setTextContent("offline");
-
-                    Server.updateXML(users, document);
-                }
-            } catch (IOException | ParserConfigurationException | SAXException e) {
-                e.printStackTrace();
-            }
         }
     }
 

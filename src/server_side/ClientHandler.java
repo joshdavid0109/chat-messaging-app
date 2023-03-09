@@ -71,6 +71,7 @@ public class ClientHandler implements Runnable {
     //listen to messages from client
     public void run() {
         try {
+//            outToClient.writeObject(usersFile);
             while (userInput != null) {
                 Object obj = new Object();
                 try {
@@ -150,7 +151,7 @@ public class ClientHandler implements Runnable {
                         exception.printStackTrace();
                     }
                 } // TODO: 04/03/2023 RECEIVE XML FILE FROM CLIENT THEN PARSE TO CURRENT XML FILE (PAG MAGKAIBANG MACHINE GAMIT)
-                else if (obj instanceof File f) {
+                /*else if (obj instanceof File f) {
                     System.out.println("File ito");
 
                     try {
@@ -161,7 +162,7 @@ public class ClientHandler implements Runnable {
                         e.printStackTrace();
                     }
 
-                }
+                }*/
             }
         } catch (IOException e) {
             System.err.println("Error handling client: " + e);
@@ -211,7 +212,7 @@ public class ClientHandler implements Runnable {
                 out.close();
             }
         }
-        System.out.println("file coopine");
+        System.out.println("file copied");
     }
 
     /**

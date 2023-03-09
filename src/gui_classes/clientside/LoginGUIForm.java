@@ -40,10 +40,8 @@ public class LoginGUIForm extends JDialog implements Runnable{
     public static final int CANCEL = 1;
 
 
-    public LoginGUIForm(JFrame parent, File file) {
+    public LoginGUIForm(JFrame parent ) {
         super(parent, "Login", true);
-        this.file = file;
-
         showPassword.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -65,7 +63,7 @@ public class LoginGUIForm extends JDialog implements Runnable{
                 NodeList nodelist = null;
                 try {
                     documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                    document = documentBuilder.parse(file);
+                    document = documentBuilder.parse("res/users.xml");
                    nodelist = document.getElementsByTagName("User");
                 } catch (ParserConfigurationException | IOException | SAXException ex) {
                     throw new RuntimeException(ex);

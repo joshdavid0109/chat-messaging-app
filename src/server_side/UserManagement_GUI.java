@@ -258,7 +258,7 @@ public class UserManagement_GUI extends JFrame{
             }
         });
 
-/*        frameUM.add(portNumber);*/
+        frameUM.add(portNumber);
         frameUM.add(serverSwitch);
         frameUM.add(addUser);
         frameUM.add(deleteUser);
