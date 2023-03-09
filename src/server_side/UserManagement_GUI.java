@@ -15,11 +15,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import static java.awt.Color.*;
 
 public class UserManagement_GUI extends JFrame{
     private User user;
@@ -29,6 +32,7 @@ public class UserManagement_GUI extends JFrame{
     private JTable table;
     private int port;
     private XMLParse xmlParse;
+    public static JLabel portNumber;
 
     public UserManagement_GUI(/*User user*/) { this.user = user; }
 
@@ -64,37 +68,76 @@ public class UserManagement_GUI extends JFrame{
         frameUM.setResizable(false);
         frameUM.setTitle("Budget Discord User Management");
         frameUM.setSize(755, 500);
-        frameUM.getContentPane().setBackground(Color.decode("#3e444f"));
+        frameUM.getContentPane().setBackground(decode("#3e444f"));
 
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - frameUM.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - frameUM.getHeight()) / 2);
         frameUM.setLocation(x, y);
 
-        JButton startServer = new JButton("Start Server");
-        startServer.setBounds(570, 25, 150, 45);
-        startServer.setBorder(BorderFactory.createEtchedBorder(000000));
-        startServer.setForeground(Color.black);
-        startServer.setBackground(Color.decode("#149639"));
+
+        portNumber = new JLabel("Port: ");
+        portNumber.setForeground(white);
+        portNumber.setBounds(610, 30, 175, 45);
+
 
         AtomicBoolean serverStatus = new AtomicBoolean(false); // false offline
                               // true online
 
-        startServer.addActionListener(new ActionListener() {
+        AtomicReference<Server> server = null;
+        JSplitPane serverSwitch = new JSplitPane();
+        serverSwitch.setDividerSize(0);
+        serverSwitch.setResizeWeight(0.5);
+
+        //start button
+        serverSwitch.setLeftComponent(new JButton("Start"));
+        serverSwitch.getLeftComponent().setEnabled(true);
+        serverSwitch.getLeftComponent().setBackground(decode("#149639"));
+        JButton leftComponent = (JButton) serverSwitch.getLeftComponent();
+        leftComponent.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent event) {
+            public void actionPerformed(ActionEvent e) {
                 if (!serverStatus.get()) {
+                    serverStatus.set(true);
+                    serverSwitch.getRightComponent().setEnabled(true);
+                    serverSwitch.getRightComponent().setBackground(decode("#BC544B"));
                     new Thread(() -> {
-                        Server server = new Server(port, frameUM);
-                        serverStatus.set(true);
+                        server.set(new Server(port, frameUM));
+
                     }).start();
-                }
+
+                } else
+                    JOptionPane.showMessageDialog(null, "Server is already running at port " + Server.port,
+                            "Server Status", JOptionPane.ERROR_MESSAGE, null);
             }
         });
 
+        //stop button
+        serverSwitch.setRightComponent(new JButton("Stop"));
+        serverSwitch.getRightComponent().setBackground(Color.gray);
+        serverSwitch.getRightComponent().setEnabled(false);
+        JButton rightComponent = (JButton)serverSwitch.getRightComponent();
+        rightComponent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Server.serverSocket.close();
+                    serverStatus.set(false);
+                    serverSwitch.getRightComponent().setEnabled(false);
+                    rightComponent.setBackground(gray);
+                    portNumber.setText("Port: ");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+
+        serverSwitch.setBounds(557, 80, 175, 45);
+
 
         JButton addUser = new JButton("Add User");
-        addUser.setBounds(570, 80, 150, 45);
+        addUser.setBounds(570, 130, 150, 45);
         addUser.setBorder(BorderFactory.createEtchedBorder(000000));
         addUser.setForeground(Color.black);
         addUser.setBackground(Color.WHITE);
@@ -107,7 +150,7 @@ public class UserManagement_GUI extends JFrame{
         });
 
         JButton deleteUser = new JButton("Delete User");
-        deleteUser.setBounds(570, 135, 150, 45);
+        deleteUser.setBounds(570, 180, 150, 45);
         deleteUser.setBorder(BorderFactory.createEtchedBorder(000000));
         deleteUser.setForeground(Color.black);
         deleteUser.setBackground(Color.WHITE);
@@ -117,7 +160,7 @@ public class UserManagement_GUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 Object [] options = {"Yes", "No"};
                 System.out.println(table.getSelectedRow());
-                if (table.getSelectedRow() ==1){
+                if (table.getSelectedRow() ==-1){
                     JOptionPane.showMessageDialog(null, "Select a row at the table to delete.", "User Deletion", JOptionPane.ERROR_MESSAGE, null);
                     return;
                 }
@@ -141,16 +184,16 @@ public class UserManagement_GUI extends JFrame{
         });
 
         JButton banUser = new JButton("Ban User");
-        banUser.setBounds(570, 190, 150, 45);
+        banUser.setBounds(570, 230, 150, 45);
         banUser.setBorder(BorderFactory.createEtchedBorder(000000));
         banUser.setForeground(Color.black);
-        banUser.setBackground(Color.decode("#cc4949"));
+        banUser.setBackground(decode("#cc4949"));
 
         banUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(table.getSelectedRow());
-                if (table.getSelectedRow() ==1){
+                if (table.getSelectedRow() ==-1){
                     JOptionPane.showMessageDialog(null, "Select a row at the table to ban.", "User ban", JOptionPane.ERROR_MESSAGE, null);
                 }
                 else{
@@ -168,14 +211,14 @@ public class UserManagement_GUI extends JFrame{
         });
 
         JButton unbanUser = new JButton("Unban User");
-        unbanUser.setBounds(570, 245, 150, 45);
+        unbanUser.setBounds(570, 280, 150, 45);
         unbanUser.setBorder(BorderFactory.createEtchedBorder(000000));
         unbanUser.setForeground(Color.black);
-        unbanUser.setBackground(Color.decode("#c2b225"));
+        unbanUser.setBackground(decode("#c2b225"));
         unbanUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (table.getSelectedRow() ==1){
+                if (table.getSelectedRow() ==-1){
                     JOptionPane.showMessageDialog(null, "Select a row at the table to unban.", "User unban", JOptionPane.ERROR_MESSAGE, null);
                 }
                 else{
@@ -196,7 +239,7 @@ public class UserManagement_GUI extends JFrame{
         refresh.setBounds(570, 400, 150, 45);
         refresh.setBorder(BorderFactory.createEtchedBorder(000000));
         refresh.setForeground(Color.black);
-        refresh.setBackground(Color.decode("#FF7F50"));
+        refresh.setBackground(decode("#FF7F50"));
 
         refresh.addActionListener(new ActionListener() {
             @Override
@@ -211,7 +254,8 @@ public class UserManagement_GUI extends JFrame{
         });
 
 
-        frameUM.add(startServer);
+        frameUM.add(portNumber);
+        frameUM.add(serverSwitch);
         frameUM.add(addUser);
         frameUM.add(deleteUser);
         frameUM.add(banUser);
@@ -228,13 +272,8 @@ public class UserManagement_GUI extends JFrame{
     }
 
     public void populateList() {
-//        Server.getRegisteredUsers();
 
-        Server.updateUsersList();
-
-
-//            list1.setListData(Server.registeredUsersList.toArray(new User[0]));
-
+        Server.updateUsersList(); // update list of users in case there are changes
 
         String[]  columnHeaders = new String[] {
                 "Name", "Username", "Status", "Ban Status"};
@@ -260,6 +299,7 @@ public class UserManagement_GUI extends JFrame{
             i++;
         }
 
+        //Add data at column headers to table
         table = new JTable(userData, columnHeaders);
         changeTable(table,2);
         table.setRowHeight(30);

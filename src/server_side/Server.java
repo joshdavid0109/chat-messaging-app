@@ -16,12 +16,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
 import java.io.*;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,7 +35,7 @@ public class Server extends Thread{
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     public static int port;
     static Scanner scanner = new Scanner(System.in);
-    static ServerSocket serverSocket;
+    public static ServerSocket serverSocket;
     private static ArrayList<String> userNames;
     public List<User> clients;
     private List<ClientHandler> clientsList;
@@ -114,13 +116,23 @@ public class Server extends Thread{
         boolean validPort = false;
         while(!validPort){
             try{
-                port = Integer.parseInt(JOptionPane.showInputDialog(frame, "Input port"));
-                serverSocket = new ServerSocket(port);
-                validPort = true;
-            }
-            catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(frame, "Input a valid port");
-                System.out.println(e.getMessage());
+                    JTextField field = new JTextField();
+                    JFrame f = new JFrame();
+                port = JOptionPane.showOptionDialog(f, field,
+                        "Input port connection", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, new Object[] {"Yes", "Cancel"}, JOptionPane.YES_OPTION);
+
+                if (port== JOptionPane.YES_OPTION) {
+                    port = Integer.parseInt(field.getText());
+                    serverSocket = new ServerSocket(port);
+                    validPort = true;
+                    UserManagement_GUI.portNumber.setText("Port: " + port);
+                } else if (port == JOptionPane.NO_OPTION) {
+                    validPort=true;
+                } else if (port == JOptionPane.CLOSED_OPTION) {
+                    validPort=true;
+                }
+
             }
             catch(RuntimeException e){
                 System.out.println(e.getMessage());
@@ -155,6 +167,7 @@ public class Server extends Thread{
                 e.printStackTrace();
             }
         }//end run method
+
     private void populateGroupsMap() {
         groupsMap = new HashMap<>();
         for (Group group : groups) {

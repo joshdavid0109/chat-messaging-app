@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.Book;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,12 +22,21 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class BookmarkContacts extends JPanel {
-    private final ArrayList<String> bookmarkedContacts;
-    private final JList<String> contactList;
-    private final JLabel bookmarkedContactsLabel;
+public class BookmarkContacts extends JPanel implements Runnable{
+    private ArrayList<String> bookmarkedContacts;
+    private JList<String> contactList;
+    private JLabel bookmarkedContactsLabel;
 
-    public BookmarkContacts() {
+    public static void main(String[] args) {
+        BookmarkContacts bookmarks = new gui_classes.clientside.BookmarkContacts();
+        JFrame frame = new JFrame("Contacts");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 400);
+        frame.add(bookmarks);
+        frame.setVisible(true);
+    }
+
+    public void run() {
         bookmarkedContacts = new ArrayList<>();
         contactList = new JList<>();
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
