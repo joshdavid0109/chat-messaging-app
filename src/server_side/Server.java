@@ -169,18 +169,23 @@ public class Server extends Thread{
     }*/
     public void groupMessage(String groupName, Message message) {
         ObjectOutputStream outToRecipient;
+        HashMap<ClientHandler, Boolean> sentToClientMap = new HashMap<>();
         for (ClientHandler client : loginHandlerArraylist) {
             if (loggedInUserHashMap.get(client).isMember(groupName)) {
                 outToRecipient = client.outToClient;
                 try {
-                    outToRecipient.writeObject(message);
-                    outToRecipient.flush();
+                    if (!sentToClientMap.containsKey(client)) {
+                        outToRecipient.writeObject(message);
+                        outToRecipient.flush();
+                        sentToClientMap.put(client, true);
+                    }
                 } catch (IOException e) {
                     System.err.println("Error sending message to client: " + e);
                 }
             }
         }
     }
+
     public void broadcastMessage(Message message) {
         for (ClientHandler client : clientsList) {
             try {
