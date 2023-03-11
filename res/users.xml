@@ -4,7 +4,7 @@
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
         <Groups>
             <Group id="Member">REAL</Group>
@@ -34,7 +34,7 @@
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groups>
             <Group id="Member">REAL</Group>
@@ -55,8 +55,8 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>online</status>
-        <BanStatus/>
+        <status>offline</status>
+        <BanStatus>BANNED</BanStatus>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Rey</name>

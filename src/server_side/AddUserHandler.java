@@ -39,7 +39,7 @@ public class AddUserHandler extends JDialog implements Runnable{
         super(parent, "Login", true);
         XMLParse parse = new XMLParse("res/users.xml");
 
-      /*  showPassCB1.addItemListener(new ItemListener() {
+        showPassCB1.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED)
@@ -57,7 +57,7 @@ public class AddUserHandler extends JDialog implements Runnable{
                 else
                     confirmPasswordPF.setEchoChar((Character) UIManager.get("PasswordField.echoChar"));
             }
-        });*/
+        });
 
         confirmButton.addActionListener(new ActionListener() {
             @Override

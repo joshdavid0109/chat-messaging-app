@@ -6,12 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,6 +192,7 @@
       <workItem from="1678351330692" duration="6297000" />
       <workItem from="1678369461206" duration="24000" />
       <workItem from="1678369619905" duration="1353000" />
+      <workItem from="1678516792994" duration="6801000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -382,22 +388,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
-          <line>162</line>
-          <properties class="server_side.UserManagement_GUI">
+          <line>163</line>
+          <properties>
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java</url>
           <line>44</line>
           <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/server_side/ClientHandler.java</url>
+          <line>121</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

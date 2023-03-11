@@ -1,5 +1,7 @@
 package gui_classes.clientside;
 
+import shared_classes.XMLParse;
+
 import javax.swing.*;
 import java.io.IOException;
 import java.net.ServerSocket;

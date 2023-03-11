@@ -45,22 +45,23 @@ public class GUIClientController implements ActionListener {
             input = new ObjectInputStream(server.getInputStream());
 
             boolean loggedIn = false;
+            logAuth:
             while (!loggedIn) {
 
 
                 // Prompt the user to enter their username and password
                 System.out.println("login ka na");
-                    LoginGUIForm log = new LoginGUIForm(frame);
+                LoginGUIForm log = new LoginGUIForm(frame, output);
 
-
-                // Create a login message and send it to the server
-                LoginCredentials loginMessage = new LoginCredentials(log.getUsername(), log.getPassword());
-                output.writeObject(loginMessage);
-                //ouput.writeObject(file);
                 // Wait for the server to respond with a User object
 
                 Object obj = input.readObject();
-                if (obj instanceof User) {
+                if (obj instanceof JOptionPane j) {
+                    JOptionPane.showMessageDialog(new JFrame(), j.getMessage().toString());
+                    continue logAuth;
+                }
+                else if (obj instanceof User) {
+                    log.dispose();
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: " + user.getName());
                     loggedIn = true;
@@ -86,7 +87,9 @@ public class GUIClientController implements ActionListener {
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        } /*finally {
+            XMLParse.setEveryoneOffline();
+        }*/
     }
 
     /**

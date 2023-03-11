@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><Messages>
-    
-    
     <Message id="xxx">
         <Time>2023-03-09 18:11</Time>
         <Sender>Joshua</Sender>
@@ -8,11 +6,4 @@
         <Recipient>reydan</Recipient>
     </Message>
     
-    
-    <Message id="xxx">
-        <Time>2023-03-09 18:26</Time>
-        <Sender>Ariel</Sender>
-        <Text>hello</Text>
-        <Recipient>joshua</Recipient>
-    </Message>
 </Messages>

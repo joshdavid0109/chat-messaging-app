@@ -10,13 +10,11 @@ public class LoginCredentials implements Serializable {
     public LoginCredentials(String username, String password) {
         this.username = username;
         this.password = password;
-        setStatus(username, "online");
     }
 
-    private void setStatus(String username, String status) {
+    public static void setStatus(String username, String status) {
         XMLParse.setStatusOfUser(username, status);
     }
-
 
     public String getUsername() {
         return username;

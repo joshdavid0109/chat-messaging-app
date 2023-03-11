@@ -150,7 +150,7 @@ public class GUIClientFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         headerName.setText(user.getUsername());
         currentUserName.setText(user.getName());
-        currentUserStatus.setText(user.getStatus());
+        headerStatus.setText("online");
 
         JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
         scrollPaneListMembers.setVisible(true);

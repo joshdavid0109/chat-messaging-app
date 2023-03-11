@@ -6,6 +6,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import shared_classes.*;
+
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -99,61 +101,50 @@ public class ClientHandler implements Runnable {
                 } else if (obj instanceof LoginCredentials loginCredentials) {
 
                     //TODO lipat ito sa XMLParse class
-                    DocumentBuilderFactory documentBuilderFactory = null;
-                    DocumentBuilder documentBuilder = null;
-                    Document document = null;
-                    NodeList nodelist = null;
 
 
                     try {
-                        documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                        documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                        document = documentBuilder.parse("res/users.xml");
-                        nodelist = document.getElementsByTagName("User");
-
-                        Element element;
-
+                        boolean loginStatus = false;
+                        Server.updateUsersList();
                         for (User user : registeredUsersList) {
                             if (user.getUsername().equals(loginCredentials.getUsername())) {
                                 if (user.getPassword().equals(loginCredentials.getPassword())) {
-                                    for (int i = 0; i < nodelist.getLength(); i++) {
-                                        element = (Element) nodelist.item(i);
-                                        String uname = element.getElementsByTagName("Username").item(0).getTextContent();
-                                        String pass = element.getElementsByTagName("Password").item(0).getTextContent();
-                                        if (uname.equals(user.getUsername()) && pass.equals(user.getPassword())) {
-                                            element.getElementsByTagName("status").item(0).setTextContent("online");
-                                            Server.updateXML(nodelist, document);
+                                    if (user.getStatus().equals("online")) {
+                                        System.out.println("ol");
+                                        loginStatus = true;
+                                        outToClient.writeObject(new JOptionPane("User is currently logged in on another device."));
+                                        break;
+                                    } else if (user.getBanStatus().equals("BANNED")) {
+                                        System.out.println("banned");
+                                        loginStatus = true;
+                                        outToClient.writeObject(new JOptionPane("User is currently banned from the system."));
+                                        break;
+                                    } else {
+                                        if (XMLParse.loginAuth(loginCredentials.getUsername(), loginCredentials.getPassword())  ) {
+                                            loginStatus = true;
+                                            outToClient.writeObject(user);
+                                            outToClient.flush();
+                                            server.clients.add(user);
+                                            loginHandlerArraylist.add(this);
+                                            loggedInUserHashMap.put(this, user);
+                                            setUser(user);
+                                            //send offline messages to user
+                                            List<OfflineMessage> offlineMessages = getOfflineMessages(user);
+                                            server.offlineMessage(user.getName(), offlineMessages);
                                             break;
                                         }
                                     }
-                                    outToClient.writeObject(user);
-                                    outToClient.flush();
-                                    server.clients.add(user);
-                                    loginHandlerArraylist.add(this);
-                                    loggedInUserHashMap.put(this, user);
-                                    setUser(user);
-                                    //send offline messages to user
-                                    List<OfflineMessage> offlineMessages = getOfflineMessages(user);
-                                    server.offlineMessage(user.getName(), offlineMessages);
                                 }
                             }
+                        }
+                        if (!loginStatus){
+                            System.out.println("user not exist");
+                            outToClient.writeObject(new JOptionPane("Invalid Username or password.", JOptionPane.ERROR_MESSAGE));
                         }
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
-                } // TODO: 04/03/2023 RECEIVE XML FILE FROM CLIENT THEN PARSE TO CURRENT XML FILE (PAG MAGKAIBANG MACHINE GAMIT)
-                /*else if (obj instanceof File f) {
-                    System.out.println("File ito");
-
-                    try {
-                        File file=new File("res/users.xml");
-                        replaceContent(f, file);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }*/
+                }
             }
         } catch (IOException e) {
             System.err.println("Error handling client: " + e);
@@ -163,7 +154,7 @@ public class ClientHandler implements Runnable {
             try {
                 userInput.close();
                 clientSocket.close();
-                //XMLParse.setEveryoneOffline();
+//                XMLParse.setEveryoneOffline();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -104,6 +104,7 @@ public class UserManagement_GUI extends JFrame{
                     serverStatus.set(false);
                     serverSwitch.getRightComponent().setEnabled(false);
                     rightComponent.setBackground(gray);
+                    XMLParse.setEveryoneOffline();
                     portNumber.setText("Port: ");
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -246,7 +247,6 @@ public class UserManagement_GUI extends JFrame{
         userScroll.setBounds(35, 30, 500, 400);
 
         frameUM.add(userScroll);
-
     }
 
     public void populateList() {
@@ -292,9 +292,9 @@ public class UserManagement_GUI extends JFrame{
             test.run();
         } catch (Exception e) {
             e.printStackTrace();
-        } /*finally {
+        } finally {
             XMLParse.setEveryoneOffline();
-        }*/
+        }
     }
 
     public void changeTable(JTable table, int column_index) {

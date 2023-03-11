@@ -141,6 +141,36 @@ public class XMLParse {
         return groups;
     }
 
+    public static boolean loginAuth(String username, String password) {
+        DocumentBuilderFactory documentBuilderFactory = null;
+        DocumentBuilder documentBuilder = null;
+        Document document = null;
+        NodeList nodelist = null;
+        Element element;
+        try {
+            documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            document = documentBuilder.parse("res/users.xml");
+            nodelist = document.getElementsByTagName("User");
+
+            for (int i = 0; i < nodelist.getLength(); i++) {
+                element = (Element) nodelist.item(i);
+                String uname = element.getElementsByTagName("Username").item(0).getTextContent();
+                String pass = element.getElementsByTagName("Password").item(0).getTextContent();
+                if (uname.equals(username) && pass.equals(password)) {
+                    System.out.println("paol");
+                    element.getElementsByTagName("status").item(0).setTextContent("online");
+                    Server.updateXML(nodelist, document);
+                    return true;
+                }
+
+            }
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     public static void setStatusOfUser(String username, String status) {
         DocumentBuilderFactory documentBuilderFactory = null;
         DocumentBuilder documentBuilder = null;
