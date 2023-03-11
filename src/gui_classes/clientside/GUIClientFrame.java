@@ -161,10 +161,10 @@ public class GUIClientFrame extends JFrame {
                 JList<String> list = (JList<String>) evt.getSource();
 
                 //REFRESH, MAG UUPDATE KUNG SINO ONLINE AND NOT, kahirap neto gawin animal
-                setContactList(new JList<>(getAllContacts()));
+                /*setContactList(new JList<>(getAllContacts()));
                 scrollPaneListMembers.setViewportView(contactList);
                 scrollPaneListMembers.revalidate();
-                scrollPaneListMembers.repaint();
+                scrollPaneListMembers.repaint();*/
 
                 String selectedValue = list.getSelectedValue();
                 String[] x = selectedValue.split(" : ");
@@ -184,6 +184,8 @@ public class GUIClientFrame extends JFrame {
                 messageInput.setText("/gm "+selectedValue+" ");
             }
         });
+
+        JButton createGroup = new JButton("Create Group");
 
         messagePane.setVisible(true);
         messagePane.setBorder(BorderFactory.createEmptyBorder());
@@ -310,7 +312,6 @@ public class GUIClientFrame extends JFrame {
         //after log in is successful, makikita nayung main GUI
         setVisible(true);
 
-        //if nag close ng window ung user, gawin siya offline, works flawlessly idk why amazing
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
@@ -379,7 +380,9 @@ public class GUIClientFrame extends JFrame {
 
 
     public void appendMessage(String message) {
-        messagePane.append(message + "\n");
+        Font font = new Font("Verdana", Font.BOLD, 10);
+        messagePane.setFont(font);
+        messagePane.append(message+ "\n");
     }
 
     public void setUsers(String[] users) {
@@ -389,24 +392,6 @@ public class GUIClientFrame extends JFrame {
         }
     }
 
-    public void ListRenderer(JList list, int rowIndex) {
-        list.setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-                final Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-                String val = list.getSelectedValue().toString();
-                System.out.println(val);
-                if (val.contains("online"))  {
-                    c.setBackground( Color.decode("#5DBB63") );
-                }
-                else {
-                    c.setBackground( Color.white);
-                }
-                return c;
-            }
-        });
-
-    }
 
     public void updateUsernameLabel(String username) {
         usernameLabel.setText(username);

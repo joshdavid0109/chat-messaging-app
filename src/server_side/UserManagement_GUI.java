@@ -289,6 +289,7 @@ public class UserManagement_GUI extends JFrame{
     public static void main(String[] args){
         try {
             UserManagement_GUI test = new UserManagement_GUI();
+            XMLParse.setEveryoneOffline();
             test.run();
         } catch (Exception e) {
             e.printStackTrace();

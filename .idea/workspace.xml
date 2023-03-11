@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/AddUserHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/UserManagement_GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/LoginCredentials.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,11 +49,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH": "135",
+    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "265",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/joshdavid0109/Desktop/myChat"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="server_side" />
@@ -70,7 +66,7 @@
       <recent name="C:\Users\ADMIN\IdeaProjects\2022aaaa\res" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientMain">
+  <component name="RunManager" selected="Application.CreateGroup">
     <configuration name="AddUserHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.AddUserHandler" />
       <module name="console" />
@@ -84,8 +80,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BookmarkContacts" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.BookmarkContacts" />
+    <configuration name="ClientMain" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.ClientMain" />
       <module name="console" />
       <extension name="coverage">
         <pattern>
@@ -97,8 +93,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ClientMain" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.ClientMain" />
+    <configuration name="CreateGroup" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.CreateGroup" />
       <module name="console" />
       <extension name="coverage">
         <pattern>
@@ -151,7 +147,7 @@
     </configuration>
     <list>
       <item itemvalue="Application.UserManagement_GUI" />
-      <item itemvalue="Application.BookmarkContacts" />
+      <item itemvalue="Application.CreateGroup" />
       <item itemvalue="Application.LoginGUIForm" />
       <item itemvalue="Application.AddUserHandler" />
       <item itemvalue="Application.GUIClientController" />
@@ -159,6 +155,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.CreateGroup" />
         <item itemvalue="Application.ClientMain" />
         <item itemvalue="Application.AddUserHandler" />
         <item itemvalue="Application.GUIClientController" />
@@ -192,7 +189,7 @@
       <workItem from="1678351330692" duration="6297000" />
       <workItem from="1678369461206" duration="24000" />
       <workItem from="1678369619905" duration="1353000" />
-      <workItem from="1678516792994" duration="6801000" />
+      <workItem from="1678516792994" duration="13468000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -320,7 +317,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678369445420</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="login auth fixed and minor changes to other classes">
+      <created>1678523935444</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1678523935444</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -368,7 +372,8 @@
     <MESSAGE value="error handling sa pagcoconnect to server, atbp" />
     <MESSAGE value="trial for multiple machine connection" />
     <MESSAGE value="update xml file on server when logged in from another machine" />
-    <option name="LAST_COMMIT_MESSAGE" value="update xml file on server when logged in from another machine" />
+    <MESSAGE value="login auth fixed and minor changes to other classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="login auth fixed and minor changes to other classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
