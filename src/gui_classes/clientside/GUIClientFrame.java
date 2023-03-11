@@ -23,6 +23,7 @@ public class GUIClientFrame extends JFrame {
 
     private GUIClientController controller;
     JList<String> contactList;
+    ArrayList<String> usersList;
     public JList<String> groupsList;
     public ArrayList<String> bookmarkedContacts = new ArrayList<>();
     public  JLabel bookmarkedContactsLabel = new JLabel();
@@ -56,7 +57,9 @@ public class GUIClientFrame extends JFrame {
         setTitle("Chat Application - "+user.getName());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
+        usersList = new ArrayList<>(Arrays.asList(getAllContacts()));
         contactList = new JList<>(getAllContacts());
+
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         List<String> x = Server.getGroupsOfUser(user);
@@ -122,16 +125,15 @@ public class GUIClientFrame extends JFrame {
                 if (contactList.getSelectedValue() != null) {
                     selectedContact = contactList.getSelectedValue();
                     int index = contactList.getSelectedIndex();
-                    bookmark(e, selectedContact, index);
-                    /*if (bookmarkedContacts.contains(selectedContact)) {
-                        bookmarkedContacts.remove(selectedContact);
-                        bookmarkButton.setText("Bookmark");
-                    } else {
-                        bookmarkedContacts.add(selectedContact);
-                        bookmarkButton.setText("Unbookmark");
-                    }
-                    updateBookmarkedContactsLabel();*/
-//                    updateContactList(getAllContacts());
+                    usersList.remove(index);
+                    usersList.add(0, selectedContact);
+
+                    String [] temp = usersList.toArray(new String[usersList.size()]);
+                    contactList.setListData(temp);
+                    contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                    contactList.setFixedCellHeight(20);
+
+
                 }
             }
         });

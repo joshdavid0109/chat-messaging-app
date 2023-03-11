@@ -56,7 +56,7 @@
         <Username>ariel</Username>
         <Password>ariel</Password>
         <status>offline</status>
-        <BanStatus>BANNED</BanStatus>
+        <BanStatus/>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Rey</name>
