@@ -18,10 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 
 public class XMLParse {
@@ -51,6 +48,12 @@ public class XMLParse {
             throw new RuntimeException(e);
         }
     }
+    /**
+     * Get the groups of a user, return as a List
+     *
+     * @param user The user whose groups you want to get.
+     * @return A list of groups that the user is a member of.
+     */
     public static List<Group> getGroupsOfUser(User user) throws ParserConfigurationException, IOException, SAXException {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();
@@ -305,6 +308,40 @@ public class XMLParse {
         }
         return contactNames;
     }
+
+    /**
+     * It reads the users.xml file and returns an array of strings containing the names and usernames of all registered
+     * users
+     *
+     * @return A list of all the users in the XML file.
+     */
+    public static String[] usersList() {
+        String[] contacts = new String[Server.registeredUsersList.size()];
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse("res/users.xml");
+            NodeList userNodes = document.getElementsByTagName("User");
+
+            contacts = new String[userNodes.getLength()];
+
+            for (int i = 0; i < userNodes.getLength(); i++) {
+                Node userNode = userNodes.item(i);
+                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element userElement = (Element) userNode;
+                    String name = userElement.getElementsByTagName("name").item(0).getTextContent();
+                    String username = userElement.getElementsByTagName("Username").item(0).getTextContent();
+                    contacts[i] = name + " - " + username;
+                }
+            }
+            // Sort contacts alphabetically
+            Arrays.sort(contacts);
+        } catch (SAXException | IOException | ParserConfigurationException e) {
+            System.out.println(e.getMessage());
+        }
+        return contacts;
+    }
+
     public static List<User> getUserList() {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();

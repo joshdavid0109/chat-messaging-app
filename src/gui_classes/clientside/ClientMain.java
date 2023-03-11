@@ -21,10 +21,11 @@ public class ClientMain {
             try {
                 boolean validPort = false;
                 while (!validPort) {
-                    port = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
-                    hostName = JOptionPane.showInputDialog(new JFrame(), "Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);
-/*                    port = 1234;
-                    hostName = "localhost";*/
+                    //hardcode ko lang forda testing
+                    /*port = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
+                    hostName = JOptionPane.showInputDialog(new JFrame(), "Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);*/
+                    port = 1234;
+                    hostName = "localhost";
                     validPort = true;
                 }
 

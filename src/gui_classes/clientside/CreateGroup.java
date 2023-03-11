@@ -1,25 +1,14 @@
 package gui_classes.clientside;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import server_side.Server;
+import shared_classes.XMLParse;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class CreateGroup extends JDialog implements Runnable{
     private JButton addButton;
@@ -34,12 +23,9 @@ public class CreateGroup extends JDialog implements Runnable{
 
     public CreateGroup(JFrame parent, String groupName, ObjectOutputStream out) {
         super(parent, "Create Group", true);
-
-        usersList.setListData(usersList());
+        usersList.setListData(XMLParse.usersList());
         usersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         usersList.setFixedCellHeight(30);
-
-
         panel.setBackground(Color.decode("#3e444f"));
         getContentPane().add(panel);
         pack();
@@ -57,7 +43,7 @@ public class CreateGroup extends JDialog implements Runnable{
         groupName.setFont(f);
         groupName.setText("Sample Group");
 
-        usersList.setListData(usersList());
+        usersList.setListData(XMLParse.usersList());
         usersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         usersList.setFixedCellHeight(30);
         usersList.setCellRenderer(getRenderer());
@@ -160,30 +146,5 @@ public class CreateGroup extends JDialog implements Runnable{
        this.run();
     }
 
-    public String[] usersList() {
-        String[] contacts = new String[Server.registeredUsersList.size()];
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse("res/users.xml");
-            NodeList userNodes = document.getElementsByTagName("User");
 
-            contacts = new String[userNodes.getLength()];
-
-            for (int i = 0; i < userNodes.getLength(); i++) {
-                Node userNode = userNodes.item(i);
-                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element userElement = (Element) userNode;
-                    String name = userElement.getElementsByTagName("name").item(0).getTextContent();
-                    String username = userElement.getElementsByTagName("Username").item(0).getTextContent();
-                    contacts[i] = name + " - " + username;
-                }
-            }
-            // Sort contacts alphabetically
-            Arrays.sort(contacts);
-        } catch (SAXException | IOException | ParserConfigurationException e) {
-            System.out.println(e.getMessage());
-        }
-        return contacts;
-    }
 }

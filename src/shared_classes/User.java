@@ -3,6 +3,8 @@ package shared_classes;
 import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -17,7 +19,6 @@ public class User implements Serializable {
     private List<Group> listOfGroups;
 
     public User(){
-
     }
 
     public User(String id, String name,String age, String username, String password, String status, String banStatus) throws IOException, ParserConfigurationException {
@@ -29,6 +30,7 @@ public class User implements Serializable {
         this.status = status;
         this.banStatus = banStatus;
         populateGroups(this);
+        //System.out.println(Arrays.toString(this.getGroups().toArray()));
     }
 
     public static void populateGroups(User user){
@@ -52,10 +54,14 @@ public class User implements Serializable {
     }
 
     public Boolean isMember(String groupName){
-        for (Group listOfGroup : listOfGroups) {
-            if (listOfGroup.getName().equalsIgnoreCase(groupName)) {
-                return true;
+        try {
+            for (Group listOfGroup : XMLParse.getGroupsOfUser(this)) {
+                if (listOfGroup.getName().equalsIgnoreCase(groupName)) {
+                    return true;
+                }
             }
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
         }
         return false;
     }
