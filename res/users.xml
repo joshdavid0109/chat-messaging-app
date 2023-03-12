@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Users>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Darren</name>
@@ -16,7 +15,9 @@
         <Password>joshdavid</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups/>
+        <Groups>
+            <Group id="Member">pipol</Group>
+        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Kiko</name>
@@ -36,6 +37,7 @@
         <BanStatus/>
         <Groups>
             <Group id="ADMIN">BOYz</Group>
+            <Group id="Member">pipol</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
@@ -58,6 +60,7 @@
         <BanStatus/>
         <Groups>
             <Group id="Member">BOYz</Group>
+            <Group id="ADMIN">pipol</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">

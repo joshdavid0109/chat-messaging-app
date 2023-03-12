@@ -8,15 +8,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
+    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="oki na ata, havent tested pa tho much, mwehehehe">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/Group.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -330,7 +327,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678523935444</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="oki na ata, havent tested pa tho much, mwehehehe">
+      <created>1678628728116</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1678628728116</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -380,7 +384,8 @@
     <MESSAGE value="update xml file on server when logged in from another machine" />
     <MESSAGE value="login auth fixed and minor changes to other classes" />
     <MESSAGE value="wala lng" />
-    <option name="LAST_COMMIT_MESSAGE" value="wala lng" />
+    <MESSAGE value="oki na ata, havent tested pa tho much, mwehehehe" />
+    <option name="LAST_COMMIT_MESSAGE" value="oki na ata, havent tested pa tho much, mwehehehe" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -391,21 +396,21 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
-          <line>265</line>
-          <properties class="server_side.UserManagement_GUI">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
           <line>163</line>
           <properties>
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java</url>
+          <line>494</line>
+          <properties class="gui_classes.clientside.GUIClientFrame" method="findSimilarNames">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/SearchingContacts.java</url>
@@ -414,13 +419,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/server_side/ClientHandler.java</url>
-          <line>126</line>
+          <line>124</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.java</url>
           <line>130</line>
           <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java</url>
+          <line>312</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java</url>
+          <line>350</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

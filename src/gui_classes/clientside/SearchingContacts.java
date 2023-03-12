@@ -16,7 +16,7 @@ public class SearchingContacts extends JFrame{
 
     private ArrayList<String> similarNames;
 
-    public SearchingContacts(){
+    public SearchingContacts(Frame frame){
         super("Search");
 
         //Create search bar
