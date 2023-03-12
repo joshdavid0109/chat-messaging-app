@@ -6,30 +6,43 @@ import java.util.List;
 
 public class Group implements Serializable {
     private String name;
-    private List<String> members;
+    private List<User> members;
+    private User admin;
 
     public Group(String name) {
         this.name = name;
         members = new ArrayList<>();
     }
 
+    public Group(String name, User creator) {
+        this.name = name;
+        this.admin = creator;
+        members = new ArrayList<>();
+    }
+
+    public Group(String name, User creator, List<User> members) {
+        this.name = name;
+        this.admin = creator;
+        this.members = members;
+    }
+
     public String getName() {
         return name;
     }
 
-    public List<String> getMembers() {
+    public List<User> getMembers() {
         return members;
     }
 
-    public void addMember(String member) {
+    public void addMember(User member) {
         members.add(member);
     }
 
-    public void removeMember(String member) {
+    public void removeMember(User member) {
         members.remove(member);
     }
 
-    public boolean containsMember(String member) {
+    public boolean containsMember(User member) {
         return members.contains(member);
     }
 }
