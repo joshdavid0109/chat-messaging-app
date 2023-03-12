@@ -101,8 +101,33 @@ public class CreateGroup extends JDialog implements Runnable{
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                selectedUsers.add(0, user.getName() + " - " + user.getUsername());
-                XMLParse.addGroup(selectedUsers, groupNameTF.getText());
+
+                if(groupNameTF.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null,"please enter a group name");
+                    return;
+                }
+                else{
+                    selectedUsers.add(0, user.getName() + " - " + user.getUsername());
+
+                    System.out.println("SELECTED USERS R:");
+                    System.out.println(selectedUsers.toString());
+
+                    Group grupow = new Group(groupNameTF.getText(), selectedUsers, user);
+                    try {
+                        out.writeObject(grupow);
+                        out.flush();
+                    } catch (IOException ex) {
+                        System.err.println(ex.getMessage());
+                        ex.printStackTrace();
+                    }
+                }
+
+
+                //XMLParse.addGroup(selectedUsers, groupNameTF.getText());
+
+
+
+
 /*                try {
                     selectedUsers.add(0, user.getName() + " - " + user.getUsername());
                     out.writeObject(new Group(groupNameLabel.getText(), selectedUsers));

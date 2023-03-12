@@ -36,9 +36,6 @@ public class GUIClientController implements ActionListener {
         this.run();
     }
 
-    public static void main(String[] args) {
-    }
-
     /**
      * It creates a login form, sends the login credentials to the server, and waits for the server to respond with a User
      * object. If the server responds with a User object, then the client is logged in. If the server responds with a
@@ -224,10 +221,10 @@ public class GUIClientController implements ActionListener {
                             }
                         }
                     } // It ain't working :< idk why
-                    else  if (obj instanceof Group g) {
+                    /*else  if (obj instanceof Group g) {
                         System.out.println("Group hello");
                         XMLParse.addGroup(g.getMembers(), g.getName());
-                    }
+                    }*/
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());

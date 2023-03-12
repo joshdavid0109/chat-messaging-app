@@ -98,7 +98,16 @@ public class ClientHandler implements Runnable {
                         server.privateMessage(message.getRecipient(), message);
                     }
                     //outToClient.writeObject(message);
-                } else if (obj instanceof LoginCredentials loginCredentials) {
+                }
+
+                else if(obj instanceof Group group){
+                    XMLParse.addGroup(group);
+
+                    //debug
+                    server.privateMessage(group.getAdmin().getName(), new Message("GRP CREATED!"));
+                }
+
+                else if (obj instanceof LoginCredentials loginCredentials) {
                     try {
                         boolean loginStatus = false;
                         Server.updateUsersList();

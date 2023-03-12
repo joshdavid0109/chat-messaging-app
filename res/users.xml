@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Users>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Darren</name>
@@ -6,9 +7,7 @@
         <Password>franz</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">REAL</Group>
-        </Groups>
+        <Groups/>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Joshua</name>
@@ -17,11 +16,7 @@
         <Password>joshdavid</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Moderator">Sample Group</Group>
-            <Group id="Moderator">Group Name</Group>
-            <Group id="Member">test group</Group>
-        </Groups>
+        <Groups/>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Kiko</name>
@@ -30,18 +25,18 @@
         <Password>kikoxcore</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">Group Name</Group>
-        </Groups>
+        <Groups/>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>TEST</name>
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
-        <Groups/>
+        <Groups>
+            <Group id="ADMIN">BOYz</Group>
+        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Maervin</name>
@@ -51,8 +46,7 @@
         <status>offline</status>
         <BanStatus/>
         <Groups>
-            <Group id="Member">Sample Group</Group>
-            <Group id="Member">test group</Group>
+            <Group id="Member">BOYz</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
@@ -60,10 +54,10 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groups>
-            <Group id="Moderator">test group</Group>
+            <Group id="Member">BOYz</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
@@ -73,7 +67,9 @@
         <Password>rey</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups/>
+        <Groups>
+            <Group id="Member">BOYz</Group>
+        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>reydan</name>

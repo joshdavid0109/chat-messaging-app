@@ -237,6 +237,14 @@ public class XMLParse {
         }
     }
 
+    public static void parseGroup(Group group) {
+        User admin = group.getAdmin();
+        String groupname = group.getName();
+        List<String> members = group.getMembers(); //todo, instead of string dapat user
+
+
+    }
+
     public User getUser(String userName) {
         User user = new User();
         try {
@@ -454,7 +462,11 @@ public class XMLParse {
         }
     }
 
-    public static void addGroup(List<String> usersToAdd, String groupName) {
+    public static void addGroup(Group group) {
+        List<String> usersToAdd = group.getMembers();
+        String groupName = group.getName();
+        User admin = group.getAdmin();
+
         try {
             getUsersDoc();
             usersDoc.getDocumentElement().normalize();
@@ -464,11 +476,8 @@ public class XMLParse {
             Element root;
 
             for (int j = 0; j < usersToAdd.size(); j++) {
-                boolean admin = false;
                 String temp = usersToAdd.get(j).split("\\s+", 3)[2];
                 System.out.println(temp);
-                if (j == 0)
-                    admin =true;
                 for (int i = 0; i < nodeList.getLength(); i++) {
                     element = (Element) nodeList.item(i);
                     if (element.getElementsByTagName("Username").item(0).getTextContent().equals(temp)) {
@@ -477,8 +486,8 @@ public class XMLParse {
                         if (groupNode.getLength() > 0) {
                             root = (Element)groupNode.item(i) ;
                             base = usersDoc.createElement("Group");
-                            if (admin) {
-                                base.setAttribute("id", "Moderator");
+                            if (element.getElementsByTagName("name").item(0).getTextContent().equals(admin.getName())) {
+                                base.setAttribute("id", "ADMIN");
                                 base.setTextContent(groupName);
                             }else {
                                 base.setAttribute("id", "Member");
@@ -490,7 +499,7 @@ public class XMLParse {
                                 root = (Element) groupNode.item(i);
                                 Element groupRoot = usersDoc.createElement("Groups");
                                 base = usersDoc.createElement("Group");
-                                if (admin) {
+                                if (element.getElementsByTagName("name").item(0).getTextContent().equals(admin.getName())) {
                                     base.setAttribute("id", "Moderator");
                                     base.setTextContent(groupName);
                                 }else {

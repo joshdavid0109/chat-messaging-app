@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Group implements Serializable {
     private String name;
-    private List<User> members;
+    private List<String> members;
     private User admin;
 
     public Group(String name) {
@@ -14,40 +14,38 @@ public class Group implements Serializable {
         members = new ArrayList<>();
     }
 
-    public Group(String groupname, List<User> members) {
+    public Group(String groupname, List<String> members) {
         this.name = groupname;
         this.members = members;
     }
 
-    public Group(String name, User creator) {
-        this.name = name;
-        this.admin = creator;
-        members = new ArrayList<>();
+    public Group(String groupname, List<String> members, User admin) {
+        this.name = groupname;
+        this.members = members;
+        this.admin = admin;
     }
 
-    public Group(String name, User creator, List<User> members) {
-        this.name = name;
-        this.admin = creator;
-        this.members = members;
+    public User getAdmin() {
+        return admin;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<User> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 
-    public void addMember(User member) {
+    public void addMember(String member) {
         members.add(member);
     }
 
-    public void removeMember(User member) {
+    public void removeMember(String member) {
         members.remove(member);
     }
 
-    public boolean containsMember(User member) {
+    public boolean containsMember(String member) {
         return members.contains(member);
     }
 

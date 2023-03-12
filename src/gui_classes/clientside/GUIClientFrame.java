@@ -197,11 +197,11 @@ public class GUIClientFrame extends JFrame {
         createGroup.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         createGroup.setFocusable(false);
         createGroup.setBounds(790, 640, 100, 20);
-        Frame f = this;
+        JFrame f = this;
         createGroup.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateGroup((JFrame) f, out, user);
+                new CreateGroup(f, out, user);
             }
         });
 
