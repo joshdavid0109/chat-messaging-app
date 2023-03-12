@@ -121,7 +121,6 @@ public class GUIClientController implements ActionListener {
                         break;
                     }
                     else{
-                        msg = new Message(user.getName(), recipient, message);
                         frame.appendMessage("[ERROR] user "+ recipient+" does not exist.");
                         break;
                     }
@@ -130,19 +129,30 @@ public class GUIClientController implements ActionListener {
 
                     String group = words[2].toLowerCase(Locale.ROOT);
 
-                    if(Server.getGroups().contains(group)){
+                    if(!Server.getGroups().contains(group)) {
+                        frame.appendMessage("[ERROR] group "+group+" does not exist.");
+                        break;
+                    }
+                    //check muna if user is not member of said group
+                    else if(!user.isMember(group)){
+                        frame.appendMessage("[ERROR] you are not a member of the group: "+group);
+                        break;
+                    }
+                    else{
+                        //send msg to grp
                         String messageContent = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
                         msg = new Message(user.getName(),"@"+group, messageContent);
                         break;
                     }
-                    else{
-                        msg = new Message(user.getName(),"@"+ group, message);
-                        frame.appendMessage("[ERROR] group "+ group+" does not exist.");
-                        break;
-                    }
+
 
                 case "quit":
                     System.exit(0);
+                    break;
+                default:
+                    msg = null;
+                    frame.appendMessage("[ERROR] Command '"+command+ "' not recognized..");
+                    break;
             }
         }
         else{
@@ -151,12 +161,15 @@ public class GUIClientController implements ActionListener {
         }
 
         // Send the message to the server
-        try {
-            output.reset();
-            output.writeObject(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (msg != null) {
+            try {
+                output.reset();
+                output.writeObject(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
         // Clear the input field
         frame.clearMessageText();
     }
