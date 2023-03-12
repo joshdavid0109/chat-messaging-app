@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +45,7 @@ public class GUIClientFrame extends JFrame {
         this.contactList = contactList;
     }
 
-    public GUIClientFrame(GUIClientController controller, User u) {
+    public GUIClientFrame(GUIClientController controller, User u, ObjectOutputStream out) {
         this.user = u;
         String fontfamily = "Arial, sans-serif";
         Font font = new Font(fontfamily, Font.PLAIN, fontSize);
@@ -58,8 +59,9 @@ public class GUIClientFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         usersList = new ArrayList<>(Arrays.asList(getAllContacts()));
-        contactList = new JList<>(getAllContacts());
 
+        contactList = new JList<>(getAllContacts());
+        contactList.setFixedCellHeight(20);
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         List<String> x = Server.getGroupsOfUser(user);
@@ -73,6 +75,7 @@ public class GUIClientFrame extends JFrame {
         messagePane = new JTextArea();
         messagePane.setFont(font);
         messagePane.setEditable(false);
+        messagePane.setLineWrap(true); // fit text to panel
         JScrollPane scrollPane = new JScrollPane(messagePane);
         scrollPane.setPreferredSize(new Dimension(350, 200));
 
@@ -188,6 +191,19 @@ public class GUIClientFrame extends JFrame {
         });
 
         JButton createGroup = new JButton("Create Group");
+        createGroup.setVisible(true);
+        createGroup.setForeground(Color.BLACK);
+        createGroup.setBackground(Color.WHITE);
+        createGroup.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        createGroup.setFocusable(false);
+        createGroup.setBounds(790, 640, 100, 20);
+        Frame f = this;
+        createGroup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CreateGroup((JFrame) f, out, user);
+            }
+        });
 
         messagePane.setVisible(true);
         messagePane.setBorder(BorderFactory.createEmptyBorder());
@@ -243,6 +259,7 @@ public class GUIClientFrame extends JFrame {
         this.add(currentUserStatus);
         this.add(listOfMembersName);
         this.add(bookmarkButton);
+        this.add(createGroup);
         this.add(scrollPane);
         this.add(messageInput);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

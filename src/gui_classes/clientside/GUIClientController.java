@@ -4,6 +4,7 @@ import org.xml.sax.SAXException;
 import server_side.Server;
 import shared_classes.*;
 
+import javax.lang.model.type.ArrayType;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -25,13 +27,16 @@ public class GUIClientController implements ActionListener {
     private GUIClientFrame frame;
     private final Socket server;
     private ObjectInputStream input;
-    private ObjectOutputStream output;
+    public static ObjectOutputStream output;
     User user;
     ImageIcon icon = new ImageIcon("res/appLogo.png");
 
     public GUIClientController(Socket server) {
         this.server = server;
         this.run();
+    }
+
+    public static void main(String[] args) {
     }
 
     /**
@@ -75,7 +80,7 @@ public class GUIClientController implements ActionListener {
             }
 
             // Create the GUI frame
-            frame = new GUIClientFrame(this, user);
+            frame = new GUIClientFrame(this, user, output);
             frame.setIconImage(icon.getImage());
             frame.appendMessage("CONNECTED TO SERVER "+server.getLocalAddress()+" PORT "+server.getPort());
             frame.appendMessage("WELCOME TO THE CHATROOM, "+user.getName());
@@ -178,6 +183,7 @@ public class GUIClientController implements ActionListener {
             try {
                 while (input != null) {
                     Object obj = input.readObject();
+
                     if (obj instanceof Message) {
 
                         // Handle incoming message
@@ -217,6 +223,10 @@ public class GUIClientController implements ActionListener {
                                 frame.appendMessage("[UNREAD MSG] " + sender + ": " + content);
                             }
                         }
+                    } // It ain't working :< idk why
+                    else  if (obj instanceof Group g) {
+                        System.out.println("Group hello");
+                        XMLParse.addGroup(g.getMembers(), g.getName());
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {

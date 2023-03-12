@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="8" />
+    <option name="CUSTOM_SCOPE_NAME" value="All Places" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/messages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/messages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/Group.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +65,8 @@
     &quot;UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH&quot;: &quot;135&quot;,
     &quot;UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH&quot;: &quot;265&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/joshdavid0109/Desktop/myChat&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/joshdavid0109/Desktop/myChat&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -65,7 +79,7 @@
       <recent name="C:\Users\ADMIN\IdeaProjects\2022aaaa\res" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.UserManagement_GUI">
+  <component name="RunManager" selected="Application.ClientMain">
     <configuration name="AddUserHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.AddUserHandler" />
       <module name="console" />
@@ -155,8 +169,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.ClientMain" />
-        <item itemvalue="Application.BookmarkContacts" />
         <item itemvalue="Application.CreateGroup" />
+        <item itemvalue="Application.BookmarkContacts" />
         <item itemvalue="Application.AddUserHandler" />
         <item itemvalue="Application.GUIClientController" />
       </list>
@@ -190,6 +204,11 @@
       <workItem from="1678369619905" duration="1353000" />
       <workItem from="1678516792994" duration="13468000" />
       <workItem from="1678534892022" duration="1473000" />
+      <workItem from="1678580391843" duration="308000" />
+      <workItem from="1678611492076" duration="734000" />
+      <workItem from="1678613083321" duration="106000" />
+      <workItem from="1678613209886" duration="154000" />
+      <workItem from="1678613381632" duration="8818000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -407,8 +426,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/server_side/ClientHandler.java</url>
-          <line>121</line>
+          <line>117</line>
           <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.java</url>
+          <line>105</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
