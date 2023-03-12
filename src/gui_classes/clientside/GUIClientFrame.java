@@ -37,7 +37,6 @@ public class GUIClientFrame extends JFrame {
     private JTextField messageInput;
     private JTextField searchInput;
     public static JButton bookmarkButton;
-    private JButton searchPeke;
     private static JButton searchButton;
     private int fontSize = 12;
     ArrayList<String> similarNames;
@@ -80,7 +79,8 @@ public class GUIClientFrame extends JFrame {
         messagePane.setEditable(false);
         messagePane.setLineWrap(true); // fit text to panel
         JScrollPane scrollPane = new JScrollPane(messagePane);
-        scrollPane.setPreferredSize(new Dimension(350, 200));
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        //scrollPane.setPreferredSize(new Dimension(350, 200));
 
         JLabel headerName = new JLabel();
         headerName.setForeground(Color.WHITE);
@@ -210,41 +210,56 @@ public class GUIClientFrame extends JFrame {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<String> searchRes = new ArrayList<>();
+
+                //can contain both users and groups object na
+                List<Object> searchRes = new ArrayList<>();
                 String toSearch = searchInput.getText().trim();
                 searchInput.setText("");
-                String info = XMLParse.searchXML(toSearch);
+                searchRes = XMLParse.searchXML(toSearch);
+                List<String> stringResultMap = new ArrayList<>();
+                //List<Object> info = XMLParse.searchXML(toSearch);
 
-                if (info.isEmpty()) {
-                    similarNames = findSimilarNames(toSearch);
-                    if (similarNames.isEmpty()) {
-                        searchRes.add(toSearch + " not found.");
-                    } else if (similarNames.size() == 1) {
-                        // If only one similar name found, show its info
-                        info = XMLParse.searchXML(similarNames.get(0));
-                        searchRes.add(info);
-                    } else {
-                        // If multiple similar names found, show a list of suggestions
-                        String suggestion = "Did you mean:";
-                        for (String name : similarNames) {
-                            suggestion += " " + name + ",";
-                        }
-                        suggestion = suggestion.substring(0, suggestion.length() - 1); // Remove last comma
-                        searchRes.add(suggestion);
+                //iterate through lahat ng objects na nasearch (users or groups) tapos
+                //sort them idk
+                for(Object obj : searchRes){
+                    if(obj instanceof User){
+                        User user = (User) obj;
+                        stringResultMap.add("USER "+" : "+user.getName()+" @"+user.getUsername());
                     }
-                } else {
-                    searchRes.add(info);
+                    else if(obj instanceof Group){
+                        Group grp = (Group) obj;
+                        stringResultMap.add("GROUP "+" : "+grp.getName());
+                    }
                 }
 
-                String[] resultsArr = searchRes.toArray(new String[searchRes.size()]);
-                searchResultsList = new JList<>(resultsArr);
+                String[] resultsArr = stringResultMap.toArray(new String[searchRes.size()]);
+                searchResultsList = new JList<>( resultsArr);
                 searchResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 searchResultsList.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent evt) {
                         JList<String> list = (JList<String>) evt.getSource();
                         String selectedValue = list.getSelectedValue();
                         //messageInput.setText("/gm "+selectedValue+" ");
-                        System.out.println("selected "+selectedValue);
+                        //System.out.println("selected "+selectedValue);
+
+                        String[] thingz = selectedValue.split("\\s+");
+
+                        //can either be "GROUP" or "USER"
+                        String type = thingz[0];
+
+                        if (type.equals("USER")) {
+                            //String username = thingz[3];
+                            /*System.out.println("A "+thingz[0]);
+                            System.out.println("B "+thingz[1]);
+                            System.out.println("C "+thingz[2]);
+                            System.out.println("D "+thingz[3]);*/
+                            messageInput.setText("/pm "+thingz[2]+" ");
+                        } else if (type.equals("GROUP")) {
+                            /*System.out.println("A "+thingz[0]);
+                            System.out.println("B "+thingz[1]);
+                            System.out.println("C "+thingz[2]);*/
+                            messageInput.setText("/gm "+thingz[2]+" ");
+                        }
                     }
                 });
 
@@ -382,27 +397,11 @@ public class GUIClientFrame extends JFrame {
             }
         });
 
-        searchPeke = new JButton("Search");
-        searchPeke.setVisible(true);
-        searchPeke.setForeground(Color.BLACK);
-        searchPeke.setBackground(Color.WHITE);
-        searchPeke.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-        searchPeke.setFocusable(false);
-        searchPeke.setBounds(260, 600, 75, 20);
-        searchPeke.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                searchContacts();
-            }
-        });
-
-
         privateMessagePanel.add(currentUserName);
         privateMessagePanel.add(currentUserStatus);
         privateMessagePanel.add(messagePane);
         privateMessagePanel.add(messageInput);
         privateMessagePanel.add(sendButton);
-        privateMessagePanel.add(searchPeke);
 
         broadCastPanel.add(miscellaneous);
         broadCastPanel.add(broadcastArea);
@@ -417,9 +416,9 @@ public class GUIClientFrame extends JFrame {
         });
     }
 
-    private void searchContacts() {
+    /*private void searchContacts() {
         new SearchingContacts(this);
-    }
+    }*/
 
     private void bookmark(java.awt.event.ActionEvent evt, String selectedContact, int index) {
         DefaultListModel model = (DefaultListModel) contactList.getModel();

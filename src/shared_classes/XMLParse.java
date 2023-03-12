@@ -546,45 +546,66 @@ public class XMLParse {
             child = nextChild;
         }
     }
-    public static String searchXML(String name){
-        try{
+    /**
+     * It searches the XML file for the search term and returns a list of objects that match the search term
+     *
+     * @param toSearch The search term that the user has entered
+     * @return A list of objects - can be Users or Groups :)
+     */
+    public static List<Object> searchXML(String toSearch) {
+        List<Object> searchResults = new ArrayList<>();
+        List<String> addedGroups = new ArrayList<>();
+        try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse("res/users.xml");
             document.getDocumentElement().normalize();
             NodeList nodeList = document.getElementsByTagName("User");
 
-            for(int i = 0; i < nodeList.getLength(); i++){
+            for (int i = 0; i < nodeList.getLength(); i++) {
                 Node nNode = nodeList.item(i);
 
-                if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) nNode;
 
-                    String userName = element
-                            .getElementsByTagName("name")
-                            .item(0)
-                            .getTextContent();
+                    String userName = element.getElementsByTagName("Username").item(0).getTextContent();
+                    if (userName.toLowerCase().contains(toSearch.toLowerCase())) {
+                        // If the search term matches a username, create a User object and add it to the search results
+                        String id = element.getAttribute("id");
+                        String name = element.getElementsByTagName("name").item(0).getTextContent();
+                        String age = element.getElementsByTagName("Age").item(0).getTextContent();
+                        String password = element.getElementsByTagName("Password").item(0).getTextContent();
+                        String status = element.getElementsByTagName("status").item(0).getTextContent();
+                        String banStatus = element.getElementsByTagName("BanStatus").item(0).getTextContent();
+                        User user = new User(id, name, age, userName, password, status, banStatus);
+                        searchResults.add(user);
 
-                    if(userName.equalsIgnoreCase(name)){
-                        String info = "Name: " + userName + "\n";
-                        info += "User name: " +element.getElementsByTagName("Username")
-                                .item(0)
-                                .getTextContent() +"\n";
-
-                        info += "Status: " +element.getElementsByTagName("status")
-                                .item(0)
-                                .getTextContent() +"\n";
-
-                        return info;
+                    } else {
+                        // If the search term doesn't match a username, check if it matches a group name
+                        Node groupNode = element.getElementsByTagName("Group").item(0);
+                        if (groupNode != null && groupNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element groupElement = (Element) groupNode;
+                            String groupName = groupElement.getTextContent();
+                            if (groupName.toLowerCase().contains(toSearch.toLowerCase())) {
+                                String userId = element.getAttribute("id");
+                                userName = element.getElementsByTagName("Username").item(0).getTextContent();
+                                User user = new User(userId, null, null, userName, null, null, null);
+                                Group group = new Group(groupName, null, user);
+                                if (!addedGroups.contains(groupName)) {
+                                    searchResults.add(group);
+                                    addedGroups.add(groupName);
+                                }
+                            }
+                        }
                     }
-
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return searchResults;
     }
+
     public void addMessage(String sender, String message, String recipient, LocalDateTime timeSent) {
 
         try {

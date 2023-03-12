@@ -146,8 +146,7 @@ public class GUIClientController implements ActionListener {
             }
         }
         else{
-            //if walang command, send yung message object sa server as message object parin pero "toall" yung
-            //recipient which means ibrobroadcast yung message
+            //broadcast msg
             msg = new Message(user.getName(), "TOALL", message);
         }
 

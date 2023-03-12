@@ -30,7 +30,6 @@ public class User implements Serializable {
         this.status = status;
         this.banStatus = banStatus;
         populateGroups(this);
-        //System.out.println(Arrays.toString(this.getGroups().toArray()));
     }
 
     public static void populateGroups(User user){

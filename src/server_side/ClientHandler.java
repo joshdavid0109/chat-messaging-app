@@ -26,13 +26,7 @@ import static server_side.Server.*;
 public class ClientHandler implements Runnable {
 
     public Socket clientSocket;
-    public PrintWriter printWriter = null;
-    public BufferedReader bufferedReader = null;
     public ObjectInputStream userInput = null;
-    static File usersFile = new File("res/users.xml");
-    XMLParse xmlParse = new XMLParse("res/messages.xml");
-
-    private List<String> groups = new ArrayList<>();
     private Server server;
     private User user;
     public ObjectOutputStream outToClient = null;
