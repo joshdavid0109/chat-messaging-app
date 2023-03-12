@@ -99,10 +99,6 @@ public class ClientHandler implements Runnable {
                     }
                     //outToClient.writeObject(message);
                 } else if (obj instanceof LoginCredentials loginCredentials) {
-
-                    //TODO lipat ito sa XMLParse class
-
-
                     try {
                         boolean loginStatus = false;
                         Server.updateUsersList();
@@ -138,7 +134,6 @@ public class ClientHandler implements Runnable {
                             }
                         }
                         if (!loginStatus){
-                            System.out.println("user not exist");
                             outToClient.writeObject(new JOptionPane("Invalid Username or password.", JOptionPane.ERROR_MESSAGE));
                         }
                     } catch (Exception exception) {

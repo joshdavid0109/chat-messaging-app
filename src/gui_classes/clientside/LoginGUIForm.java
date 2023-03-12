@@ -58,7 +58,6 @@ public class LoginGUIForm extends JDialog implements Runnable{
             @Override
             public void actionPerformed(ActionEvent e) {
                     try {
-                        System.out.println(getUsername()+"\n"+getPassword());
                         out.writeObject(new LoginCredentials(getUsername(), getPassword()));
                     } catch (Exception exception) {
                         exception.printStackTrace();

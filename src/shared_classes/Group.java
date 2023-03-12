@@ -14,6 +14,11 @@ public class Group implements Serializable {
         members = new ArrayList<>();
     }
 
+    public Group(String groupname, List<User> members) {
+        this.name = groupname;
+        this.members = members;
+    }
+
     public Group(String name, User creator) {
         this.name = name;
         this.admin = creator;
@@ -44,5 +49,10 @@ public class Group implements Serializable {
 
     public boolean containsMember(User member) {
         return members.contains(member);
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

@@ -10,6 +10,7 @@ import server_side.Server;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.events.EndElement;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -144,6 +145,14 @@ public class XMLParse {
         return groups;
     }
 
+    /**
+     * It takes a username and password as parameters, and checks if the username and password are in the XML file. If they
+     * are, it changes the status of the user to online and returns true
+     *
+     * @param username The username of the user who is trying to login
+     * @param password The password of the user
+     * @return A boolean value.
+     */
     public static boolean loginAuth(String username, String password) {
         DocumentBuilderFactory documentBuilderFactory = null;
         DocumentBuilder documentBuilder = null;
@@ -174,6 +183,12 @@ public class XMLParse {
         return false;
     }
 
+    /**
+     * It takes a username and a status as parameters, and then it updates the status of the user in the XML file
+     *
+     * @param username The username of the user whose status is to be changed.
+     * @param status The status of the user.
+     */
     public static void setStatusOfUser(String username, String status) {
         DocumentBuilderFactory documentBuilderFactory = null;
         DocumentBuilder documentBuilder = null;
@@ -201,6 +216,9 @@ public class XMLParse {
         }
     }
 
+    /**
+     * It sets the status of all users to offline
+     */
     public static void setEveryoneOffline() {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -242,6 +260,12 @@ public class XMLParse {
         }
         return user;
     }
+    /**
+     * It takes a username and a status, and sets the user's ban status to the status
+     *
+     * @param username The username of the user you want to ban/unban
+     * @param status The status of the user. Either "BANNED" or ""
+     */
     public void setBanStatus(String username, String status){
         try {
             getUsersDoc();
@@ -295,6 +319,14 @@ public class XMLParse {
             e.printStackTrace();
         }
     }
+    /**
+     * "Get all the contact names from the XML file and return them as a list."
+     *
+     * The first line of the function calls the `getUsersDoc()` function, which is defined in the `XMLHelper` class. This
+     * function returns a `Document` object that represents the XML file
+     *
+     * @return A list of all the contact names in the XML file.
+     */
     public static List<String> getAllContactNames() {
         getUsersDoc();
         usersDoc.getDocumentElement().normalize();
@@ -315,7 +347,7 @@ public class XMLParse {
      *
      * @return A list of all the users in the XML file.
      */
-    public static String[] usersList() {
+    public static String[] usersList(User user) {
         String[] contacts = new String[Server.registeredUsersList.size()];
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -331,11 +363,12 @@ public class XMLParse {
                     Element userElement = (Element) userNode;
                     String name = userElement.getElementsByTagName("name").item(0).getTextContent();
                     String username = userElement.getElementsByTagName("Username").item(0).getTextContent();
-                    contacts[i] = name + " - " + username;
+
+                        contacts[i] = name + " - " + username;
                 }
             }
             // Sort contacts alphabetically
-            Arrays.sort(contacts);
+//            Arrays.sort(contacts);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             System.out.println(e.getMessage());
         }
@@ -362,6 +395,12 @@ public class XMLParse {
         }
         return userList;
     }
+
+    /**
+     * It takes a User object, adds it to the list of users, and then writes the list to the XML file
+     *
+     * @param newUser The new user to be added to the XML file.
+     */
     public void addUser(User newUser) {
         try {
             List<User> userList = getUserList();
@@ -385,6 +424,8 @@ public class XMLParse {
                 statusElement.setTextContent(user.getStatus());
                 Element banSttsElement = usersDoc.createElement("BanStatus");
                 banSttsElement.setTextContent(user.getBanStatus());
+                Element groupElement = usersDoc.createElement("Groups");
+
 
                 nUser.appendChild(nameElement);
                 nUser.appendChild(ageElement);
@@ -392,6 +433,7 @@ public class XMLParse {
                 nUser.appendChild(pswdElement);
                 nUser.appendChild(statusElement);
                 nUser.appendChild(banSttsElement);
+                nUser.appendChild(groupElement);
 
                 usersTag.appendChild(nUser);
             }
@@ -411,6 +453,81 @@ public class XMLParse {
             e.printStackTrace();
         }
     }
+
+    public static void addGroup(List<String> usersToAdd, String groupName) {
+        try {
+            getUsersDoc();
+            usersDoc.getDocumentElement().normalize();
+            NodeList nodeList = usersDoc.getElementsByTagName("User");
+            Element element = null;
+            Element base;
+            Element root;
+
+            for (int j = 0; j < usersToAdd.size(); j++) {
+                boolean admin = false;
+                String temp = usersToAdd.get(j).split("\\s+", 3)[2];
+                System.out.println(temp);
+                if (j == 0)
+                    admin =true;
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    element = (Element) nodeList.item(i);
+                    if (element.getElementsByTagName("Username").item(0).getTextContent().equals(temp)) {
+                        System.out.println(element.toString());
+                        NodeList groupNode = usersDoc.getElementsByTagName("Groups");
+                        if (groupNode.getLength() > 0) {
+                            root = (Element)groupNode.item(i) ;
+                            base = usersDoc.createElement("Group");
+                            if (admin) {
+                                base.setAttribute("id", "Moderator");
+                                base.setTextContent(groupName);
+                            }else {
+                                base.setAttribute("id", "Member");
+                                base.setTextContent(groupName);
+                            }
+                            root.appendChild(base);
+                            break;
+                        } else {
+                                root = (Element) groupNode.item(i);
+                                Element groupRoot = usersDoc.createElement("Groups");
+                                base = usersDoc.createElement("Group");
+                                if (admin) {
+                                    base.setAttribute("id", "Moderator");
+                                    base.setTextContent(groupName);
+                                }else {
+                                    base.setAttribute("id", "Member");
+                                    base.setTextContent(groupName);
+                                }
+                                groupRoot.appendChild(base);
+                                root.appendChild(groupRoot);
+                                break;
+                        }
+                    }
+                }
+            }
+            nodeList = usersDoc.getElementsByTagName("Users");
+            trimWhiteSpace((Element) nodeList.item(0));
+
+            DOMSource source = new DOMSource(usersDoc);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            StreamResult streamResult = new StreamResult(new File("res/users.xml"));
+            transformer.transform(source, streamResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Remove all children from the root element of the given XML document.
+     *
+     * @param xml The XML document to clear.
+     */
     private void clearXML(Document xml) {
         Element root = xml.getDocumentElement();
         Node child = root.getFirstChild();

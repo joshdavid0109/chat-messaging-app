@@ -1,5 +1,7 @@
 package gui_classes.clientside;
 
+import shared_classes.Group;
+import shared_classes.User;
 import shared_classes.XMLParse;
 
 import javax.swing.*;
@@ -7,6 +9,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
@@ -18,36 +21,24 @@ public class CreateGroup extends JDialog implements Runnable{
     private JButton removeButton;
     private JPanel panel;
     private JScrollPane usersPane;
-    private JLabel groupName;
+    private JLabel groupNameLabel;
+    private JTextField groupNameTF;
     private ArrayList<String> selectedUsers;
 
-    public CreateGroup(JFrame parent, String groupName, ObjectOutputStream out) {
-        super(parent, "Create Group", true);
-        usersList.setListData(XMLParse.usersList());
-        usersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        usersList.setFixedCellHeight(30);
-        panel.setBackground(Color.decode("#3e444f"));
-        getContentPane().add(panel);
-        pack();
-        setLocationRelativeTo(parent);
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setVisible(true);
-    }
-
-    public CreateGroup(JFrame parent) {
+    public CreateGroup(JFrame parent, ObjectOutputStream out, User user) {
         super(parent, "Create Group", true);
         selectedUsers = new ArrayList<>();
         saveButton.setUI(new BasicButtonUI());
 
         Font f = new Font("Verdana", Font.BOLD, 15);
-        groupName.setFont(f);
-        groupName.setText("Sample Group");
+        groupNameLabel.setFont(f);
+        groupNameLabel.setText("Group Name");
+        groupNameTF.setFont(f);
 
-        usersList.setListData(XMLParse.usersList());
+        usersList.setListData(XMLParse.usersList(user));
         usersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         usersList.setFixedCellHeight(30);
         usersList.setCellRenderer(getRenderer());
-
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -66,7 +57,6 @@ public class CreateGroup extends JDialog implements Runnable{
                         }
                     }
                     if (!check) {
-                        System.out.println(temp + "\n" + selectedUser);
                         selectedUsers.add(selectedUser);
                         String[] t = selectedUsers.toArray(new String[0]);
                         selectedUsersList.setSelectedIndex(-1);
@@ -76,7 +66,7 @@ public class CreateGroup extends JDialog implements Runnable{
                         selectedUsersList.setCellRenderer(getRenderer());
                     }
                 } else {
-                    System.out.println("Add " + selectedUser);
+
                     selectedUsers.add(selectedUser);
                     String[] temp = selectedUsers.toArray(new String[0]);
                     selectedUsersList.setListData(temp);
@@ -111,7 +101,16 @@ public class CreateGroup extends JDialog implements Runnable{
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO writeObject then parse to xml file
+                selectedUsers.add(0, user.getName() + " - " + user.getUsername());
+                XMLParse.addGroup(selectedUsers, groupNameTF.getText());
+/*                try {
+                    selectedUsers.add(0, user.getName() + " - " + user.getUsername());
+                    out.writeObject(new Group(groupNameLabel.getText(), selectedUsers));
+                    out.flush();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }*/
+                dispose();
             }
         });
 
@@ -135,10 +134,6 @@ public class CreateGroup extends JDialog implements Runnable{
                 return listCellRendererComponent;
             }
         };
-    }
-
-    public static void main(String[] args) {
-        new CreateGroup(null);
     }
 
     @Override
