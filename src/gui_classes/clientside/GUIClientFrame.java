@@ -374,14 +374,39 @@ public class GUIClientFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                    out.writeObject(new JOptionPane());
-                    String gcName = groupsList.getSelectedValue();
-                System.out.println(gcName);
-                    try {
+                String gcName = groupsList.getSelectedValue();
+                try {
+
+                    Object[] options = {"Yes", "No"};
+
+                    if (groupsList.getSelectedIndex() == -1) {
+                        JOptionPane.showMessageDialog(null, "Select a row at the table to delete.", "User Deletion", JOptionPane.ERROR_MESSAGE, null);
+                        return;
+                    }
+
+
+                    int c = JOptionPane.showOptionDialog(null, "Are you sure you want to leave " + gcName + "?", "Leave A Group",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+
+                    if (c == 0) {
                         out.writeObject("/leavegroup " + gcName + " " + user.getUsername());
                         out.flush();
-                    } catch (IOException ex) {
-                        System.err.println(ex.getMessage());
                     }
+
+
+                } catch (IOException ex) {
+                    System.err.println(ex.getMessage());
+                }
+
+                try {
+                    updateGroupsTab();
+                } catch (ParserConfigurationException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (SAXException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -534,6 +559,21 @@ public class GUIClientFrame extends JFrame {
         contactList.setFixedCellHeight(30);
         contactList.setCellRenderer(renderCell());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    public void updateGroupsTab() throws ParserConfigurationException, IOException, SAXException {
+        String [] temp = Server.getGroupsOfUser(user).toArray(new String[Server.getGroupsOfUser(user).size()]);
+        groupsList.setListData(temp);
+        groupsList.setFixedCellHeight(30);
+        groupsList.setCellRenderer(renderCell());
+        groupsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        ArrayList<String> temp1 = XMLParse.getAllGroups();
+        String [] stringOfGroups = temp1.toArray(new String[temp1.size()]);
+        availGroups.setListData(stringOfGroups);
+        availGroups.setFixedCellHeight(30);
+        availGroups.setCellRenderer(renderCell());
+        availGroups.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
 

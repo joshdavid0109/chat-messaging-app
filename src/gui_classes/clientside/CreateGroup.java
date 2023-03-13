@@ -36,7 +36,7 @@ public class CreateGroup extends JDialog implements Runnable{
         groupNameLabel.setText("Group Name");
         groupNameTF.setFont(f);
 
-        usersList.setListData(XMLParse.usersList(user));
+        usersList.setListData(XMLParse.usersList());
         usersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         usersList.setFixedCellHeight(30);
         usersList.setCellRenderer(renderCell());
@@ -108,8 +108,7 @@ public class CreateGroup extends JDialog implements Runnable{
                     return;
                 }
                 else{
-                    selectedUsers.add(0, user.getName() + " @" + user.getUsername());
-
+                    selectedUsers.add(0,  "TEST @x" );
                     Group grupow = new Group(groupNameTF.getText(), selectedUsers, user);
                     try {
                         out.writeObject(grupow);

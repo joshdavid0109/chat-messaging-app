@@ -15,6 +15,9 @@
         <Password>joshdavid</Password>
         <status>offline</status>
         <BanStatus/>
+        <Groups>
+            <Group id="Member">testgrp</Group>
+        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Kiko</name>
@@ -30,12 +33,9 @@
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Admin">BOYz</Group>
-            <Group id="Member">pipol</Group>
-        </Groups>
+        <Groups/>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Maervin</name>
@@ -45,7 +45,7 @@
         <status>offline</status>
         <BanStatus/>
         <Groups>
-            <Group id="Member">BOYz</Group>
+            <Group id="Member">testgrp</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
@@ -55,10 +55,7 @@
         <Password>ariel</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">BOYz</Group>
-            <Group id="Admin">pipol</Group>
-        </Groups>
+        <Groups/>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Rey</name>

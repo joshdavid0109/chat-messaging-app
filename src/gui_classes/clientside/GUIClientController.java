@@ -70,8 +70,6 @@ public class GUIClientController implements ActionListener {
                     //login error message from server
                     Message message = (Message) obj;
                     JOptionPane.showMessageDialog(frame, message.getContent(), "Login Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Incorrect username or password. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -241,15 +239,30 @@ public class GUIClientController implements ActionListener {
                         }
                         // update members list if sino kakaonline hehe
                         if (!list.isEmpty() && list.get(0) instanceof String) {
-                            System.out.println("arrlst sa gcc");
                             ArrayList<String> arrayList1 = (ArrayList<String>) list;
                             frame.updateStats(arrayList1);
                         }
+                    }
+                    // Handles:
+                    //      Leaving a group
+                    //      Other dialog/pop up messages
+                    else if (obj instanceof JOptionPane j) {
+                        JOptionPane.showMessageDialog(new JFrame(), j.getMessage());
+                    }
+
+                    // Update Groups tab when user is added to a group
+                    else if (obj instanceof Group group) {
+                        frame.updateGroupsTab();
+                        System.out.println("groups tab updated");
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                throw new RuntimeException(e);
+            } catch (SAXException e) {
+                throw new RuntimeException(e);
             }
         }
     }

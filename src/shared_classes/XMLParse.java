@@ -355,7 +355,7 @@ public class XMLParse {
      *
      * @return A list of all the users in the XML file.
      */
-    public static String[] usersList(User user) {
+    public static String[] usersList() {
         String[] contacts = new String[Server.registeredUsersList.size()];
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -524,7 +524,6 @@ public class XMLParse {
     public static void addGroup(Group group) {
         List<String> usersToAdd = group.getMembers();
         String groupName = group.getName();
-        User admin = group.getAdmin();
 
         try {
             getUsersDoc();
@@ -535,40 +534,29 @@ public class XMLParse {
             Element root;
 
             for (int j = 0; j < usersToAdd.size(); j++) {
-                String temp = usersToAdd.get(j).split("\\s+", 3)[2];
-                System.out.println(temp);
+                System.out.println(usersToAdd);
+                String admin = null;
+                String temp = usersToAdd.get(j).split(" @", 2)[1];
+
+                if (j == 0) {
+                    admin = temp;
+                }
                 for (int i = 0; i < nodeList.getLength(); i++) {
                     element = (Element) nodeList.item(i);
                     if (element.getElementsByTagName("Username").item(0).getTextContent().equals(temp)) {
-                        System.out.println(element.toString());
-                        NodeList groupNode = usersDoc.getElementsByTagName("Groups");
-                        if (groupNode.getLength() > 0) {
-                            root = (Element)groupNode.item(i) ;
-                            base = usersDoc.createElement("Group");
-                            if (element.getElementsByTagName("name").item(0).getTextContent().equals(admin.getName())) {
-                                base.setAttribute("id", "Admin");
-                                base.setTextContent(groupName);
-                            }else {
-                                base.setAttribute("id", "Member");
-                                base.setTextContent(groupName);
-                            }
-                            root.appendChild(base);
-                            break;
-                        } else {
+                        System.out.println(element.getElementsByTagName("Username").item(0).getTextContent());
+                            NodeList groupNode = usersDoc.getElementsByTagName("Groups");
                                 root = (Element) groupNode.item(i);
-                                Element groupRoot = usersDoc.createElement("Groups");
                                 base = usersDoc.createElement("Group");
-                                if (element.getElementsByTagName("name").item(0).getTextContent().equals(admin.getName())) {
+                                if (element.getElementsByTagName("Username").item(0).getTextContent().equals(admin)) {
                                     base.setAttribute("id", "Admin");
                                     base.setTextContent(groupName);
                                 }else {
                                     base.setAttribute("id", "Member");
                                     base.setTextContent(groupName);
                                 }
-                                groupRoot.appendChild(base);
-                                root.appendChild(groupRoot);
+                                root.appendChild(base);
                                 break;
-                        }
                     }
                 }
             }
@@ -761,21 +749,18 @@ public class XMLParse {
                 Element user = (Element)nodeList.item(i);
                 String name = user.getElementsByTagName("Username").item(0).getTextContent();
                 if (name.equals(nameToDelete)) {
-                    NodeList nodeL = usersDoc.getElementsByTagName("Groups");
-                    if (nodeL != null) {
-                        for (int j = 0; j < nodeL.getLength(); j++) {
-                            Element node = (Element) nodeL.item(j);
-                            if (node.getElementsByTagName("Group").getLength() != 0) {
-                                String group = node.getElementsByTagName("Group").item(0).getTextContent();
-                                System.out.println(group + "\n" + groupName);
-                                if (group.equals(groupName)) {
-                                    System.out.println(group + "11");
-                                    Element parent = (Element) node.getParentNode();
-                                    parent.removeChild(node);
-                                }
+                    NodeList nodeL = user.getElementsByTagName("Group");
+                    if (nodeL.getLength()!=0) {
+                        for (int j =0;j < nodeList.getLength(); j++) {
+                            Node g = nodeL.item(j);
+                            if (g.getTextContent().equals(groupName)){
+                                Element parent = (Element) g.getParentNode();
+                                parent.removeChild(g);
+                                break;
                             }
                         }
-                    }
+                    } else
+                        break;
                 }
             }
 

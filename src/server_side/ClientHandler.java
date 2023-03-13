@@ -104,7 +104,7 @@ public class ClientHandler implements Runnable {
 
                 else if(obj instanceof Group group){
                     XMLParse.addGroup(group);
-
+                    outToClient.writeObject(group);
                     //debug
                     server.privateMessage(group.getAdmin().getName(), new Message("GRP CREATED!"));
                 }
@@ -113,6 +113,7 @@ public class ClientHandler implements Runnable {
                     if (s.contains("/leavegroup")) {
                         String [] x = s.split(" ");
                         XMLParse.removeUserFromGroup(x[2], x[1]);
+                        outToClient.writeObject(new JOptionPane("You have successfully left the group " + x[1]));
                     }
                 }
 
