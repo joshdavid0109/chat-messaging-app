@@ -51,16 +51,11 @@ public class GUIClientFrame extends JFrame {
         this.user = u;
         this.controller = controller;
 
-
-
-
         String fontfamily = "Arial, sans-serif";
         Font font = new Font(fontfamily, Font.PLAIN, fontSize);
         setTitle("Chat Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
-
-
 
         setTitle("Chat Application - "+user.getName());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -421,13 +416,16 @@ public class GUIClientFrame extends JFrame {
             @Override
             public void windowClosing(WindowEvent event) {
                 XMLParse.setStatusOfUser(user.getUsername(), "offline");
+                usersList = new ArrayList<>(Arrays.asList(getAllContacts()));
+                try {
+                    out.writeObject(usersList);
+                    out.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
-
-    /*private void searchContacts() {
-        new SearchingContacts(this);
-    }*/
 
     public void updateStats(ArrayList<String> contacts) {
         String [] temp = contacts.toArray(new String[contacts.size()]);
@@ -464,7 +462,6 @@ public class GUIClientFrame extends JFrame {
         return contacts;
     }
 
-
     public void appendMessage(String message) {
         Font font = new Font("Verdana", Font.BOLD, 10);
         messagePane.setFont(font);
@@ -477,31 +474,6 @@ public class GUIClientFrame extends JFrame {
             userPane.append(user + "\n");
         }
     }
-    private ArrayList<String> findSimilarNames(String input) {
-        similarNames = new ArrayList<>();
-        //this one kinopya lang po namin sa internet sir,
-        // i dont even know how this works
-        for (String name : XMLParse.getAllContactNames()) {
-            int[][] dp = new int[input.length() + 1][name.length() + 1];
-            for (int i = 0; i <= input.length(); i++) {
-                dp[i][0] = i;
-            }
-            for (int j = 0; j <= name.length(); j++) {
-                dp[0][j] = j;
-            }
-            for (int i = 1; i <= input.length(); i++) {
-                for (int j = 1; j <= name.length(); j++) {
-                    int cost = (input.charAt(i - 1) == name.charAt(j - 1)) ? 0 : 1;
-                    dp[i][j] = Math.min(dp[i - 1][j] + 1, Math.min(dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost));
-                }
-            }
-            int distance = dp[input.length()][name.length()];
-            if (distance <= 2) { // Set the maximum allowed edit distance to 2
-                similarNames.add(name);
-            }
-        }
-        return similarNames;
-    }
 
     public void updateUsernameLabel(String username) {
         usernameLabel.setText(username);
@@ -513,13 +485,6 @@ public class GUIClientFrame extends JFrame {
 
     public void clearMessageText() {
         messageInput.setText("");
-    }
-
-    private class InputListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            sendButton.doClick();
-        }
     }
 
     private void refresh(){
