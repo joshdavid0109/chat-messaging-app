@@ -207,6 +207,23 @@ public class Server extends Thread{
     }
 
     /**
+     * Update status of users for each frame of user
+     * who have just been online
+     * @param arrayList
+     */
+    public void updateUserFrameList(ArrayList<String> arrayList) {
+        for (ClientHandler clientHandler: clientsList) {
+            try {
+                System.out.println(arrayList.get(0));
+                clientHandler.outToClient.writeObject(arrayList);
+                clientHandler.outToClient.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * For each client in the list of clients, send the message to the client.
      *
      * @param message The message to be sent to all clients.

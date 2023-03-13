@@ -1,5 +1,6 @@
 package server_side;
 
+import gui_classes.clientside.GUIClientController;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -94,6 +95,14 @@ public class ClientHandler implements Runnable {
                     //outToClient.writeObject(message);
                 }
 
+                // Update status of users
+                else if (obj instanceof ArrayList<?> arrayList) {
+                    System.out.println("ARraylst");
+                    ArrayList<String> strings= (ArrayList<String>) arrayList;
+                    server.updateUserFrameList(strings);
+
+                }
+
                 else if(obj instanceof Group group){
                     XMLParse.addGroup(group);
 
@@ -109,12 +118,10 @@ public class ClientHandler implements Runnable {
                             if (user.getUsername().equals(loginCredentials.getUsername())) {
                                 if (user.getPassword().equals(loginCredentials.getPassword())) {
                                     if (user.getStatus().equals("online")) {
-                                        System.out.println("ol");
                                         loginStatus = true;
                                         outToClient.writeObject(new JOptionPane("User is currently logged in on another device."));
                                         break;
                                     } else if (user.getBanStatus().equals("BANNED")) {
-                                        System.out.println("banned");
                                         loginStatus = true;
                                         outToClient.writeObject(new JOptionPane("User is currently banned from the system."));
                                         break;

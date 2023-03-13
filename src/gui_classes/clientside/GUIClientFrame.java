@@ -23,8 +23,8 @@ import shared_classes.*;
 public class GUIClientFrame extends JFrame {
 
     private GUIClientController controller;
-    JList<String> contactList;
-    ArrayList<String> usersList;
+    public static JList<String> contactList;
+    public static ArrayList<String> usersList;
     public JList<String> groupsList;
     public JList<String> searchResultsList;
     public ArrayList<String> bookmarkedContacts = new ArrayList<>();
@@ -47,20 +47,29 @@ public class GUIClientFrame extends JFrame {
         this.contactList = contactList;
     }
 
-    public GUIClientFrame(GUIClientController controller, User u, ObjectOutputStream out) {
+    public GUIClientFrame(GUIClientController controller, User u, ObjectOutputStream out) throws IOException {
         this.user = u;
+        this.controller = controller;
+
+
+
+
         String fontfamily = "Arial, sans-serif";
         Font font = new Font(fontfamily, Font.PLAIN, fontSize);
         setTitle("Chat Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
 
-        this.controller = controller;
+
 
         setTitle("Chat Application - "+user.getName());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         usersList = new ArrayList<>(Arrays.asList(getAllContacts()));
+
+        // Inform other clients that new client have just been connected
+        out.writeObject(usersList);         // then update members tab
+        out.flush();
 
         contactList = new JList<>(getAllContacts());
         contactList.setFixedCellHeight(20);
@@ -420,34 +429,11 @@ public class GUIClientFrame extends JFrame {
         new SearchingContacts(this);
     }*/
 
-    private void bookmark(java.awt.event.ActionEvent evt, String selectedContact, int index) {
-        DefaultListModel model = (DefaultListModel) contactList.getModel();
-        model.remove(index);
-        model.add(index-1, selectedContact);
-        contactList.setSelectedIndex(index-1);
-    }
-
-    private void updateContactList(String[] allContacts) {
-        ArrayList<String> contactsList = new ArrayList<>();
-
-        bookmarkedContacts.sort(String.CASE_INSENSITIVE_ORDER);
-        for (String contact : bookmarkedContacts) {
-            if (contactsList.contains(contact)) {
-                continue;
-            }
-            contactsList.add(contact);
-        }
-        for (String contact : allContacts) {
-            if (contactsList.contains(contact)) {
-                continue;
-            }
-            contactsList.add(contact);
-        }
-        contactList.setListData(contactsList.toArray(new String[0]));
-    }
-
-    private void updateBookmarkedContactsLabel() {
-        bookmarkedContactsLabel.setText("Bookmarked Contacts: " + bookmarkedContacts.toString());
+    public void updateStats(ArrayList<String> contacts) {
+        String [] temp = contacts.toArray(new String[contacts.size()]);
+        contactList.setListData(temp);
+        contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        contactList.setFixedCellHeight(20);
     }
 
 

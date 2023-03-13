@@ -372,7 +372,7 @@ public class XMLParse {
                     String name = userElement.getElementsByTagName("name").item(0).getTextContent();
                     String username = userElement.getElementsByTagName("Username").item(0).getTextContent();
 
-                        contacts[i] = name + " - " + username;
+                        contacts[i] = name + " @" + username;
                 }
             }
             // Sort contacts alphabetically

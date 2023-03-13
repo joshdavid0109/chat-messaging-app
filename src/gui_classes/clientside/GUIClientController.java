@@ -66,6 +66,7 @@ public class GUIClientController implements ActionListener {
                     log.dispose();
                     user = (User) obj;
                     System.out.println("YOU HAVE LOGGED IN AS: " + user.getName());
+
                     loggedIn = true;
                 } else if (obj instanceof Message) {
                     //login error message from server
@@ -92,6 +93,10 @@ public class GUIClientController implements ActionListener {
         } /*finally {
             XMLParse.setEveryoneOffline();
         }*/
+    }
+
+    public void updateUserStatus() {
+
     }
 
     /**
@@ -232,11 +237,13 @@ public class GUIClientController implements ActionListener {
                                 frame.appendMessage("[UNREAD MSG] " + sender + ": " + content);
                             }
                         }
-                    } // It ain't working :< idk why
-                    /*else  if (obj instanceof Group g) {
-                        System.out.println("Group hello");
-                        XMLParse.addGroup(g.getMembers(), g.getName());
-                    }*/
+                        // update members list if sino kakaonline hehe
+                        if (!list.isEmpty() && list.get(0) instanceof String) {
+                            System.out.println("arrlst sa gcc");
+                            ArrayList<String> arrayList1 = (ArrayList<String>) list;
+                            frame.updateStats(arrayList1);
+                        }
+                    }
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());

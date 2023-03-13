@@ -107,10 +107,7 @@ public class CreateGroup extends JDialog implements Runnable{
                     return;
                 }
                 else{
-                    selectedUsers.add(0, user.getName() + " - " + user.getUsername());
-
-                    System.out.println("SELECTED USERS R:");
-                    System.out.println(selectedUsers.toString());
+                    selectedUsers.add(0, user.getName() + " @" + user.getUsername());
 
                     Group grupow = new Group(groupNameTF.getText(), selectedUsers, user);
                     try {
