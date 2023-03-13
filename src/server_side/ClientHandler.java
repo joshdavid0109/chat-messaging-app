@@ -97,7 +97,6 @@ public class ClientHandler implements Runnable {
 
                 // Update status of users
                 else if (obj instanceof ArrayList<?> arrayList) {
-                    System.out.println("ARraylst");
                     ArrayList<String> strings= (ArrayList<String>) arrayList;
                     server.updateUserFrameList(strings);
 

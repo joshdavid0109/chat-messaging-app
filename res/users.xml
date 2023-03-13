@@ -4,7 +4,7 @@
         <Age>18</Age>
         <Username>franz1</Username>
         <Password>franz</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groups/>
     </User>
@@ -36,7 +36,7 @@
         <status>offline</status>
         <BanStatus/>
         <Groups>
-            <Group id="ADMIN">BOYz</Group>
+            <Group id="Admin">BOYz</Group>
             <Group id="Member">pipol</Group>
         </Groups>
     </User>
@@ -56,11 +56,11 @@
         <Age>20</Age>
         <Username>ariel</Username>
         <Password>ariel</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groups>
             <Group id="Member">BOYz</Group>
-            <Group id="ADMIN">pipol</Group>
+            <Group id="Admin">pipol</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">

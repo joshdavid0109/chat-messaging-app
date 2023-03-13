@@ -5,6 +5,7 @@ import shared_classes.User;
 import shared_classes.XMLParse;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,7 +24,7 @@ public class CreateGroup extends JDialog implements Runnable{
     private JScrollPane usersPane;
     private JLabel groupNameLabel;
     private JTextField groupNameTF;
-    private ArrayList<String> selectedUsers;
+    private final ArrayList<String> selectedUsers;
 
     public CreateGroup(JFrame parent, ObjectOutputStream out, User user) {
         super(parent, "Create Group", true);
@@ -38,7 +39,7 @@ public class CreateGroup extends JDialog implements Runnable{
         usersList.setListData(XMLParse.usersList(user));
         usersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         usersList.setFixedCellHeight(30);
-        usersList.setCellRenderer(getRenderer());
+        usersList.setCellRenderer(renderCell());
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -63,7 +64,7 @@ public class CreateGroup extends JDialog implements Runnable{
                         selectedUsersList.setListData(t);
                         selectedUsersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                         selectedUsersList.setFixedCellHeight(30);
-                        selectedUsersList.setCellRenderer(getRenderer());
+                        selectedUsersList.setCellRenderer(renderCell());
                     }
                 } else {
 
@@ -74,7 +75,7 @@ public class CreateGroup extends JDialog implements Runnable{
                     selectedUsersList.setSelectedIndex(-1);
                     selectedUsersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                     selectedUsersList.setFixedCellHeight(30);
-                    selectedUsersList.setCellRenderer(getRenderer());
+                    selectedUsersList.setCellRenderer(renderCell());
                 }
             }
         });
@@ -94,7 +95,7 @@ public class CreateGroup extends JDialog implements Runnable{
                 selectedUsersList.setListData(temp);
                 selectedUsersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 selectedUsersList.setFixedCellHeight(30);
-                selectedUsersList.setCellRenderer(getRenderer());
+                selectedUsersList.setCellRenderer(renderCell());
             }
         });
 
@@ -118,20 +119,6 @@ public class CreateGroup extends JDialog implements Runnable{
                         ex.printStackTrace();
                     }
                 }
-
-
-                //XMLParse.addGroup(selectedUsers, groupNameTF.getText());
-
-
-
-
-/*                try {
-                    selectedUsers.add(0, user.getName() + " - " + user.getUsername());
-                    out.writeObject(new Group(groupNameLabel.getText(), selectedUsers));
-                    out.flush();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }*/
                 dispose();
             }
         });
@@ -145,14 +132,27 @@ public class CreateGroup extends JDialog implements Runnable{
         this.setVisible(true);
     }
 
-    private ListCellRenderer<? super String> getRenderer() {
+    public static ListCellRenderer<? super String> renderCell() {
         return new DefaultListCellRenderer(){
             @Override
             public Component getListCellRendererComponent(JList<?> list,
                                                           Object value, int index, boolean isSelected,
                                                           boolean cellHasFocus) {
                 JLabel listCellRendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,cellHasFocus);
-                listCellRendererComponent.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,Color.BLACK));
+                String rowValue = listCellRendererComponent.getText();
+                if (rowValue.contains("online")) {
+                    listCellRendererComponent.setText(rowValue.split(" : ")[0]);
+                            listCellRendererComponent.setBorder(new CompoundBorder(
+                                    BorderFactory.createMatteBorder(0, 15, 0, 0, Color.GREEN),
+                                    BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK)));
+                }
+                else if (rowValue.contains("offline")){
+                    listCellRendererComponent.setText(rowValue.split(" : ")[0]);
+                    listCellRendererComponent.setBorder(new CompoundBorder(
+                            BorderFactory.createMatteBorder(0, 15, 0, 0, Color.white),
+                            BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK)));
+                } else
+                    listCellRendererComponent.setBorder(BorderFactory.createMatteBorder(0,0,1,0, Color.black));
                 return listCellRendererComponent;
             }
         };

@@ -133,7 +133,7 @@ public class XMLParse {
                 for (int j = 0; j < groupNodes.getLength(); j++) {
                     Node groupNode = groupNodes.item(j);
                     if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
-                        String group = groupNode.getTextContent().toLowerCase(Locale.ROOT);
+                        String group = groupNode.getTextContent();
                         if (!groups.contains(group)) {
                             groups.add(group);
                         }
@@ -376,7 +376,7 @@ public class XMLParse {
                 }
             }
             // Sort contacts alphabetically
-//            Arrays.sort(contacts);
+            Arrays.sort(contacts);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             System.out.println(e.getMessage());
         }
@@ -462,6 +462,65 @@ public class XMLParse {
         }
     }
 
+    public static String[] getAllContacts() {
+        String[] contacts;
+        try {
+
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse("res/users.xml");
+            NodeList userNodes = document.getElementsByTagName("User");
+
+            contacts = new String[userNodes.getLength()];
+
+            for (int i = 0; i < userNodes.getLength(); i++) {
+                Node userNode = userNodes.item(i);
+                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element userElement = (Element) userNode;
+                    String name = userElement.getElementsByTagName("name").item(0).getTextContent();
+                    String status = userElement.getElementsByTagName("status").item(0).getTextContent();
+                    contacts[i] = name + " : " + status ;
+                }
+            }
+        } catch (SAXException | IOException | ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        return contacts;
+    }
+
+    public static ArrayList<User> getAllUsers() {
+        ArrayList<User> users = null;
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse("res/users.xml");
+            NodeList userNodes = document.getElementsByTagName("User");
+
+            users = new ArrayList<>();
+
+            for (int i = 0; i < userNodes.getLength(); i++) {
+                Node userNode = userNodes.item(i);
+                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element userElement = (Element) userNode;
+                    String id = userElement.getAttribute("id");
+                    String username = userElement.getElementsByTagName("Username").item(0).getTextContent();
+                    String name = userElement.getElementsByTagName("name").item(0).getTextContent();
+                    String age = userElement.getElementsByTagName("Age").item(0).getTextContent();
+                    String password = userElement.getElementsByTagName("Password").item(0).getTextContent();
+                    String  status= userElement.getElementsByTagName("status").item(0).getTextContent();
+                    String banStatus= userElement.getElementsByTagName("BanStatus").item(0).getTextContent();
+
+                    users.add(new User(id, name, age,username, password, status, banStatus));
+                }
+            }
+            // Sort contacts alphabetically
+            Arrays.sort(new ArrayList[]{users});
+        } catch (SAXException | IOException | ParserConfigurationException e) {
+            System.out.println(e.getMessage());
+        }
+        return users;
+    }
+
     public static void addGroup(Group group) {
         List<String> usersToAdd = group.getMembers();
         String groupName = group.getName();
@@ -487,7 +546,7 @@ public class XMLParse {
                             root = (Element)groupNode.item(i) ;
                             base = usersDoc.createElement("Group");
                             if (element.getElementsByTagName("name").item(0).getTextContent().equals(admin.getName())) {
-                                base.setAttribute("id", "ADMIN");
+                                base.setAttribute("id", "Admin");
                                 base.setTextContent(groupName);
                             }else {
                                 base.setAttribute("id", "Member");
@@ -500,7 +559,7 @@ public class XMLParse {
                                 Element groupRoot = usersDoc.createElement("Groups");
                                 base = usersDoc.createElement("Group");
                                 if (element.getElementsByTagName("name").item(0).getTextContent().equals(admin.getName())) {
-                                    base.setAttribute("id", "Moderator");
+                                    base.setAttribute("id", "Admin");
                                     base.setTextContent(groupName);
                                 }else {
                                     base.setAttribute("id", "Member");

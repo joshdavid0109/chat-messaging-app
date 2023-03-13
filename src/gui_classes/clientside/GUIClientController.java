@@ -50,9 +50,7 @@ public class GUIClientController implements ActionListener {
             logAuth:
             while (!loggedIn) {
 
-
                 // Prompt the user to enter their username and password
-                System.out.println("login ka na");
                 LoginGUIForm log = new LoginGUIForm(frame, output);
 
                 // Wait for the server to respond with a User object
@@ -90,8 +88,12 @@ public class GUIClientController implements ActionListener {
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } /*finally {
-            XMLParse.setEveryoneOffline();
+        }  catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }/*finally {
+            XMLParse.setStatusOfUser(user.getUsername(), "offline");
         }*/
     }
 
@@ -239,7 +241,6 @@ public class GUIClientController implements ActionListener {
                         }
                         // update members list if sino kakaonline hehe
                         if (!list.isEmpty() && list.get(0) instanceof String) {
-                            System.out.println("arrlst sa gcc");
                             ArrayList<String> arrayList1 = (ArrayList<String>) list;
                             frame.updateStats(arrayList1);
                         }

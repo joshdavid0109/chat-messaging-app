@@ -40,7 +40,6 @@ public class Server extends Thread{
     public List<User> clients;
     private List<ClientHandler> clientsList;
     public static ArrayList<String> groups;
-    public Set<String> groupNames;
     static XMLParse xmlParse = new XMLParse("res/messages.xml");
     public static List<User> registeredUsersList = new ArrayList<>(XMLParse.getUserList());
     JFrame frame;

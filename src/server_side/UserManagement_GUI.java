@@ -61,6 +61,7 @@ public class UserManagement_GUI extends JFrame{
         JSplitPane serverSwitch = new JSplitPane();
         serverSwitch.setDividerSize(0);
         serverSwitch.setResizeWeight(0.5);
+        serverSwitch.setBorder(BorderFactory.createEtchedBorder(000000));
 
         //start button
         serverSwitch.setLeftComponent(new JButton("Start"));

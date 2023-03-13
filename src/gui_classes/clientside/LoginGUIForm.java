@@ -70,7 +70,7 @@ public class LoginGUIForm extends JDialog implements Runnable{
         getContentPane().add(panel);
         pack();
         setLocationRelativeTo(parent);
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setVisible(true);
 
     }

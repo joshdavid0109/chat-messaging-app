@@ -1,6 +1,9 @@
 package gui_classes.clientside;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicScrollPaneUI;
+import javax.swing.plaf.synth.SynthScrollPaneUI;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -8,8 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -20,34 +22,28 @@ import org.xml.sax.SAXException;
 import server_side.Server;
 import shared_classes.*;
 
+import static gui_classes.clientside.CreateGroup.renderCell;
+
 public class GUIClientFrame extends JFrame {
 
     private GUIClientController controller;
     public static JList<String> contactList;
     public static ArrayList<String> usersList;
     public JList<String> groupsList;
+    public JList<String> availGroups;
     public JList<String> searchResultsList;
-    public ArrayList<String> bookmarkedContacts = new ArrayList<>();
-    public  JLabel bookmarkedContactsLabel = new JLabel();
     private JTextArea messagePane;
-    private JTextArea userPane;
     private JButton sendButton;
-    private JButton logoutButton;
-    private JLabel usernameLabel;
     private JTextField messageInput;
     private JTextField searchInput;
+    public static HashMap<String, Boolean> bookmarkedContactsMap;
     public static JButton bookmarkButton;
     private static JButton searchButton;
-    private int fontSize = 12;
-    ArrayList<String> similarNames;
+    private final int fontSize = 12;
     User user;
 
 
-    public void setContactList(JList<String> contactList) {
-        this.contactList = contactList;
-    }
-
-    public GUIClientFrame(GUIClientController controller, User u, ObjectOutputStream out) throws IOException {
+    public GUIClientFrame(GUIClientController controller, User u, ObjectOutputStream out) throws IOException, ParserConfigurationException, SAXException {
         this.user = u;
         this.controller = controller;
 
@@ -60,14 +56,15 @@ public class GUIClientFrame extends JFrame {
         setTitle("Chat Application - "+user.getName());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
-        usersList = new ArrayList<>(Arrays.asList(getAllContacts()));
+        usersList = new ArrayList<>(Arrays.asList(XMLParse.getAllContacts()));
 
         // Inform other clients that new client have just been connected
         out.writeObject(usersList);         // then update members tab
         out.flush();
 
-        contactList = new JList<>(getAllContacts());
-        contactList.setFixedCellHeight(20);
+        contactList = new JList<>(XMLParse.getAllContacts());
+        contactList.setFixedCellHeight(30);
+        contactList.setCellRenderer(renderCell());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         List<String> x = Server.getGroupsOfUser(user);
@@ -75,7 +72,17 @@ public class GUIClientFrame extends JFrame {
         String[] groupsArray = x.toArray(new String[x.size()]);
 
         groupsList = new JList<>(groupsArray);
+        groupsList.setFixedCellHeight(30);
+        groupsList.setCellRenderer(renderCell());
         groupsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        ArrayList<String> temp = XMLParse.getAllGroups();
+        String [] stringOfGroups = temp.toArray(new String[temp.size()]);
+        availGroups = new JList<>(stringOfGroups);
+        availGroups.setFixedCellHeight(30);
+        availGroups.setCellRenderer(renderCell());
+        availGroups.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 
         // Initialize the components
         messagePane = new JTextArea();
@@ -100,6 +107,11 @@ public class GUIClientFrame extends JFrame {
         miscellaneous.setForeground(Color.WHITE);
         miscellaneous.setFont(new Font("Arial", Font.BOLD, 18));
         miscellaneous.setBounds(100, 0, 200, 75);
+
+        JLabel groups = new JLabel("GROUPS");
+        groups.setForeground(Color.WHITE);
+        groups.setFont(new Font("Arial", Font.BOLD, 18));
+        groups.setBounds(180, 350, 200, 75);
 
         JLabel currentUserName = new JLabel();
         currentUserName.setForeground(Color.WHITE);
@@ -128,6 +140,15 @@ public class GUIClientFrame extends JFrame {
         bookmarkButton.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         bookmarkButton.setFocusable(false);
         bookmarkButton.setBounds(40, 300, 100, 20);
+        bookmarkedContactsMap = new HashMap<String, Boolean>();
+
+        for (String s:
+                usersList
+             ) {
+            bookmarkedContactsMap.put((s.split("\\s+")[0]), false);
+
+        }
+
         bookmarkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -135,13 +156,31 @@ public class GUIClientFrame extends JFrame {
                 if (contactList.getSelectedValue() != null) {
                     selectedContact = contactList.getSelectedValue();
                     int index = contactList.getSelectedIndex();
-                    usersList.remove(index);
-                    usersList.add(0, selectedContact);
+
+                    if (bookmarkButton.getText().equals("Bookmark")) {
+                        usersList.remove(index);
+                        usersList.add(0, selectedContact);
+
+                        for (Map.Entry<String, Boolean> entry : bookmarkedContactsMap.entrySet()) {
+                            if (entry.getKey().equals(selectedContact.split(" : ")[0]))
+                                entry.setValue(true);
+                        }
+                    } else if (bookmarkButton.getText().equals("Unbookmark")) {
+                        usersList.remove(index);
+                        usersList.add(selectedContact);
+
+
+                        for (Map.Entry<String, Boolean> entry : bookmarkedContactsMap.entrySet()) {
+                            if (entry.getKey().equals(selectedContact.split(" : ")[0]))
+                                entry.setValue(false);
+                        }
+                    }
 
                     String [] temp = usersList.toArray(new String[usersList.size()]);
                     contactList.setListData(temp);
                     contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                    contactList.setFixedCellHeight(20);
+                    contactList.setFixedCellHeight(30);
+                    contactList.setCellRenderer(renderCell());
 
 
                 }
@@ -162,6 +201,7 @@ public class GUIClientFrame extends JFrame {
         JScrollPane scrollPaneListMembers = new JScrollPane(contactList);
         scrollPaneListMembers.setVisible(true);
         scrollPaneListMembers.setBorder(BorderFactory.createEmptyBorder());
+        scrollPaneListMembers.setUI(new BasicScrollPaneUI());
         scrollPaneListMembers.setBounds(40, 70, 200, 200);
         contactList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -177,6 +217,15 @@ public class GUIClientFrame extends JFrame {
                 String[] x = selectedValue.split(" : ");
                 messageInput.setText("/pm "+ x[0]+" ");
 
+                // Pang unbookmark/bookmark
+                for (Map.Entry<String, Boolean> e:
+                     bookmarkedContactsMap.entrySet()) {
+                    if (e.getKey().equals(x[0]) && e.getValue()) {
+                        bookmarkButton.setText("Unbookmark");
+                    } else if (e.getKey().equals(x[0]))
+                        bookmarkButton.setText("Bookmark");
+
+                }
             }
         });
 
@@ -211,6 +260,12 @@ public class GUIClientFrame extends JFrame {
         searchResultsScrollPane.setBorder(BorderFactory.createEmptyBorder());
         searchResultsScrollPane.setBounds(40, 100, 270, 200);
 
+
+        JScrollPane availableGroups = new JScrollPane(availGroups);
+        availableGroups.setVisible(true);
+        availableGroups.setBorder(BorderFactory.createEmptyBorder());
+        availableGroups.setBounds(90, 415, 270, 200);
+
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -226,18 +281,18 @@ public class GUIClientFrame extends JFrame {
                 //iterate through lahat ng objects na nasearch (users or groups) tapos
                 //sort them idk
                 for(Object obj : searchRes){
-                    if(obj instanceof User){
-                        User user = (User) obj;
+                    if(obj instanceof User user){
                         stringResultMap.add("USER "+" : "+user.getName()+" @"+user.getUsername());
                     }
-                    else if(obj instanceof Group){
-                        Group grp = (Group) obj;
+                    else if(obj instanceof Group grp){
                         stringResultMap.add("GROUP "+" : "+grp.getName());
                     }
                 }
 
                 String[] resultsArr = stringResultMap.toArray(new String[searchRes.size()]);
                 searchResultsList = new JList<>( resultsArr);
+                searchResultsList.setFixedCellHeight(30);
+                searchResultsList.setCellRenderer(renderCell());
                 searchResultsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 searchResultsList.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent evt) {
@@ -272,20 +327,39 @@ public class GUIClientFrame extends JFrame {
             }
         });
 
-
-
         JButton createGroup = new JButton("Create Group");
         createGroup.setVisible(true);
         createGroup.setForeground(Color.BLACK);
         createGroup.setBackground(Color.WHITE);
         createGroup.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         createGroup.setFocusable(false);
-        createGroup.setBounds(790, 640, 100, 20);
+        createGroup.setBounds(90, 640, 100, 20);
         JFrame f = this;
         createGroup.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateGroup(f, out, user);
+            }
+        });
+
+        /**
+         * Additional feature nalang eheh
+         *
+         */
+        JButton joinGroup = new JButton("Join Group");
+        joinGroup.setVisible(true);
+        joinGroup.setForeground(Color.BLACK);
+        joinGroup.setBackground(Color.WHITE);
+        joinGroup.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        joinGroup.setFocusable(false);
+        joinGroup.setBounds(260, 640, 100, 20);
+        joinGroup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                    out.writeObject(new JOptionPane());
+                    JOptionPane.showMessageDialog(f, "This feature is not yet available"
+                    );
+
             }
         });
 
@@ -344,11 +418,14 @@ public class GUIClientFrame extends JFrame {
         this.add(headerName);
         this.add(headerStatus);
         this.add(miscellaneous);
+        this.add(groups);
         this.add(currentUserName);
         this.add(currentUserStatus);
         this.add(listOfMembersName);
         this.add(bookmarkButton);
         this.add(createGroup);
+        this.add(joinGroup);
+        this.add(availableGroups);
         this.add(scrollPane);
         this.add(messageInput);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -416,7 +493,7 @@ public class GUIClientFrame extends JFrame {
             @Override
             public void windowClosing(WindowEvent event) {
                 XMLParse.setStatusOfUser(user.getUsername(), "offline");
-                usersList = new ArrayList<>(Arrays.asList(getAllContacts()));
+                usersList = new ArrayList<>(Arrays.asList(XMLParse.getAllContacts()));
                 try {
                     out.writeObject(usersList);
                     out.flush();
@@ -430,37 +507,27 @@ public class GUIClientFrame extends JFrame {
     public void updateStats(ArrayList<String> contacts) {
         String [] temp = contacts.toArray(new String[contacts.size()]);
         contactList.setListData(temp);
+        contactList.setFixedCellHeight(30);
+        contactList.setCellRenderer(renderCell());
         contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        contactList.setFixedCellHeight(20);
     }
 
 
-    public String[] getAllContacts() {
-        String[] contacts = new String[Server.registeredUsersList.size()];
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse("res/users.xml");
-            NodeList userNodes = document.getElementsByTagName("User");
+    public static ListCellRenderer<? super String> changeColor() {
+        return new DefaultListCellRenderer(){
+            @Override
+            public Component getListCellRendererComponent(JList<?> list,
+                                                          Object value, int index, boolean isSelected,
+                                                          boolean cellHasFocus) {
+                JLabel c = (JLabel) super.getListCellRendererComponent(list,value, index, isSelected, cellHasFocus);
+                c.setBackground(Color.green);
+                return c;
 
-            contacts = new String[userNodes.getLength()];
-
-            for (int i = 0; i < userNodes.getLength(); i++) {
-                Node userNode = userNodes.item(i);
-                if (userNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element userElement = (Element) userNode;
-                    String name = userElement.getElementsByTagName("name").item(0).getTextContent();
-                    String status = userElement.getElementsByTagName("status").item(0).getTextContent();
-                    contacts[i] = name + " : " + status;
-                }
             }
-            // Sort contacts alphabetically
-            Arrays.sort(contacts);
-        } catch (SAXException | IOException | ParserConfigurationException e) {
-            System.out.println(e.getMessage());
-        }
-        return contacts;
+        };
+
     }
+
 
     public void appendMessage(String message) {
         Font font = new Font("Verdana", Font.BOLD, 10);
@@ -468,7 +535,7 @@ public class GUIClientFrame extends JFrame {
         messagePane.append(message+ "\n");
     }
 
-    public void setUsers(String[] users) {
+/*    public void setUsers(String[] users) {
         userPane.setText("");
         for (String user : users) {
             userPane.append(user + "\n");
@@ -477,7 +544,7 @@ public class GUIClientFrame extends JFrame {
 
     public void updateUsernameLabel(String username) {
         usernameLabel.setText(username);
-    }
+    }*/
 
     public String getMessageText() {
         return messageInput.getText();
@@ -487,8 +554,5 @@ public class GUIClientFrame extends JFrame {
         messageInput.setText("");
     }
 
-    private void refresh(){
-        contactList = new JList<>(getAllContacts());
-    }
 
 }
