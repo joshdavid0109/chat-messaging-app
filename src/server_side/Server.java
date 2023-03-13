@@ -34,7 +34,6 @@ public class Server extends Thread{
     public static ArrayList<ClientHandler> loginHandlerArraylist = new ArrayList<>();
     public static HashMap<ClientHandler, User> loggedInUserHashMap = new HashMap<>();
     public static int port;
-    static Scanner scanner = new Scanner(System.in);
     public static ServerSocket serverSocket;
     private static ArrayList<String> userNames;
     public List<User> clients;

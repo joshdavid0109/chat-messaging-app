@@ -363,6 +363,29 @@ public class GUIClientFrame extends JFrame {
             }
         });
 
+        JButton leaveGroup = new JButton("Leave Group");
+        leaveGroup.setVisible(true);
+        leaveGroup.setForeground(Color.BLACK);
+        leaveGroup.setBackground(Color.WHITE);
+        leaveGroup.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        leaveGroup.setFocusable(false);
+        leaveGroup.setBounds(790, 640, 100, 20);
+        leaveGroup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                    out.writeObject(new JOptionPane());
+                    String gcName = groupsList.getSelectedValue();
+                System.out.println(gcName);
+                    try {
+                        out.writeObject("/leavegroup " + gcName + " " + user.getUsername());
+                        out.flush();
+                    } catch (IOException ex) {
+                        System.err.println(ex.getMessage());
+                    }
+            }
+        });
+
+
         messagePane.setVisible(true);
         messagePane.setBorder(BorderFactory.createEmptyBorder());
         messagePane.setBounds(30, 70, 290, 470);
@@ -425,6 +448,7 @@ public class GUIClientFrame extends JFrame {
         this.add(bookmarkButton);
         this.add(createGroup);
         this.add(joinGroup);
+        this.add(leaveGroup);
         this.add(availableGroups);
         this.add(scrollPane);
         this.add(messageInput);

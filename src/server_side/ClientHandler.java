@@ -109,6 +109,13 @@ public class ClientHandler implements Runnable {
                     server.privateMessage(group.getAdmin().getName(), new Message("GRP CREATED!"));
                 }
 
+                else if (obj instanceof String s) {
+                    if (s.contains("/leavegroup")) {
+                        String [] x = s.split(" ");
+                        XMLParse.removeUserFromGroup(x[2], x[1]);
+                    }
+                }
+
                 else if (obj instanceof LoginCredentials loginCredentials) {
                     try {
                         boolean loginStatus = false;

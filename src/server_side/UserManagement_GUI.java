@@ -33,6 +33,7 @@ public class UserManagement_GUI extends JFrame{
             @Override
             public void windowClosing(WindowEvent e) {
                 XMLParse.setEveryoneOffline();
+//                closeClients();
                 System.exit(0);
             }
         });
@@ -248,6 +249,19 @@ public class UserManagement_GUI extends JFrame{
         userScroll.setBounds(35, 30, 500, 400);
 
         frameUM.add(userScroll);
+    }
+
+    private void closeClients() {
+        for (ClientHandler c:
+             Server.loginHandlerArraylist) {
+            try {
+                c.clientSocket.close();
+                c.outToClient.writeObject(new JOptionPane("The server has been terminated"));
+                c.outToClient.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void populateList() {

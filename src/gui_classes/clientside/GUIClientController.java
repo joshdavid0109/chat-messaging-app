@@ -241,6 +241,7 @@ public class GUIClientController implements ActionListener {
                         }
                         // update members list if sino kakaonline hehe
                         if (!list.isEmpty() && list.get(0) instanceof String) {
+                            System.out.println("arrlst sa gcc");
                             ArrayList<String> arrayList1 = (ArrayList<String>) list;
                             frame.updateStats(arrayList1);
                         }

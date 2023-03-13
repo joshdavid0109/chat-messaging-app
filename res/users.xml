@@ -15,9 +15,6 @@
         <Password>joshdavid</Password>
         <status>offline</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Member">pipol</Group>
-        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Kiko</name>
@@ -33,7 +30,7 @@
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
         <Groups>
             <Group id="Admin">BOYz</Group>

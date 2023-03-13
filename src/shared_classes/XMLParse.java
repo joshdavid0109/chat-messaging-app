@@ -750,6 +750,56 @@ public class XMLParse {
         }
     }
 
+    //TODO
+    public static void removeUserFromGroup(String nameToDelete, String groupName) {
+        try {
+            getUsersDoc();
+            usersDoc.getDocumentElement().normalize();
+            NodeList nodeList = usersDoc.getElementsByTagName("User");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Element user = (Element)nodeList.item(i);
+                String name = user.getElementsByTagName("Username").item(0).getTextContent();
+                if (name.equals(nameToDelete)) {
+                    NodeList nodeL = usersDoc.getElementsByTagName("Groups");
+                    if (nodeL != null) {
+                        for (int j = 0; j < nodeL.getLength(); j++) {
+                            Element node = (Element) nodeL.item(j);
+                            if (node.getElementsByTagName("Group").getLength() != 0) {
+                                String group = node.getElementsByTagName("Group").item(0).getTextContent();
+                                System.out.println(group + "\n" + groupName);
+                                if (group.equals(groupName)) {
+                                    System.out.println(group + "11");
+                                    Element parent = (Element) node.getParentNode();
+                                    parent.removeChild(node);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            nodeList = usersDoc.getElementsByTagName("Users");
+            trimWhiteSpace((Element) nodeList.item(0));
+
+            DOMSource source = new DOMSource(usersDoc);
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            StreamResult streamResult = new StreamResult(new File("res/users.xml"));
+            transformer.transform(source, streamResult);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteUser(String nameToDelete) {
         try {
             getUsersDoc();
@@ -785,6 +835,7 @@ public class XMLParse {
             e.printStackTrace();
         }
     }
+
     public static ArrayList<User> getUsersWithGroup(String groupName) {
         ArrayList<User> users = new ArrayList<>();
         try {
