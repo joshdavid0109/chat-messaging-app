@@ -114,7 +114,7 @@ public class ClientHandler implements Runnable {
                     if (s.contains("/leavegroup")) {
                         String [] x = s.split(" ");
                         XMLParse.removeUserFromGroup(x[2], x[1]);
-                        outToClient.writeObject(new JOptionPane("You have successfully left the group " + x[1]));
+                        outToClient.writeObject(new JOptionPane(x[2] + " have successfully removed from the group " + x[1]));
                     }
                 }
 

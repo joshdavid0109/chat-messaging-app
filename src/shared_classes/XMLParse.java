@@ -539,7 +539,6 @@ public class XMLParse {
             Element root;
 
             for (int j = 0; j < usersToAdd.size(); j++) {
-                System.out.println(usersToAdd);
                 String admin = null;
                 String temp = usersToAdd.get(j).split(" @", 2)[1];
 
@@ -548,24 +547,39 @@ public class XMLParse {
                 }
                 for (int i = 0; i < nodeList.getLength(); i++) {
                     element = (Element) nodeList.item(i);
+
+                    boolean checkDelete = group.getMembers()
+                            .contains(element.getElementsByTagName("Username")
+                                    .item(0).getTextContent());
+
+                    if (usersDoc.getElementsByTagName("Group").item(0).getTextContent().equals(groupName) &&
+                            !checkDelete) {
+                        removeUserFromGroup(temp, groupName);
+                        continue;
+                    }
+
                     if (element.getElementsByTagName("Username").item(0).getTextContent().equals(temp)) {
-                        System.out.println(element.getElementsByTagName("Username").item(0).getTextContent());
                             NodeList groupNode = usersDoc.getElementsByTagName("Groups");
                                 root = (Element) groupNode.item(i);
 
-                                if (root.getElementsByTagName("Group").item(0).getTextContent().equals(groupName)) {
-                                    continue;
-                                }
-                                base = usersDoc.createElement("Group");
-                                if (element.getElementsByTagName("Username").item(0).getTextContent().equals(admin)) {
-                                    base.setAttribute("id", "Admin");
-                                    base.setTextContent(groupName);
-                                }else {
-                                    base.setAttribute("id", "Member");
-                                    base.setTextContent(groupName);
-                                }
-                                root.appendChild(base);
+
+
+                            if (root.getElementsByTagName("Group").item(0).getTextContent().equals(groupName)) {
                                 break;
+                            }
+
+                            base = usersDoc.createElement("Group");
+
+
+                            if (element.getElementsByTagName("Username").item(0).getTextContent().equals(admin)) {
+                                base.setAttribute("id", "Admin");
+                                base.setTextContent(groupName);
+                            }else {
+                                base.setAttribute("id", "Member");
+                                base.setTextContent(groupName);
+                            }
+                            root.appendChild(base);
+                            break;
                     }
                 }
             }

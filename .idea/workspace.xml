@@ -9,12 +9,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared_classes/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/Group.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -209,7 +206,7 @@
       <workItem from="1678755270240" duration="2643000" />
       <workItem from="1678758819764" duration="1352000" />
       <workItem from="1678765829242" duration="702000" />
-      <workItem from="1678786203344" duration="3576000" />
+      <workItem from="1678786203344" duration="6362000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -386,7 +383,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678763092074</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="add kick members from the group. not tested but kinda working ahahha">
+      <created>1678789885808</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1678789885808</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -416,7 +420,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="GROUP MESSAGE PACHECK HUHUHUHHU" />
     <MESSAGE value="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working" />
     <MESSAGE value="onting change sa login, sa pm if user does not exist -&gt; sasabihin does not exist sa user, if user exists pero offline siya (wala siya sa loggedinuserhashmap), yung pm sakanya is mastostore sa messages.xml" />
     <MESSAGE value="offline message working:)" />
@@ -441,7 +444,8 @@
     <MESSAGE value="okay na yata" />
     <MESSAGE value="FINAL TOUCHES NA TALAGA" />
     <MESSAGE value="FINAL TOUCHES NA TALAGA. SO FAR, WORKING FLAWLESSLY LAHAT NG FEATURE HAHAHA" />
-    <option name="LAST_COMMIT_MESSAGE" value="FINAL TOUCHES NA TALAGA. SO FAR, WORKING FLAWLESSLY LAHAT NG FEATURE HAHAHA" />
+    <MESSAGE value="add kick members from the group. not tested but kinda working ahahha" />
+    <option name="LAST_COMMIT_MESSAGE" value="add kick members from the group. not tested but kinda working ahahha" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -496,6 +500,11 @@
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/AddKickMemberFromGroup.java</url>
           <line>36</line>
           <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java</url>
+          <line>295</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Users>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Darren</name>
@@ -17,6 +18,7 @@
         <BanStatus/>
         <Groups>
             <Group id="Member">testgrp</Group>
+            <Group id="Member">test</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
@@ -24,20 +26,22 @@
         <Age>20</Age>
         <Username>kikoxcore</Username>
         <Password>kikoxcore</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
-        <Groups/>
+        <Groups>
+            <Group id="Member">test</Group>
+            <Group id="Member">test</Group>
+            <Group id="Member">test</Group>
+        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>TEST</name>
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
-        <Groups>
-            <Group id="Admin">arielsgrp</Group>
-        </Groups>
+        <Groups/>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Maervin</name>
