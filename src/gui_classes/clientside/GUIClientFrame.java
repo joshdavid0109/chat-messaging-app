@@ -1,6 +1,8 @@
 package gui_classes.clientside;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.plaf.synth.SynthScrollPaneUI;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -160,6 +162,7 @@ public class GUIClientFrame extends JFrame {
                     if (bookmarkButton.getText().equals("Bookmark")) {
                         usersList.remove(index);
                         usersList.add(0, selectedContact);
+                        System.out.println("'" + selectedContact.split(":")[0].trim() + "' bookmark added.");
 
                         for (Map.Entry<String, Boolean> entry : bookmarkedContactsMap.entrySet()) {
                             if (entry.getKey().equals(selectedContact.split(" : ")[0]))
@@ -168,7 +171,7 @@ public class GUIClientFrame extends JFrame {
                     } else if (bookmarkButton.getText().equals("Unbookmark")) {
                         usersList.remove(index);
                         usersList.add(selectedContact);
-
+                        System.out.println("'" + selectedContact.split(":")[0].trim() + "' bookmark removed.");
 
                         for (Map.Entry<String, Boolean> entry : bookmarkedContactsMap.entrySet()) {
                             if (entry.getKey().equals(selectedContact.split(" : ")[0]))
@@ -181,8 +184,56 @@ public class GUIClientFrame extends JFrame {
                     contactList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                     contactList.setFixedCellHeight(30);
                     contactList.setCellRenderer(renderCell());
+                }
 
+                // sa pag bookmark ng groups
+                String selectedGroup = "";
+                if (groupsList.getSelectedValue() != null) {
+                    selectedGroup = groupsList.getSelectedValue();
+                    boolean isBookmarked = bookmarkedContactsMap.getOrDefault(selectedGroup, false);
 
+                    if (isBookmarked) {
+                        bookmarkedContactsMap.put(selectedGroup, false);
+                        System.out.println("'" + selectedGroup.split(":")[0].trim() + "' bookmark removed.");
+                    } else {
+                        bookmarkedContactsMap.put(selectedGroup, true);
+                        System.out.println("'" + selectedGroup.split(":")[0].trim() + "' bookmark added.");
+                    }
+
+                    boolean updatedIsBookmarked = bookmarkedContactsMap.getOrDefault(selectedGroup, false);
+                    bookmarkButton.setText(updatedIsBookmarked ? "Unbookmark" : "Bookmark");
+                }
+
+                // Sort groupsList
+                ArrayList<String> bookmarkedGroups = new ArrayList<>();
+                ArrayList<String> unbookmarkedGroups = new ArrayList<>();
+
+                for (String group : groupsArray) {
+                    if (bookmarkedContactsMap.getOrDefault(group, false)) {
+                        bookmarkedGroups.add(group);
+                    } else {
+                        unbookmarkedGroups.add(group);
+                    }
+                }
+
+                bookmarkedGroups.addAll(unbookmarkedGroups);
+
+                String[] tempGroups = bookmarkedGroups.toArray(new String[bookmarkedGroups.size()]);
+                groupsList.setListData(tempGroups);
+            }
+        });
+
+        groupsList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+
+                if (groupsList.getSelectedValue() != null) {
+                    String selectedGroup = groupsList.getSelectedValue();
+                    boolean isBookmarked = bookmarkedContactsMap.getOrDefault(selectedGroup, false);
+                    bookmarkButton.setText(isBookmarked ? "Unbookmark" : "Bookmark");
                 }
             }
         });
