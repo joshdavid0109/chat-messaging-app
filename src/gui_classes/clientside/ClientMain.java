@@ -21,9 +21,10 @@ public class ClientMain {
             try {
                 boolean validPort = false;
                 while (!validPort) {
-                    //hardcode ko lang forda testing
-                    /*port = Integer.parseInt(JOptionPane.showInputDialog(new JFrame(), "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
-                    hostName = JOptionPane.showInputDialog(new JFrame(), "Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);*/
+                    JFrame f = new JFrame();
+                    f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    port = Integer.parseInt(JOptionPane.showInputDialog(f, "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
+                    hostName = JOptionPane.showInputDialog(f, "Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);
                     port = 1234;
                     hostName = "localhost";
                     validPort = true;
@@ -42,7 +43,6 @@ public class ClientMain {
                 }
             } catch (NumberFormatException e) {
                 System.out.println(e.getMessage());
-                JOptionPane.showMessageDialog(new JFrame(), "Not mabalin nga port number. Please enter a valid integer.", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (IOException e) {
                 System.out.println("Could not connect to server");
                 System.out.println(e.getMessage());

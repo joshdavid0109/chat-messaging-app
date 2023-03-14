@@ -248,6 +248,7 @@ public class GUIClientController implements ActionListener {
                     //      Other dialog/pop up messages
                     else if (obj instanceof JOptionPane j) {
                         JOptionPane.showMessageDialog(new JFrame(), j.getMessage());
+                        frame.updateGroupsTab();
                     }
 
                     // Update Groups tab when user is added to a group

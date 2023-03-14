@@ -37,8 +37,6 @@
         <BanStatus/>
         <Groups>
             <Group id="Admin">arielsgrp</Group>
-            <Group id="Admin">testcreate</Group>
-            <Group id="Admin">testgrpulit</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">

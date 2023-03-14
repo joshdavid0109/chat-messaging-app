@@ -448,16 +448,6 @@ public class GUIClientFrame extends JFrame {
                 } catch (IOException ex) {
                     System.err.println(ex.getMessage());
                 }
-
-                try {
-                    updateGroupsTab();
-                } catch (ParserConfigurationException ex) {
-                    throw new RuntimeException(ex);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (SAXException ex) {
-                    throw new RuntimeException(ex);
-                }
             }
         });
 
