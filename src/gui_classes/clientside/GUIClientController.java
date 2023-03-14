@@ -71,6 +71,7 @@ public class GUIClientController implements ActionListener {
                     Message message = (Message) obj;
                     JOptionPane.showMessageDialog(frame, message.getContent(), "Login Error", JOptionPane.ERROR_MESSAGE);
                 }
+                System.out.println();
             }
 
             // Create the GUI frame

@@ -1,5 +1,6 @@
 package server_side;
 
+import gui_classes.clientside.AddKickMemberFromGroup;
 import gui_classes.clientside.GUIClientController;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

@@ -552,6 +552,10 @@ public class XMLParse {
                         System.out.println(element.getElementsByTagName("Username").item(0).getTextContent());
                             NodeList groupNode = usersDoc.getElementsByTagName("Groups");
                                 root = (Element) groupNode.item(i);
+
+                                if (root.getElementsByTagName("Group").item(0).getTextContent().equals(groupName)) {
+                                    continue;
+                                }
                                 base = usersDoc.createElement("Group");
                                 if (element.getElementsByTagName("Username").item(0).getTextContent().equals(admin)) {
                                     base.setAttribute("id", "Admin");
@@ -790,6 +794,35 @@ public class XMLParse {
         }
     }
 
+    public static boolean checkUserAtt(String groupName, User user) {
+        try {
+            getUsersDoc();
+            usersDoc.getDocumentElement().normalize();
+            NodeList nodeList = usersDoc.getElementsByTagName("User");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Element u = (Element)nodeList.item(i);
+                String name = u.getElementsByTagName("Username").item(0).getTextContent();
+                if (name.equals(user.getUsername())) {
+                    NodeList nodeL = u.getElementsByTagName("Group");
+                    if (nodeL.getLength()!=0) {
+                        for (int j =0;j < nodeList.getLength(); j++) {
+                            Node g = nodeL.item(j);
+                            if (g.getTextContent().equals(groupName)){
+                                return true;
+                            }
+                        }
+                    } else
+                        return false;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void deleteUser(String nameToDelete) {
         try {
             getUsersDoc();
@@ -836,7 +869,7 @@ public class XMLParse {
             NodeList nodeList = doc.getElementsByTagName("User");
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Element element = (Element) nodeList.item(i);
-                NodeList groupList = element.getElementsByTagName("Groupname");
+                NodeList groupList = element.getElementsByTagName("Group");
                 for (int j = 0; j < groupList.getLength(); j++) {
                     Element group = (Element) groupList.item(j);
                     if (group.getTextContent().equals(groupName)) {

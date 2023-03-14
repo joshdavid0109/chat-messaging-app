@@ -8,16 +8,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="final touches">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
+    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/CreateGroup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server_side/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/Group.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -60,6 +57,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/Users/joshdavid0109/Desktop"
   }
 }]]></component>
@@ -68,12 +66,30 @@
       <recent name="server_side" />
       <recent name="gui_classes.clientside" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Program Files\IdeaProjects\2022-2_9328-pregrp7Revision\src\server_side" />
+      <recent name="E:\Program Files\IdeaProjects\2022-2_9328-pregrp7Revision\src\gui_classes\clientside" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Program Files\IdeaProjects\2022-2_9328-pregrp7Revision\src\gui_classes\clientside" />
       <recent name="E:\Program Files\IdeaProjects\2022-2_9328-pregrp7Revision\src\test" />
       <recent name="C:\Users\ADMIN\IdeaProjects\2022aaaa\res" />
     </key>
   </component>
   <component name="RunManager" selected="Application.ClientMain">
+    <configuration name="AddKickMemberFromGroup" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.AddKickMemberFromGroup" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AddUserHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.AddUserHandler" />
       <module name="console" />
@@ -126,19 +142,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GUIClientController" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.GUIClientController" />
-      <module name="console" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="gui_classes.clientside.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="UserManagement_GUI" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
       <module name="console" />
@@ -154,19 +157,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.UserManagement_GUI" />
+      <item itemvalue="Application.AddKickMemberFromGroup" />
       <item itemvalue="Application.BookmarkContacts" />
       <item itemvalue="Application.CreateGroup" />
       <item itemvalue="Application.AddUserHandler" />
-      <item itemvalue="Application.GUIClientController" />
       <item itemvalue="Application.ClientMain" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ClientMain" />
+        <item itemvalue="Application.AddKickMemberFromGroup" />
         <item itemvalue="Application.CreateGroup" />
         <item itemvalue="Application.BookmarkContacts" />
         <item itemvalue="Application.AddUserHandler" />
-        <item itemvalue="Application.GUIClientController" />
       </list>
     </recent_temporary>
   </component>
@@ -205,6 +208,8 @@
       <workItem from="1678613381632" duration="8818000" />
       <workItem from="1678755270240" duration="2643000" />
       <workItem from="1678758819764" duration="1352000" />
+      <workItem from="1678765829242" duration="702000" />
+      <workItem from="1678786203344" duration="3576000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -374,7 +379,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678716654890</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="FINAL TOUCHES NA TALAGA. SO FAR, WORKING FLAWLESSLY LAHAT NG FEATURE HAHAHA">
+      <created>1678763092074</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1678763092074</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -404,8 +416,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="set offline" />
-    <MESSAGE value="set offline on socket termination" />
     <MESSAGE value="GROUP MESSAGE PACHECK HUHUHUHHU" />
     <MESSAGE value="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working" />
     <MESSAGE value="onting change sa login, sa pm if user does not exist -&gt; sasabihin does not exist sa user, if user exists pero offline siya (wala siya sa loggedinuserhashmap), yung pm sakanya is mastostore sa messages.xml" />
@@ -429,7 +439,9 @@
     <MESSAGE value="Updating color status on clients frame, working bookmark/unbookmark feature, and other updates sa ibang classes.&#10;&#10;may getallusers na rin sa xmlparse if ever kailangan" />
     <MESSAGE value="leave group, di pa fully working. T_T sa pagparse nalang ng xml file - XMLParse - removeUserFromGroup method" />
     <MESSAGE value="okay na yata" />
-    <option name="LAST_COMMIT_MESSAGE" value="okay na yata" />
+    <MESSAGE value="FINAL TOUCHES NA TALAGA" />
+    <MESSAGE value="FINAL TOUCHES NA TALAGA. SO FAR, WORKING FLAWLESSLY LAHAT NG FEATURE HAHAHA" />
+    <option name="LAST_COMMIT_MESSAGE" value="FINAL TOUCHES NA TALAGA. SO FAR, WORKING FLAWLESSLY LAHAT NG FEATURE HAHAHA" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -462,12 +474,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java</url>
-          <line>499</line>
+          <line>505</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java</url>
-          <line>541</line>
+          <line>547</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -477,8 +489,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/server_side/ClientHandler.java</url>
-          <line>105</line>
+          <line>106</line>
           <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/AddKickMemberFromGroup.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

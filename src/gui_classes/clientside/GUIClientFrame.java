@@ -49,6 +49,8 @@ public class GUIClientFrame extends JFrame {
         this.user = u;
         this.controller = controller;
 
+        JFrame f = this;
+
         String fontfamily = "Arial, sans-serif";
         Font font = new Font(fontfamily, Font.PLAIN, fontSize);
         setTitle("Chat Application");
@@ -289,6 +291,10 @@ public class GUIClientFrame extends JFrame {
                 JList<String> list = (JList<String>) evt.getSource();
                 String selectedValue = list.getSelectedValue();
                 messageInput.setText("/gm "+selectedValue+" ");
+
+                if (evt.getClickCount() == 2 && evt.getButton() == MouseEvent.BUTTON1) {
+                        new AddKickMemberFromGroup(f, out, user, selectedValue);
+                }
             }
         });
 
@@ -385,7 +391,7 @@ public class GUIClientFrame extends JFrame {
         createGroup.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         createGroup.setFocusable(false);
         createGroup.setBounds(90, 640, 100, 20);
-        JFrame f = this;
+
         createGroup.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

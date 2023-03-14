@@ -9,6 +9,10 @@ public class Group implements Serializable {
     private List<String> members;
     private User admin;
 
+    public Group() {
+
+    }
+
     public Group(String name) {
         this.name = name;
         members = new ArrayList<>();
