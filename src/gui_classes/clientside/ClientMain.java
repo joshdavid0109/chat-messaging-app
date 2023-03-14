@@ -25,8 +25,6 @@ public class ClientMain {
                     f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                     port = Integer.parseInt(JOptionPane.showInputDialog(f, "Input port: ", "Port connection", JOptionPane.INFORMATION_MESSAGE));
                     hostName = JOptionPane.showInputDialog(f, "Input host: ", "Port connection", JOptionPane.INFORMATION_MESSAGE);
-                    port = 1234;
-                    hostName = "localhost";
                     validPort = true;
                 }
 

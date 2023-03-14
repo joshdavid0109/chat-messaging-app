@@ -563,10 +563,10 @@ public class XMLParse {
                                 root = (Element) groupNode.item(i);
 
 
-
+/*
                             if (root.getElementsByTagName("Group").item(0).getTextContent().equals(groupName)) {
                                 break;
-                            }
+                            }*/
 
                             base = usersDoc.createElement("Group");
 

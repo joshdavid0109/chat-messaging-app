@@ -18,6 +18,8 @@
         <Groups>
             <Group id="Member">testgrp</Group>
             <Group id="Member">test</Group>
+            <Group id="Member">testgrpulit</Group>
+            <Group id="Member">asd</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
@@ -31,6 +33,8 @@
             <Group id="Member">test</Group>
             <Group id="Member">test</Group>
             <Group id="Member">test</Group>
+            <Group id="Member">arielsgrp</Group>
+            <Group id="Member">cqwe</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
@@ -38,9 +42,14 @@
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <status>offline</status>
+        <status>online</status>
         <BanStatus/>
-        <Groups/>
+        <Groups>
+            <Group id="Admin">asdas</Group>
+            <Group id="Admin">cqwe</Group>
+            <Group id="Admin">cqwe</Group>
+            <Group id="Member">cqwe</Group>
+        </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
         <name>Maervin</name>
@@ -63,7 +72,7 @@
         <Groups>
             <Group id="Member">arielsgrp</Group>
             <Group id="Member">testcreate</Group>
-            <Group id="Member">testgrpulit</Group>
+            <Group id="Member">asdas</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">

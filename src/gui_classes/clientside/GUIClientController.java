@@ -254,7 +254,7 @@ public class GUIClientController implements ActionListener {
 
                     // Update Groups tab when user is added to a group
                     else if (obj instanceof Group group) {
-                        if (!group.getAdmin().getUsername().equals(user.getUsername())) {
+                        if (!group.getAdmin().getUsername().equals(user.getUsername()) && user.getStatus().equals("offline")) {
                             JOptionPane.showMessageDialog(new JFrame(), "You have been added to group " + group.getName());
                         }
                         frame.updateGroupsTab();
