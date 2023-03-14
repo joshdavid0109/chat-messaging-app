@@ -521,6 +521,11 @@ public class XMLParse {
         return users;
     }
 
+    /**
+     * Creates a group element given the group object containing the admin of the group, members, as well as
+     * the name of the group
+     * @param group
+     */
     public static void addGroup(Group group) {
         List<String> usersToAdd = group.getMembers();
         String groupName = group.getName();

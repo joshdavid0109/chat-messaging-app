@@ -104,11 +104,11 @@ public class CreateGroup extends JDialog implements Runnable{
             public void actionPerformed(ActionEvent e) {
 
                 if(groupNameTF.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null,"please enter a group name");
+                    JOptionPane.showMessageDialog(null,"Please enter a group name");
                     return;
                 }
                 else{
-                    selectedUsers.add(0,  "TEST @x" );
+                    selectedUsers.add(0,  user.getName() + " @" + user.getUsername());
                     Group grupow = new Group(groupNameTF.getText(), selectedUsers, user);
                     try {
                         out.writeObject(grupow);

@@ -104,7 +104,7 @@ public class ClientHandler implements Runnable {
 
                 else if(obj instanceof Group group){
                     XMLParse.addGroup(group);
-                    outToClient.writeObject(group);
+                    server.updateGroupsFrame(group);
                     //debug
                     server.privateMessage(group.getAdmin().getName(), new Message("GRP CREATED!"));
                 }

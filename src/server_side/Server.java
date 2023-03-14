@@ -221,6 +221,18 @@ public class Server extends Thread{
         }
     }
 
+    public void updateGroupsFrame(Group group) {
+        for (ClientHandler clientHandler: clientsList) {
+            try {
+                clientHandler.outToClient.writeObject(group);
+                clientHandler.outToClient.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     /**
      * For each client in the list of clients, send the message to the client.
      *
