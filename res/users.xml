@@ -20,6 +20,7 @@
             <Group id="Member">test</Group>
             <Group id="Member">testgrpulit</Group>
             <Group id="Member">asd</Group>
+            <Group id="Member">asdeee</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
@@ -42,13 +43,16 @@
         <Age>20</Age>
         <Username>x</Username>
         <Password>x</Password>
-        <status>online</status>
+        <status>offline</status>
         <BanStatus/>
         <Groups>
             <Group id="Admin">asdas</Group>
             <Group id="Admin">cqwe</Group>
             <Group id="Admin">cqwe</Group>
             <Group id="Member">cqwe</Group>
+            <Group id="Admin">asdeee</Group>
+            <Group id="Admin">asdee</Group>
+            <Group id="Admin">asdee</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">
@@ -72,7 +76,6 @@
         <Groups>
             <Group id="Member">arielsgrp</Group>
             <Group id="Member">testcreate</Group>
-            <Group id="Member">asdas</Group>
         </Groups>
     </User>
     <User id="165923f2-fc93-4234-8404-59bf225ec703">

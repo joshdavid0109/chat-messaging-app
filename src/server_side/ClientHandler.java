@@ -118,6 +118,10 @@ public class ClientHandler implements Runnable {
                     }
                 }
 
+                else if (obj instanceof User u) {
+                    XMLParse.setStatusOfUser(u.getUsername(), "offline");
+                }
+
                 else if (obj instanceof LoginCredentials loginCredentials) {
                     try {
                         boolean loginStatus = false;

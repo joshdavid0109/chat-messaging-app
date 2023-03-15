@@ -8,11 +8,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="">
+    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="minor changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/ClientMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,7 +56,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/joshdavid0109/Desktop"
+    "last_opened_file_path": "H:/",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -207,7 +208,8 @@
       <workItem from="1678755270240" duration="2643000" />
       <workItem from="1678758819764" duration="1352000" />
       <workItem from="1678765829242" duration="702000" />
-      <workItem from="1678786203344" duration="9252000" />
+      <workItem from="1678786203344" duration="10106000" />
+      <workItem from="1678885409098" duration="2115000" />
     </task>
     <task id="LOCAL-00001" summary="upsdates">
       <created>1677318546729</created>
@@ -405,7 +407,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678799750953</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="minor changes">
+      <created>1678801459849</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1678801459849</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -435,7 +444,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="offline message working:)" />
     <MESSAGE value="Admin panel GUI, Server-Client port auth" />
     <MESSAGE value="addusergui" />
     <MESSAGE value="adduser" />
@@ -460,7 +468,8 @@
     <MESSAGE value="add kick members from the group. not tested but kinda working ahahha" />
     <MESSAGE value="WORKING AND TESTED ADD/REMOVE MEMBERS FROM THE GROUP" />
     <MESSAGE value="WORKING AND TESTED ADD/REMOVE MEMBERS FROM THE GROUP&#10;&#10;AddKickMemberFromGroup class------" />
-    <option name="LAST_COMMIT_MESSAGE" value="WORKING AND TESTED ADD/REMOVE MEMBERS FROM THE GROUP&#10;&#10;AddKickMemberFromGroup class------" />
+    <MESSAGE value="minor changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -484,7 +493,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/shared_classes/XMLParse.java</url>
-          <line>528</line>
+          <line>551</line>
           <properties class="shared_classes.XMLParse" method="addGroup">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />

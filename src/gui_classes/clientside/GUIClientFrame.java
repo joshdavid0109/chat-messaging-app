@@ -588,10 +588,11 @@ public class GUIClientFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
-                XMLParse.setStatusOfUser(user.getUsername(), "offline");
+
                 usersList = new ArrayList<>(Arrays.asList(XMLParse.getAllContacts()));
                 try {
                     out.writeObject(usersList);
+                    out.writeObject(user);
                     out.flush();
                 } catch (IOException e) {
                     e.printStackTrace();

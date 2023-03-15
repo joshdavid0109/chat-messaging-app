@@ -245,6 +245,29 @@ public class XMLParse {
 
     }
 
+    public static boolean checkGroupDuplicate(Group g) {
+        getUsersDoc();
+        usersDoc.getDocumentElement().normalize();
+        NodeList nodeList = usersDoc.getElementsByTagName("User");
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node userNode = nodeList.item(i);
+            if (userNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element userElement = (Element) userNode;
+                NodeList groupNodes = userElement.getElementsByTagName("Group");
+                for (int j = 0; j < groupNodes.getLength(); j++) {
+                    Node groupNode = groupNodes.item(j);
+                    if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
+                        String group = groupNode.getTextContent();
+                        if (group.equals(g.getName())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public User getUser(String userName) {
         User user = new User();
         try {
@@ -552,6 +575,8 @@ public class XMLParse {
                             .contains(element.getElementsByTagName("Username")
                                     .item(0).getTextContent());
 
+                    boolean checkDuplicate = false;
+
                     if (usersDoc.getElementsByTagName("Group").item(0).getTextContent().equals(groupName) &&
                             !checkDelete) {
                         removeUserFromGroup(temp, groupName);
@@ -562,24 +587,36 @@ public class XMLParse {
                             NodeList groupNode = usersDoc.getElementsByTagName("Groups");
                                 root = (Element) groupNode.item(i);
 
+                                NodeList groupNodes = root.getChildNodes();
 
-/*
+                                for (int x = 0; x < groupNodes.getLength();x++) {
+                                    Node e =  groupNodes.item(x);
+                                    if (e.getTextContent().equals(group.getName())) {
+                                        checkDuplicate = true;
+                                    }
+                                }
+
+                                /*
                             if (root.getElementsByTagName("Group").item(0).getTextContent().equals(groupName)) {
                                 break;
                             }*/
 
+                        if (checkDuplicate)
+                            break;
+                        else {
                             base = usersDoc.createElement("Group");
 
 
                             if (element.getElementsByTagName("Username").item(0).getTextContent().equals(admin)) {
                                 base.setAttribute("id", "Admin");
                                 base.setTextContent(groupName);
-                            }else {
+                            } else {
                                 base.setAttribute("id", "Member");
                                 base.setTextContent(groupName);
                             }
                             root.appendChild(base);
                             break;
+                        }
                     }
                 }
             }
