@@ -1,296 +1,258 @@
 package server_side;
 
-import client_side.GroupChatClientHandler;
+import gui_classes.clientside.AddKickMemberFromGroup;
+import gui_classes.clientside.GUIClientController;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import shared_classes.Messages;
-import shared_classes.User;
-import shared_classes.XMLParse;
+import shared_classes.*;
 
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import static server_side.Server.*;
 
-
+/**
+ * It handles the client's messages and sends it to the server
+ */
 public class ClientHandler implements Runnable {
-    Socket socket;
-    PrintWriter printWriter = null;
-    BufferedReader bufferedReader = null;
-    ObjectInputStream objectInputStream;
-    ObjectOutputStream objectOutputStream;
-    boolean loginStatus;
-    XMLParse xmlParse = new XMLParse("res/messages.xml");
-//    ObjectInputStream inputStream = new
 
-    public ClientHandler(Socket clientSocket, PrintWriter printWriter, BufferedReader bufferedReader) throws IOException {
-        this.socket= clientSocket;
-        this.printWriter = printWriter;
-        this.bufferedReader = bufferedReader;
+    public Socket clientSocket;
+    public ObjectInputStream userInput = null;
+    private Server server;
+    private User user;
+    public ObjectOutputStream outToClient = null;
 
+    public User getUser() {
+        return user;
     }
 
-    public void run() {
-        String name = null;
-
-        while (true){
-
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            try {
-                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                org.w3c.dom.Document document;
-                String f = "res/users.xml";
-                File file= new File(f);
-
-                document = documentBuilder.parse(file);
-
-                NodeList users = document.getElementsByTagName("User");
-
-                userValidation(name, users);
-
-            } catch (IOException | ParserConfigurationException | SAXException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    private void joinServer(User user, NodeList nodeList) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        String message, recipient;
-//        objectInputStream = new ObjectInputStream(socket.getInputStream());
-//        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+    public ObjectOutputStream getOutToClient() {
+        return outToClient;
+    }
 
+    public ClientHandler(Server s, Socket clientSocket, ObjectOutputStream outToClient) {
         try {
-            broadcast(user.name() + " joined the chat");
-            messagePrompt(user.name());
-
-            boolean exit = false;
-
-            while (!exit && (message = bufferedReader.readLine()) != null) {
-                xmlParse.addMessage(user.username(), message, "toall");
-
-                if (message.startsWith("/")) {
-                    String[] words = message.split("/");
-
-                    String command = words[1];
-                    System.out.println(command);
-                    switch (command) {
-                        case "edit":
-                            showEditMenu();
-                            printWriter.println("Input your choice: ");
-                            byte choice = Byte.parseByte(bufferedReader.readLine());
-                            switch (choice) {
-                                //TODO
-                                case 1 -> changeUName(user.name(), nodeList);
-                                case 2 -> System.out.println();
-                                case 3 -> System.out.println();
-                                case 4 -> System.out.println();
-                            }
-                            break;
-                        case "pm":
-                            printWriter.println("Send to: ");
-                            recipient = bufferedReader.readLine();
-                            messagePrompt(user.name());
-                            message = bufferedReader.readLine();
-
-                            for (User u :Server.registeredUsersList) {
-                                if (u.name().equals(recipient)) {
-                                    if (u.status().equals("online")) {
-                                        for (Map.Entry<ClientHandler, User> hash : Server.loggedInUserHashMap.entrySet()) {
-                                            if (hash.getValue().name().equals(recipient)) {
-                                                for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
-                                                    if (loginHandler.socket.equals(hash.getKey().socket)) {
-                                                        loginHandler.sendMessage(user.name() + ": " + message);
-                                                        break;
-                                                    }
-                                                }
-                                                break;
-                                            }
-                                        }
-                                        break;
-                                    } else if (u.status().equals("offline")){
-                                        xmlParse.addMessage(u.name(), message, recipient);
-                                        break;
-                                    } else
-                                        sendMessage("User not existing");
-                                }
-                            }
-
-                            break;
-                        case "create":
-                            GroupChatClientHandler gcClientHandler = new GroupChatClientHandler(socket, printWriter, bufferedReader, user);
-                            gcClientHandler.start();
-                            break;
-                        case "help":
-                            showCommands();
-                            break;
-                        case "quit":
-                            broadcast(user.name() + " has left the chat.");
-                            exit = true;
-                            break;
-
-                        case "ban":
-                            //TODO
-                            System.out.println();
-                            break;
-                        default:
-                            printWriter.println("command not recognized. input '/help' for a list of commands");
-                    }
-                } else {
-                    broadcast(user.name() + ": " + message);
-                }
-            }
-
-
-        } catch (SocketException socketException) {
-            throw new SocketException("Socket closed");
+            this.server = s;
+            this.outToClient = outToClient;
+            this.clientSocket = clientSocket;
+            this.userInput = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-
-            socket.close();
-        }
-    }
-    private void messagePrompt(String name) {
-        printWriter.println("\n\n" + name + ": ");
-    }
-
-    private void showCommands() {
-        printWriter.println("\n\n");
-        printWriter.println("COMMANDS");
-        printWriter.println("/help");
-        printWriter.println("/edit");
-        printWriter.println("/privatemessage");
-        printWriter.println("\n\n");
-    }
-
-    private void showEditMenu() {
-        printWriter.println("\n\n");
-        printWriter.println("[1] Change username");
-        printWriter.println("[2] Change name");
-        printWriter.println("[3] Change age");
-        printWriter.println("[4] Change password");
-        printWriter.println("\n\n");
-    }
-
-    public void editName(String name, String newName) {
-
-    }
-    public void broadcast(String message ){
-        for (ClientHandler loginHandler : Server.loginHandlerArraylist) {
-            if (loginHandler != null && loginStatus) {
-                loginHandler.sendMessage(message);
-            }
+            e.printStackTrace();
         }
     }
 
-    public void sendMessage ( String message){
-        printWriter.println(message);
-    }
 
-    public void changeUName(String name, NodeList usersList) {
-
-        //should check list of usernames muna if available
-        File xmlFile = new File("res/users.xml");
-        Document document;
+    /**
+     * It handles the messages sent by the client
+     */
+    public void run() {
         try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            document = documentBuilder.parse(xmlFile);
-            NodeList users;
+            while (userInput != null) {
+                Object obj = new Object();
+                try {
+                    obj = userInput.readObject();
+                } catch (EOFException e) {
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
 
-            users = document.getElementsByTagName("User");
 
-            printWriter.println("Enter new username: ");
-            String nameToChangeTo = bufferedReader.readLine();
-            for (int i = 0; i < usersList.getLength(); i++) {
-                Element u = (Element) users.item(i);
-                String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
-                printWriter.println(nameNode);
-                if (nameNode.equals(name)) {
-                    u.getElementsByTagName("name").item(0).setTextContent(nameToChangeTo);
-                    Server.updateXML(users, document);
-                    printWriter.println("User " + nameNode + " has changed name to " + nameToChangeTo);
-                    break;
+                if (obj.getClass().equals(Message.class)) {
+                    Message message = (Message) obj;
+
+                    if(message.getRecipient() == null){
+                        return;
+                    }
+
+                    //broadcast msg
+                    else if (message.getRecipient().equals("TOALL")) {
+                        server.broadcastMessage(message);
+                    }
+
+                    //group msg
+                    else if(message.getRecipient().startsWith("@")){
+                        server.groupMessage(message.getRecipient().replace("@",""), message);
+                    }
+
+                    //private msg
+                    else {
+                        server.privateMessage(message.getRecipient(), message);
+                    }
+                    //outToClient.writeObject(message);
+                }
+
+                // Update status of users
+                else if (obj instanceof ArrayList<?> arrayList) {
+                    ArrayList<String> strings= (ArrayList<String>) arrayList;
+                    server.updateUserFrameList(strings);
+
+                }
+
+                else if(obj instanceof Group group){
+                    XMLParse.addGroup(group);
+                    server.updateGroupsFrame(group);
+                    //debug
+                    server.privateMessage(group.getAdmin().getName(), new Message("GRP CREATED!"));
+                }
+
+                else if (obj instanceof String s) {
+                    if (s.contains("/leavegroup")) {
+                        String [] x = s.split(" ");
+                        XMLParse.removeUserFromGroup(x[2], x[1]);
+                        outToClient.writeObject(new JOptionPane(x[2] + " have successfully removed from the group " + x[1]));
+                    }
+                }
+
+                else if (obj instanceof User u) {
+                    XMLParse.setStatusOfUser(u.getUsername(), "offline");
+                }
+
+                else if (obj instanceof LoginCredentials loginCredentials) {
+                    try {
+                        boolean loginStatus = false;
+                        Server.updateUsersList();
+                        for (User user : registeredUsersList) {
+                            if (user.getUsername().equals(loginCredentials.getUsername())) {
+                                if (user.getPassword().equals(loginCredentials.getPassword())) {
+                                    if (user.getStatus().equals("online")) {
+                                        loginStatus = true;
+                                        outToClient.writeObject(new JOptionPane("User is currently logged in on another device."));
+                                        break;
+                                    } else if (user.getBanStatus().equals("BANNED")) {
+                                        loginStatus = true;
+                                        outToClient.writeObject(new JOptionPane("User is currently banned from the system."));
+                                        break;
+                                    } else {
+                                        if (XMLParse.loginAuth(loginCredentials.getUsername(), loginCredentials.getPassword())  ) {
+                                            loginStatus = true;
+                                            outToClient.writeObject(user);
+                                            outToClient.flush();
+                                            server.clients.add(user);
+                                            loginHandlerArraylist.add(this);
+                                            loggedInUserHashMap.put(this, user);
+                                            setUser(user);
+                                            //send offline messages to user
+                                            List<OfflineMessage> offlineMessages = getOfflineMessages(user);
+                                            server.offlineMessage(user.getName(), offlineMessages);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (!loginStatus){
+                            outToClient.writeObject(new JOptionPane("Invalid Username or password.", JOptionPane.ERROR_MESSAGE));
+                        }
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
             }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            System.err.println("Error handling client: " + e);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Invalid message received: " + e);
+        } finally {
+            try {
+                userInput.close();
+                clientSocket.close();
+//                XMLParse.setEveryoneOffline();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
-    public void userValidation(String name, NodeList users) {
-
-        while (!loginStatus) {
-            try {
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                Document document = documentBuilder.parse(Server.f);
-
-                String username, password;
-                users = document.getElementsByTagName("User");
-                Element u = null;
-
-                printWriter.println("\nUsername: ");
-                username = bufferedReader.readLine();
-
-                for (int i = 0; i < users.getLength(); i++) {
-                    u = (Element) users.item(i);
-                    String uName = u.getElementsByTagName("Username").item(0).getTextContent();
-
-                    if (uName.equals(username)) {
-                        for (int j = 0; j < users.getLength(); j++) {
-                            printWriter.println("\nPassword: ");
-                            password = bufferedReader.readLine();
-                            String pass = u.getElementsByTagName("Password").item(0).getTextContent();
-                            String nameNode = u.getElementsByTagName("name").item(0).getTextContent();
-
-                            if (pass.equals(password)) {
-                                name = nameNode;
-                                loginStatus = true;
-
-                                if (u.getElementsByTagName("BanStatus").item(0).getTextContent().equalsIgnoreCase("Banned")) {
-                                    printWriter.println("Sorry. Your account is currently banned from the system.");
-                                    break;
-                                }
+    private void replaceContent(File f, File file) throws IOException {
+        FileInputStream in = new FileInputStream(f);
+        FileOutputStream out = new FileOutputStream(file);
+        try {
 
 
-                                    Server.loginHandlerArraylist.add(new ClientHandler(socket, printWriter, bufferedReader));
-                                User user = new User(u.getAttribute("User"), u.getElementsByTagName("name").item(0).getTextContent(), u.getElementsByTagName("Age").item(0).getTextContent(),
-                                        u.getElementsByTagName("Username").item(0).getTextContent(),
-                                        u.getElementsByTagName("Password").item(0).getTextContent(), u.getElementsByTagName("status").item(0).getTextContent(), u.getElementsByTagName("BanStatus").item(0).getTextContent());
+            int c;
 
-                                // IP, USER HASHMAP
-                                Server.loggedInUserHashMap.put(new ClientHandler(socket, printWriter, bufferedReader), user);
+            while ((c = in.read()) !=-1) {
+                out.write(c);
+            }
 
-                                u.getElementsByTagName("status").item(0).setTextContent("online");
-                                Server.updateXML(users, document);
-
-
-                                System.out.println("Login Successful!");
-
-                                System.out.println(u.getElementsByTagName("name").item(0).getTextContent() + " " +  u.getElementsByTagName("status").item(0).getTextContent());
-
-                                joinServer(user, users);
-                                broadcast(name + ": ");
-                                break;
-                            }
-                            printWriter.println("Invalid password.");
-                        }
-                        break;
-                    } else if (i == users.getLength() - 1)
-                        printWriter.println("User is not existing");
-                }
-            } catch (IOException | ParserConfigurationException | SAXException | TransformerException e) {
-                throw new RuntimeException(e);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (in!=null) {
+                in.close();
+            } if (out!=null) {
+                out.close();
             }
         }
+        System.out.println("file copied");
+    }
+
+    /**
+     * It reads the XML file, finds all the messages that are addressed to the user, creates a list of OfflineMessage
+     * objects from them, and then deletes the messages from the XML file
+     *
+     * @param user The user object of the user who is logging in.
+     * @return A list of offline messages
+     */
+    public List<OfflineMessage> getOfflineMessages(User user) {
+        List<OfflineMessage> offlineMessages = new ArrayList<>();
+        try {
+            File inputFile = new File("res/messages.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("Message");
+
+            // Create a list to hold the messages to be deleted
+            List<Node> messagesToDelete = new ArrayList<>();
+
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+                Node nNode = nList.item(temp);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    String messageRecipient = eElement.getElementsByTagName("Recipient").item(0).getTextContent();
+                    if (messageRecipient.equalsIgnoreCase(user.getName())) {
+                        String sender = eElement.getElementsByTagName("Sender").item(0).getTextContent();
+                        String messageText = eElement.getElementsByTagName("Text").item(0).getTextContent();
+                        String timestamp = eElement.getElementsByTagName("Time").item(0).getTextContent();
+                        OfflineMessage message = new OfflineMessage(sender, user.getName(), messageText, timestamp);
+                        offlineMessages.add(message);
+                        // Add the message element to the list of messages to be deleted
+                        messagesToDelete.add(eElement);
+                    }
+                }
+            }
+
+            // Delete the message elements from the XML file
+            for (Node messageNode : messagesToDelete) {
+                messageNode.getParentNode().removeChild(messageNode);
+            }
+
+            // Save the changes to the XML file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(inputFile);
+            transformer.transform(source, result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return offlineMessages;
     }
 }

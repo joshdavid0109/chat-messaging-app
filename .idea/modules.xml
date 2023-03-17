@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/javachattest.iml" filepath="$PROJECT_DIR$/javachattest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/console.iml" filepath="$PROJECT_DIR$/console.iml" />
     </modules>
   </component>
 </project>

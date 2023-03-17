@@ -1,24 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Messages>
-    <Sender id="franz1">
-        <Message>/pm</Message>
-    </Sender>
-    <Sender id="joshdavid0109">
-        <Message>hello</Message>
-    </Sender>
-    <Sender id="joshdavid0109">
-        <Message>hello</Message>
-    </Sender>
-    <Sender id="franz1">
-        <Message>/pm</Message>
-    </Sender>
-    <Sender id="franz1">
-        <Message>/create</Message>
-    </Sender>
-    <Sender id="franz1">
-        <Message>group franz</Message>
-    </Sender>
-    <Sender id="franz1">
-        <Message>ariel</Message>
-    </Sender>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Messages>
+    <Message id="xxx">
+        <Time>2023-03-09 18:11</Time>
+        <Sender>Joshua</Sender>
+        <Text>hello edf</Text>
+        <Recipient>reydan</Recipient>
+    </Message>
+    <Message id="xxx">
+        <Time>2023-03-12 19:39</Time>
+        <Sender>Ariel</Sender>
+        <Text/>
+        <Recipient>asdcsa</Recipient>
+    </Message>
 </Messages>

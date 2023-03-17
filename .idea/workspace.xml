@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="8" />
+    <option name="CUSTOM_SCOPE_NAME" value="All Places" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="minor changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/users.xml" beforeDir="false" afterPath="$PROJECT_DIR$/res/users.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server_side/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server_side/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared_classes/XMLParse.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/testgc" />
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="origin/sandwich" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2MDsuGXvTiTKuv8PIIDBXcscaqD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "H:/",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="server_side" />
+      <recent name="gui_classes.clientside" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Program Files\IdeaProjects\2022-2_9328-pregrp7Revision\src\server_side" />
+      <recent name="E:\Program Files\IdeaProjects\2022-2_9328-pregrp7Revision\src\gui_classes\clientside" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Program Files\IdeaProjects\2022-2_9328-pregrp7Revision\src\gui_classes\clientside" />
+      <recent name="E:\Program Files\IdeaProjects\2022-2_9328-pregrp7Revision\src\test" />
+      <recent name="C:\Users\ADMIN\IdeaProjects\2022aaaa\res" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.ClientMain">
+    <configuration name="AddKickMemberFromGroup" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.AddKickMemberFromGroup" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AddUserHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server_side.AddUserHandler" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="server_side.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BookmarkContacts" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test.BookmarkContacts" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClientMain" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.ClientMain" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CreateGroup" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="gui_classes.clientside.CreateGroup" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="gui_classes.clientside.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserManagement_GUI" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server_side.UserManagement_GUI" />
+      <module name="console" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="server_side.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.UserManagement_GUI" />
+      <item itemvalue="Application.AddKickMemberFromGroup" />
+      <item itemvalue="Application.BookmarkContacts" />
+      <item itemvalue="Application.CreateGroup" />
+      <item itemvalue="Application.AddUserHandler" />
+      <item itemvalue="Application.ClientMain" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ClientMain" />
+        <item itemvalue="Application.AddKickMemberFromGroup" />
+        <item itemvalue="Application.CreateGroup" />
+        <item itemvalue="Application.BookmarkContacts" />
+        <item itemvalue="Application.AddUserHandler" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0c01a398-aa93-47e9-bf5c-6da31bcd0730" name="Changes" comment="" />
+      <created>1677313708151</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1677313708151</updated>
+      <workItem from="1677313709485" duration="10404000" />
+      <workItem from="1677326738086" duration="619000" />
+      <workItem from="1677500437502" duration="11131000" />
+      <workItem from="1677512978619" duration="905000" />
+      <workItem from="1677515560488" duration="23795000" />
+      <workItem from="1677575401835" duration="3335000" />
+      <workItem from="1677639404714" duration="1481000" />
+      <workItem from="1677659806645" duration="3386000" />
+      <workItem from="1677664769208" duration="5807000" />
+      <workItem from="1677905008347" duration="2834000" />
+      <workItem from="1678101447649" duration="1616000" />
+      <workItem from="1678110295825" duration="1458000" />
+      <workItem from="1678183560711" duration="7530000" />
+      <workItem from="1678281437128" duration="341000" />
+      <workItem from="1678335309884" duration="9180000" />
+      <workItem from="1678351330692" duration="6297000" />
+      <workItem from="1678369461206" duration="24000" />
+      <workItem from="1678369619905" duration="1353000" />
+      <workItem from="1678516792994" duration="13468000" />
+      <workItem from="1678534892022" duration="1473000" />
+      <workItem from="1678580391843" duration="308000" />
+      <workItem from="1678611492076" duration="734000" />
+      <workItem from="1678613083321" duration="106000" />
+      <workItem from="1678613209886" duration="154000" />
+      <workItem from="1678613381632" duration="8818000" />
+      <workItem from="1678755270240" duration="2643000" />
+      <workItem from="1678758819764" duration="1352000" />
+      <workItem from="1678765829242" duration="702000" />
+      <workItem from="1678786203344" duration="10106000" />
+      <workItem from="1678885409098" duration="2115000" />
+    </task>
+    <task id="LOCAL-00001" summary="upsdates">
+      <created>1677318546729</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1677318546729</updated>
+    </task>
+    <task id="LOCAL-00002" summary="upsdates">
+      <created>1677319560972</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1677319560972</updated>
+    </task>
+    <task id="LOCAL-00003" summary="upsdates">
+      <created>1677319654425</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1677319654425</updated>
+    </task>
+    <task id="LOCAL-00004" summary="set offline on socket termination">
+      <created>1677320181703</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1677320181703</updated>
+    </task>
+    <task id="LOCAL-00005" summary="GROUP MESSAGE PACHECK HUHUHUHHU">
+      <created>1677332978319</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1677332978319</updated>
+    </task>
+    <task id="LOCAL-00006" summary="send object to server using objOutStream, get user input using objInStream, medjo hardcode lahat and commented most ng code, pero its kinda working">
+      <created>1677505945151</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1677505945151</updated>
+    </task>
+    <task id="LOCAL-00007" summary="onting change sa login, sa pm if user does not exist -&gt; sasabihin does not exist sa user, if user exists pero offline siya (wala siya sa loggedinuserhashmap), yung pm sakanya is mastostore sa messages.xml">
+      <created>1677568662033</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1677568662033</updated>
+    </task>
+    <task id="LOCAL-00008" summary="offline message working:)">
+      <created>1677574239609</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1677574239609</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Admin panel GUI, Server-Client port auth">
+      <created>1677590660739</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1677590660739</updated>
+    </task>
+    <task id="LOCAL-00010" summary="addusergui">
+      <created>1677675584807</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1677675584807</updated>
+    </task>
+    <task id="LOCAL-00011" summary="adduser">
+      <created>1677676073024</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1677676073024</updated>
+    </task>
+    <task id="LOCAL-00012" summary="ppp">
+      <created>1678192783206</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1678192783206</updated>
+    </task>
+    <task id="LOCAL-00013" summary="complete client gui overhaul, separated na guiframe + gui controller, somehow nag eerror ayusin ko after ko eat">
+      <created>1678342952450</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1678342952450</updated>
+    </task>
+    <task id="LOCAL-00014" summary="di na nag eerror">
+      <created>1678344277608</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1678344277608</updated>
+    </task>
+    <task id="LOCAL-00015" summary="error handling sa pagcoconnect to server, atbp">
+      <created>1678355129419</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1678355129419</updated>
+    </task>
+    <task id="LOCAL-00016" summary="trial for multiple machine connection">
+      <created>1678366673790</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1678366673790</updated>
+    </task>
+    <task id="LOCAL-00017" summary="trial for multiple machine connection">
+      <created>1678367041597</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1678367041597</updated>
+    </task>
+    <task id="LOCAL-00018" summary="update xml file on server when logged in from another machine">
+      <created>1678369445420</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1678369445420</updated>
+    </task>
+    <task id="LOCAL-00019" summary="login auth fixed and minor changes to other classes">
+      <created>1678523935444</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1678523935444</updated>
+    </task>
+    <task id="LOCAL-00020" summary="oki na ata, havent tested pa tho much, mwehehehe">
+      <created>1678628728116</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1678628728116</updated>
+    </task>
+    <task id="LOCAL-00021" summary="integrated &quot;search&quot; into client gui instead of having it be a separate window, needs improvement, to be continued">
+      <created>1678636348685</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1678636348685</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Updating color status on clients frame, working bookmark/unbookmark feature, and other updates sa ibang classes.&#10;&#10;may getallusers na rin sa xmlparse if ever kailangan">
+      <created>1678701322437</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1678701322437</updated>
+    </task>
+    <task id="LOCAL-00023" summary="leave group, di pa fully working. T_T sa pagparse nalang ng xml file - XMLParse - removeUserFromGroup method">
+      <created>1678706716265</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1678706716265</updated>
+    </task>
+    <task id="LOCAL-00024" summary="okay na yata">
+      <created>1678716654890</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1678716654890</updated>
+    </task>
+    <task id="LOCAL-00025" summary="FINAL TOUCHES NA TALAGA. SO FAR, WORKING FLAWLESSLY LAHAT NG FEATURE HAHAHA">
+      <created>1678763092074</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1678763092074</updated>
+    </task>
+    <task id="LOCAL-00026" summary="add kick members from the group. not tested but kinda working ahahha">
+      <created>1678789885808</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1678789885808</updated>
+    </task>
+    <task id="LOCAL-00027" summary="WORKING AND TESTED ADD/REMOVE MEMBERS FROM THE GROUP">
+      <created>1678792872641</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1678792872641</updated>
+    </task>
+    <task id="LOCAL-00028" summary="WORKING AND TESTED ADD/REMOVE MEMBERS FROM THE GROUP&#10;&#10;AddKickMemberFromGroup class------">
+      <created>1678799750953</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1678799750953</updated>
+    </task>
+    <task id="LOCAL-00029" summary="minor changes">
+      <created>1678801459849</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1678801459849</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Admin panel GUI, Server-Client port auth" />
+    <MESSAGE value="addusergui" />
+    <MESSAGE value="adduser" />
+    <MESSAGE value="refresh update" />
+    <MESSAGE value="client to server on different pcs trial" />
+    <MESSAGE value="ppp" />
+    <MESSAGE value="complete client gui overhaul, separated na guiframe + gui controller, somehow nag eerror ayusin ko after ko eat" />
+    <MESSAGE value="di na nag eerror" />
+    <MESSAGE value="error handling sa pagcoconnect to server, atbp" />
+    <MESSAGE value="trial for multiple machine connection" />
+    <MESSAGE value="update xml file on server when logged in from another machine" />
+    <MESSAGE value="login auth fixed and minor changes to other classes" />
+    <MESSAGE value="wala lng" />
+    <MESSAGE value="oki na ata, havent tested pa tho much, mwehehehe" />
+    <MESSAGE value="integrated &quot;search&quot; into client gui instead of having it be a separate window, needs improvement, to be continued" />
+    <MESSAGE value="asd" />
+    <MESSAGE value="Updating color status on clients frame, working bookmark/unbookmark feature, and other updates sa ibang classes.&#10;&#10;may getallusers na rin sa xmlparse if ever kailangan" />
+    <MESSAGE value="leave group, di pa fully working. T_T sa pagparse nalang ng xml file - XMLParse - removeUserFromGroup method" />
+    <MESSAGE value="okay na yata" />
+    <MESSAGE value="FINAL TOUCHES NA TALAGA" />
+    <MESSAGE value="FINAL TOUCHES NA TALAGA. SO FAR, WORKING FLAWLESSLY LAHAT NG FEATURE HAHAHA" />
+    <MESSAGE value="add kick members from the group. not tested but kinda working ahahha" />
+    <MESSAGE value="WORKING AND TESTED ADD/REMOVE MEMBERS FROM THE GROUP" />
+    <MESSAGE value="WORKING AND TESTED ADD/REMOVE MEMBERS FROM THE GROUP&#10;&#10;AddKickMemberFromGroup class------" />
+    <MESSAGE value="minor changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor changes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.net.SocketException" package="java.net" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="27" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/server_side/UserManagement_GUI.java</url>
+          <line>165</line>
+          <properties>
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/shared_classes/XMLParse.java</url>
+          <line>551</line>
+          <properties class="shared_classes.XMLParse" method="addGroup">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java</url>
+          <line>505</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java</url>
+          <line>547</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/LoginGUIForm.java</url>
+          <line>57</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/server_side/ClientHandler.java</url>
+          <line>106</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/AddKickMemberFromGroup.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gui_classes/clientside/GUIClientFrame.java</url>
+          <line>295</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="usersDoc" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
